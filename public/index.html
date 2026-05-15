@@ -325,16 +325,16 @@ body::before{content:'';position:fixed;inset:0;background:
 /* explorer below top bars */
 .explorer-content{display:flex;width:100%;height:calc(100vh - 52px - 52px);overflow:hidden;}
 /* Left: body image */
-.body-side-panel{flex:0 0 200px;background:var(--surface);border-right:1px solid var(--border);
+.body-side-panel{flex:0 0 260px;background:var(--surface);border-right:1px solid var(--border);
   overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:10px 6px;}
-.body-img-wrap{position:relative;width:100%;max-width:200px;user-select:none;}
+.body-img-wrap{position:relative;width:100%;max-width:260px;user-select:none;}
 .body-img-wrap img{width:100%;height:auto;display:block;opacity:.85;transition:opacity .3s;}
 /* Clickable hotspot areas over body image */
 .hotspot{position:absolute;border-radius:50%;background:rgba(0,212,170,.08);border:1.5px solid rgba(0,212,170,.2);
   cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
 .hotspot:hover{background:rgba(0,212,170,.2);border-color:rgba(0,212,170,.6);}
 .hotspot.active{background:rgba(0,212,170,.25);border-color:var(--accent);box-shadow:0 0 12px rgba(0,212,170,.3);}
-.hotspot-label{font-size:.48rem;color:var(--accent);text-align:center;line-height:1.1;font-weight:600;padding:1px;}
+.hotspot-label{font-size:.58rem;color:var(--accent);text-align:center;line-height:1.2;font-weight:700;padding:1px;text-shadow:0 1px 3px rgba(0,0,0,.8);}
 /* Right: info */
 .info-panel{flex:1;min-width:0;overflow-y:auto;padding:12px;}
 .info-panel-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;min-height:200px;}
@@ -368,8 +368,8 @@ body::before{content:'';position:fixed;inset:0;background:
   .explorer-content{flex-direction:column;height:auto;overflow:visible;}
   #explorer{overflow-y:auto;}
   .body-side-panel{flex:none;width:100%;border-right:none;border-bottom:1px solid var(--border);
-    padding:8px;flex-direction:row;align-items:flex-start;justify-content:center;}
-  .body-img-wrap{max-width:160px;}
+    padding:8px 4px;flex-direction:column;align-items:center;justify-content:center;}
+  .body-img-wrap{max-width:280px;width:90%;margin:0 auto;}
   .info-panel{padding:8px;}
   .explorer-top-bar{top:50px;}
   .explorer-content{height:auto;}
@@ -1195,37 +1195,37 @@ const BODY_DATA = {
    cx/cy como % da imagem; rx/ry em px
 ════════════════════════════════════════ */
 const HOTSPOTS_FRONT = [
-  {id:'cabeca',   label:'Cabeça\nPescoço', cx:50,  cy:7,   rx:13, ry:11},
-  {id:'ombro',    label:'Ombro\nDir.',      cx:22,  cy:19,  rx:11, ry:9,  side:'right'},
-  {id:'ombro',    label:'Ombro\nEsq.',      cx:78,  cy:19,  rx:11, ry:9,  side:'left'},
-  {id:'cotovelo', label:'Cotovelo\nDir.',   cx:14,  cy:33,  rx:9,  ry:9,  side:'right'},
-  {id:'cotovelo', label:'Cotovelo\nEsq.',  cx:86,  cy:33,  rx:9,  ry:9,  side:'left'},
-  {id:'mao',      label:'Mão\nDir.',        cx:9,   cy:47,  rx:8,  ry:10, side:'right'},
-  {id:'mao',      label:'Mão\nEsq.',        cx:91,  cy:47,  rx:8,  ry:10, side:'left'},
-  {id:'coluna',   label:'Tronco\nColuna',   cx:50,  cy:30,  rx:14, ry:18},
-  {id:'pelve',    label:'Pelve\nDir.',       cx:35,  cy:51,  rx:12, ry:11, side:'right'},
-  {id:'pelve',    label:'Pelve\nEsq.',       cx:65,  cy:51,  rx:12, ry:11, side:'left'},
-  {id:'joelho',   label:'Joelho\nDir.',      cx:34,  cy:71,  rx:10, ry:9,  side:'right'},
-  {id:'joelho',   label:'Joelho\nEsq.',      cx:66,  cy:71,  rx:10, ry:9,  side:'left'},
-  {id:'tornozelo',label:'Tornoz.\nDir.',     cx:34,  cy:89,  rx:9,  ry:8,  side:'right'},
-  {id:'tornozelo',label:'Tornoz.\nEsq.',     cx:66,  cy:89,  rx:9,  ry:8,  side:'left'},
+  {id:'cabeca',   label:'Cabeça\nPescoço', cx:50,  cy:7,   rx:16, ry:13},
+  {id:'ombro',    label:'Ombro\nDir.',      cx:21,  cy:20,  rx:13, ry:10, side:'right'},
+  {id:'ombro',    label:'Ombro\nEsq.',      cx:79,  cy:20,  rx:13, ry:10, side:'left'},
+  {id:'cotovelo', label:'Cotovelo\nDir.',   cx:13,  cy:34,  rx:11, ry:10, side:'right'},
+  {id:'cotovelo', label:'Cotovelo\nEsq.',   cx:87,  cy:34,  rx:11, ry:10, side:'left'},
+  {id:'mao',      label:'Mão\nDir.',        cx:8,   cy:48,  rx:10, ry:11, side:'right'},
+  {id:'mao',      label:'Mão\nEsq.',        cx:92,  cy:48,  rx:10, ry:11, side:'left'},
+  {id:'coluna',   label:'Tronco\nColuna',   cx:50,  cy:31,  rx:16, ry:19},
+  {id:'pelve',    label:'Pelve\nDir.',       cx:35,  cy:52,  rx:13, ry:12, side:'right'},
+  {id:'pelve',    label:'Pelve\nEsq.',       cx:65,  cy:52,  rx:13, ry:12, side:'left'},
+  {id:'joelho',   label:'Joelho\nDir.',      cx:34,  cy:71,  rx:12, ry:10, side:'right'},
+  {id:'joelho',   label:'Joelho\nEsq.',      cx:66,  cy:71,  rx:12, ry:10, side:'left'},
+  {id:'tornozelo',label:'Tornoz.\nDir.',     cx:34,  cy:89,  rx:11, ry:9,  side:'right'},
+  {id:'tornozelo',label:'Tornoz.\nEsq.',     cx:66,  cy:89,  rx:11, ry:9,  side:'left'},
 ];
 
 const HOTSPOTS_BACK = [
-  {id:'cabeca',   label:'Cabeça\nPescoço', cx:50,  cy:7,   rx:13, ry:11},
-  {id:'ombro',    label:'Ombro\nDir.',      cx:22,  cy:19,  rx:11, ry:9,  side:'right'},
-  {id:'ombro',    label:'Ombro\nEsq.',      cx:78,  cy:19,  rx:11, ry:9,  side:'left'},
-  {id:'cotovelo', label:'Cotovelo\nDir.',   cx:14,  cy:33,  rx:9,  ry:9,  side:'right'},
-  {id:'cotovelo', label:'Cotovelo\nEsq.',  cx:86,  cy:33,  rx:9,  ry:9,  side:'left'},
-  {id:'mao',      label:'Mão\nDir.',        cx:9,   cy:47,  rx:8,  ry:10, side:'right'},
-  {id:'mao',      label:'Mão\nEsq.',        cx:91,  cy:47,  rx:8,  ry:10, side:'left'},
-  {id:'coluna',   label:'Coluna\nVertebral',cx:50,  cy:30,  rx:13, ry:20},
-  {id:'pelve',    label:'Glúteo\nDir.',      cx:38,  cy:54,  rx:12, ry:11, side:'right'},
-  {id:'pelve',    label:'Glúteo\nEsq.',      cx:62,  cy:54,  rx:12, ry:11, side:'left'},
-  {id:'joelho',   label:'Joelho\nDir.',      cx:37,  cy:71,  rx:10, ry:9,  side:'right'},
-  {id:'joelho',   label:'Joelho\nEsq.',      cx:63,  cy:71,  rx:10, ry:9,  side:'left'},
-  {id:'tornozelo',label:'Tornoz.\nDir.',     cx:37,  cy:89,  rx:9,  ry:8,  side:'right'},
-  {id:'tornozelo',label:'Tornoz.\nEsq.',     cx:63,  cy:89,  rx:9,  ry:8,  side:'left'},
+  {id:'cabeca',   label:'Cabeça\nPescoço', cx:50,  cy:7,   rx:16, ry:13},
+  {id:'ombro',    label:'Ombro\nDir.',      cx:21,  cy:20,  rx:13, ry:10, side:'right'},
+  {id:'ombro',    label:'Ombro\nEsq.',      cx:79,  cy:20,  rx:13, ry:10, side:'left'},
+  {id:'cotovelo', label:'Cotovelo\nDir.',   cx:13,  cy:34,  rx:11, ry:10, side:'right'},
+  {id:'cotovelo', label:'Cotovelo\nEsq.',   cx:87,  cy:34,  rx:11, ry:10, side:'left'},
+  {id:'mao',      label:'Mão\nDir.',        cx:8,   cy:48,  rx:10, ry:11, side:'right'},
+  {id:'mao',      label:'Mão\nEsq.',        cx:92,  cy:48,  rx:10, ry:11, side:'left'},
+  {id:'coluna',   label:'Coluna\nVertebral',cx:50,  cy:31,  rx:15, ry:21},
+  {id:'pelve',    label:'Glúteo\nDir.',      cx:37,  cy:54,  rx:13, ry:12, side:'right'},
+  {id:'pelve',    label:'Glúteo\nEsq.',      cx:63,  cy:54,  rx:13, ry:12, side:'left'},
+  {id:'joelho',   label:'Joelho\nDir.',      cx:36,  cy:71,  rx:12, ry:10, side:'right'},
+  {id:'joelho',   label:'Joelho\nEsq.',      cx:64,  cy:71,  rx:12, ry:10, side:'left'},
+  {id:'tornozelo',label:'Tornoz.\nDir.',     cx:36,  cy:89,  rx:11, ry:9,  side:'right'},
+  {id:'tornozelo',label:'Tornoz.\nEsq.',     cx:64,  cy:89,  rx:11, ry:9,  side:'left'},
 ];
 
 /* ════════════════════════════════════════
@@ -1616,8 +1616,8 @@ async function loadFullRanking(type,btn){
    BODY EXPLORER
 ════════════════════════════════════════ */
 function getBodyImageSrc(){
-  const g=bodyGender==='male'?'homem':'mulher';
-  const v=currentBodyView==='front'?'frente':'costas';
+const g=bodyGender==='male'?'homem':'mulher';
+const v=currentBodyView==='front'?'frente':bodyGender==='male'?'costas':'costa';
   return `/${g}${v}.png`;
 }
 
