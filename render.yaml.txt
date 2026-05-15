@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: anatomiafisio
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true

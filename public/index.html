@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnatomiaFisio — Plataforma Clínica</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0f1a; --surface:#111827; --surface2:#1a2235; --border:#1e2d45;
+  --accent:#00d4aa; --accent2:#0091ff; --accent3:#ff6b4a;
+  --gold:#f5c842; --text:#e8edf5; --text-muted:#6b7fa3; --text-dim:#3a4d6b;
+  --correct:#00c77a; --wrong:#ff4567; --radius:16px; --radius-sm:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 60% 40% at 80% 10%,rgba(0,212,170,.07) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 50% at 10% 90%,rgba(0,145,255,.06) 0%,transparent 60%),
+  radial-gradient(ellipse 40% 40% at 50% 50%,rgba(255,107,74,.03) 0%,transparent 60%);
+  pointer-events:none;z-index:0;}
+#app{position:relative;z-index:1;}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;animation:screen-in .4s cubic-bezier(.4,0,.2,1);}
+@keyframes screen-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── TOP NAV (shown when logged in) ── */
+#topNav{display:none;position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,15,26,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);padding:10px 24px;
+  align-items:center;gap:16px;}
+#topNav.visible{display:flex;}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--accent);margin-right:auto;}
+.nav-btn{background:none;border:1px solid var(--border);border-radius:100px;
+  padding:6px 16px;color:var(--text-muted);font-family:'Outfit',sans-serif;
+  font-size:.8rem;cursor:pointer;transition:all .2s;}
+.nav-btn:hover,.nav-btn.active{border-color:var(--accent);color:var(--accent);}
+.nav-user{font-size:.8rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;}
+.streak-badge{background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.3);
+  border-radius:100px;padding:4px 12px;font-size:.78rem;color:var(--gold);
+  display:flex;align-items:center;gap:4px;}
+
+/* ── LOGIN ── */
+#login{text-align:center;gap:0;}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:40px 36px;width:100%;max-width:420px;position:relative;}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:var(--radius) var(--radius) 0 0;}
+.logo-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,170,.1);
+  border:1px solid rgba(0,212,170,.25);border-radius:100px;padding:6px 16px;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px;}
+.login-title{font-family:'DM Serif Display',serif;font-size:2.2rem;
+  background:linear-gradient(135deg,#e8edf5 30%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;}
+.login-sub{font-size:.85rem;color:var(--text-muted);margin-bottom:28px;}
+.form-group{margin-bottom:16px;text-align:left;}
+.form-label{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text-muted);display:block;margin-bottom:6px;}
+.form-input{width:100%;background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);padding:12px 16px;color:var(--text);
+  font-family:'Outfit',sans-serif;font-size:.95rem;transition:all .2s;outline:none;}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,170,.1);}
+.form-tabs{display:flex;gap:8px;margin-bottom:24px;}
+.tab-btn{flex:1;padding:8px;background:none;border:1px solid var(--border);border-radius:var(--radius-sm);
+  color:var(--text-muted);font-family:'Outfit',sans-serif;font-size:.85rem;cursor:pointer;transition:all .2s;}
+.tab-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,212,170,.08);}
+.err-msg{color:var(--wrong);font-size:.8rem;margin-top:12px;min-height:18px;}
+.btn-primary{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;padding:14px;border-radius:100px;
+  font-family:'Outfit',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;
+  transition:all .2s;box-shadow:0 8px 32px rgba(0,212,170,.25);margin-top:8px;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,212,170,.35);}
+
+/* ── MENU (mode select) ── */
+#menu{text-align:center;gap:28px;padding-top:80px;}
+.menu-title{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3.2rem);
+  background:linear-gradient(135deg,#e8edf5 30%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.menu-sub{color:var(--text-muted);font-size:.95rem;max-width:380px;}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:600px;width:100%;}
+.mode-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:32px 24px;cursor:pointer;transition:all .25s;text-align:center;position:relative;overflow:hidden;}
+.mode-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--mc,var(--accent)) 0%,transparent 60%);opacity:0;transition:opacity .25s;}
+.mode-card:hover::before{opacity:.1;}
+.mode-card:hover{border-color:var(--mc,var(--accent));transform:translateY(-4px);}
+.mode-icon{font-size:2.8rem;margin-bottom:12px;display:block;}
+.mode-name{font-size:1.05rem;font-weight:700;margin-bottom:6px;}
+.mode-desc{font-size:.78rem;color:var(--text-muted);line-height:1.5;}
+
+/* ── HOME (quiz setup) ── */
+#home{padding-top:80px;gap:20px;justify-content:flex-start;}
+.home-header{text-align:center;width:100%;max-width:760px;}
+.home-title{font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3.5rem);
+  background:linear-gradient(135deg,#e8edf5 30%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stats-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.stat-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px 18px;text-align:center;}
+.stat-chip .val{font-family:'DM Mono',monospace;font-size:1.4rem;font-weight:500;color:var(--accent);display:block;}
+.stat-chip .lbl{font-size:.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;}
+.category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;max-width:760px;width:100%;}
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 14px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden;}
+.cat-card::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--cat-color,var(--accent)) 0%,transparent 100%);opacity:0;transition:opacity .2s;}
+.cat-card:hover::before{opacity:.08;}
+.cat-card:hover{border-color:var(--cat-color,var(--accent));transform:translateY(-2px);}
+.cat-card.selected{border-color:var(--cat-color,var(--accent));
+  background:color-mix(in srgb,var(--cat-color,var(--accent)) 10%,var(--surface));}
+.cat-card.selected .cat-check{opacity:1;transform:scale(1);}
+.cat-icon{font-size:1.6rem;margin-bottom:6px;display:block;}
+.cat-name{font-size:.78rem;font-weight:600;letter-spacing:.02em;}
+.cat-count{font-size:.68rem;color:var(--text-muted);margin-top:2px;}
+.cat-check{position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:50%;
+  background:var(--cat-color,var(--accent));display:flex;align-items:center;justify-content:center;
+  font-size:9px;opacity:0;transform:scale(.5);transition:all .2s;}
+.all-toggle{font-size:.78rem;color:var(--text-muted);cursor:pointer;text-decoration:underline;}
+.all-toggle:hover{color:var(--accent);}
+
+/* ── QUIZ ── */
+#quiz{padding:20px;max-width:760px;width:100%;margin:0 auto;gap:20px;justify-content:flex-start;padding-top:90px;}
+.quiz-header{width:100%;display:flex;align-items:center;gap:14px;}
+.q-counter{font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text-muted);white-space:nowrap;}
+.q-counter span{color:var(--text);font-weight:500;}
+.progress-bar{flex:1;height:6px;background:var(--border);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:100px;transition:width .4s cubic-bezier(.4,0,.2,1);}
+.score-badge{display:flex;align-items:center;gap:5px;background:rgba(245,200,66,.1);
+  border:1px solid rgba(245,200,66,.2);border-radius:100px;padding:4px 12px;
+  font-family:'DM Mono',monospace;font-size:.82rem;color:var(--gold);white-space:nowrap;}
+.category-label{display:inline-flex;align-items:center;gap:6px;background:var(--surface);
+  border:1px solid var(--border);border-radius:100px;padding:4px 14px;
+  font-size:.73rem;font-weight:500;color:var(--text-muted);letter-spacing:.04em;}
+.question-card{width:100%;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px;position:relative;overflow:hidden;}
+.question-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.q-number-bg{position:absolute;top:-10px;right:16px;font-family:'DM Serif Display',serif;
+  font-size:6rem;color:var(--border);line-height:1;pointer-events:none;user-select:none;}
+.question-text{font-family:'DM Serif Display',serif;font-size:clamp(1rem,2.5vw,1.25rem);
+  line-height:1.5;color:var(--text);position:relative;z-index:1;}
+.options-grid{width:100%;display:grid;gap:10px;}
+.option-btn{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  padding:14px 18px;cursor:pointer;transition:all .18s;text-align:left;
+  display:flex;align-items:flex-start;gap:12px;font-family:'Outfit',sans-serif;
+  font-size:.9rem;color:var(--text);line-height:1.45;}
+.option-btn:hover:not(:disabled){border-color:rgba(0,212,170,.4);background:rgba(0,212,170,.05);transform:translateX(3px);}
+.option-letter{width:24px;height:24px;border-radius:7px;background:var(--border);
+  display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;
+  font-size:.7rem;font-weight:500;color:var(--text-muted);flex-shrink:0;transition:all .18s;}
+.option-btn.correct{border-color:var(--correct);background:rgba(0,199,122,.12);animation:pulse-correct .4s ease;}
+.option-btn.correct .option-letter{background:var(--correct);color:#fff;}
+.option-btn.wrong{border-color:var(--wrong);background:rgba(255,69,103,.1);animation:shake .4s ease;}
+.option-btn.wrong .option-letter{background:var(--wrong);color:#fff;}
+.option-btn:disabled{cursor:default;}
+@keyframes pulse-correct{0%{transform:scale(1)}40%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.feedback-box{width:100%;border-radius:var(--radius-sm);padding:14px 18px;display:none;
+  gap:10px;align-items:flex-start;font-size:.86rem;line-height:1.55;animation:fade-up .3s ease;}
+.feedback-box.show{display:flex;}
+.feedback-box.correct-fb{background:rgba(0,199,122,.1);border:1px solid rgba(0,199,122,.3);color:#a0f0d0;}
+.feedback-box.wrong-fb{background:rgba(255,69,103,.08);border:1px solid rgba(255,69,103,.25);color:#ffb3be;}
+.feedback-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.feedback-box strong{color:var(--text);display:block;margin-bottom:3px;}
+.btn-next{align-self:flex-end;background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:100px;padding:10px 28px;font-family:'Outfit',sans-serif;font-size:.88rem;
+  font-weight:600;color:var(--text);cursor:pointer;transition:all .2s;display:none;align-items:center;gap:6px;}
+.btn-next.show{display:flex;animation:fade-up .3s ease;}
+.btn-next:hover{border-color:var(--accent);color:var(--accent);}
+@keyframes fade-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.timer-ring{width:44px;height:44px;flex-shrink:0;}
+.timer-track{fill:none;stroke:var(--border);stroke-width:4;}
+.timer-fill{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;
+  stroke-dasharray:113;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .5s;
+  transform:rotate(-90deg);transform-origin:50% 50%;}
+.timer-text{font-family:'DM Mono',monospace;font-size:.72rem;fill:var(--text);
+  font-weight:500;dominant-baseline:middle;text-anchor:middle;}
+
+/* ── RESULT ── */
+#result{text-align:center;gap:24px;padding:32px 24px;padding-top:90px;overflow-y:auto;justify-content:flex-start;}
+.result-circle{width:130px;height:130px;border-radius:50%;
+  background:conic-gradient(var(--accent) calc(var(--pct) * 1%),var(--border) 0%);
+  display:flex;align-items:center;justify-content:center;position:relative;margin:0 auto;}
+.result-circle::before{content:'';position:absolute;inset:8px;border-radius:50%;background:var(--bg);}
+.result-inner{position:relative;z-index:1;}
+.result-score-num{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--text);line-height:1;}
+.result-score-label{font-size:.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;}
+.result-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);}
+.result-msg{font-size:.9rem;color:var(--text-muted);max-width:400px;line-height:1.6;}
+.medals-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.medal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 16px;text-align:center;min-width:90px;}
+.medal .m-icon{font-size:1.4rem;display:block;margin-bottom:4px;}
+.medal .m-val{font-family:'DM Mono',monospace;font-size:1.1rem;color:var(--accent);}
+.medal .m-lbl{font-size:.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;}
+.review-section{width:100%;max-width:640px;text-align:left;}
+.review-title{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;}
+.review-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 16px;margin-bottom:7px;display:grid;grid-template-columns:auto 1fr;gap:8px 12px;font-size:.83rem;}
+.review-dot{width:7px;height:7px;border-radius:50%;margin-top:6px;}
+.review-dot.ok{background:var(--correct);}.review-dot.fail{background:var(--wrong);}
+.review-q{color:var(--text);font-weight:500;margin-bottom:3px;line-height:1.4;}
+.review-ans{color:var(--text-muted);font-size:.78rem;}
+.review-ans span{color:var(--correct);}
+.review-ans .wrong-ans{color:var(--wrong);}
+.btn-restart{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
+  border:none;padding:12px 36px;border-radius:100px;font-family:'Outfit',sans-serif;
+  font-size:.92rem;font-weight:600;cursor:pointer;transition:all .2s;
+  box-shadow:0 6px 24px rgba(0,212,170,.25);}
+.btn-restart:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,212,170,.35);}
+
+/* ── RANKING TABLE ── */
+.ranking-section{width:100%;max-width:640px;text-align:left;margin-top:16px;}
+.rank-tabs{display:flex;gap:8px;margin-bottom:14px;}
+.rank-tab{padding:6px 16px;background:none;border:1px solid var(--border);border-radius:100px;
+  color:var(--text-muted);font-family:'Outfit',sans-serif;font-size:.78rem;cursor:pointer;transition:all .2s;}
+.rank-tab.active{border-color:var(--accent);color:var(--accent);}
+.rank-table{width:100%;border-collapse:collapse;}
+.rank-table th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);
+  padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;}
+.rank-table td{padding:10px 10px;border-bottom:1px solid rgba(30,45,69,.5);font-size:.82rem;vertical-align:middle;}
+.rank-table tr:first-child td{color:var(--gold);}
+.rank-table tr:nth-child(2) td{color:#c0c8d8;}
+.rank-table tr:nth-child(3) td{color:#cd7f32;}
+.rank-num{font-family:'DM Mono',monospace;color:var(--text-muted);width:28px;}
+.rank-name{font-weight:600;}
+.rank-score{font-family:'DM Mono',monospace;color:var(--accent);}
+.rank-streak-cell{display:flex;align-items:center;gap:4px;font-size:.78rem;color:var(--gold);}
+.rank-highlight{background:rgba(0,212,170,.06);border-left:2px solid var(--accent);}
+
+/* ── BODY EXPLORER ── */
+#explorer{padding-top:80px;gap:20px;justify-content:flex-start;width:100%;}
+.explorer-wrap{display:flex;gap:24px;width:100%;max-width:1100px;align-items:flex-start;}
+.body-side{flex:0 0 320px;text-align:center;}
+.body-toggle{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
+.body-toggle-btn{padding:6px 18px;border:1px solid var(--border);border-radius:100px;
+  background:none;color:var(--text-muted);font-family:'Outfit',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s;}
+.body-toggle-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(0,212,170,.08);}
+.body-svg-wrap{position:relative;display:inline-block;}
+.body-svg-wrap svg{width:260px;height:auto;}
+.body-zone{cursor:pointer;fill:rgba(0,212,170,.08);stroke:rgba(0,212,170,.2);
+  stroke-width:1.5;transition:all .25s;rx:8;}
+.body-zone:hover,.body-zone.active{fill:rgba(0,212,170,.22);stroke:var(--accent);stroke-width:2;}
+.body-zone-label{pointer-events:none;font-family:'Outfit',sans-serif;font-size:10px;
+  font-weight:600;fill:var(--text-muted);text-anchor:middle;}
+.body-zone:hover + .body-zone-label,.body-zone.active + .body-zone-label{fill:var(--accent);}
+.info-panel{flex:1;min-width:0;}
+.info-panel-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px;min-height:400px;}
+.info-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:300px;gap:12px;color:var(--text-muted);}
+.info-placeholder .big-icon{font-size:3rem;opacity:.3;}
+.region-title{font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--text);margin-bottom:6px;}
+.region-sub{font-size:.8rem;color:var(--text-muted);margin-bottom:20px;}
+.struct-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.struct-tab{padding:5px 14px;border:1px solid var(--border);border-radius:100px;background:none;
+  color:var(--text-muted);font-family:'Outfit',sans-serif;font-size:.75rem;cursor:pointer;transition:all .2s;}
+.struct-tab.active{border-color:var(--accent);color:var(--accent);background:rgba(0,212,170,.08);}
+.struct-list{display:flex;flex-direction:column;gap:8px;}
+.struct-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 16px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:start;}
+.struct-icon{font-size:1.2rem;grid-row:span 2;}
+.struct-name{font-size:.88rem;font-weight:600;color:var(--text);}
+.struct-latin{font-size:.72rem;font-style:italic;color:var(--accent);margin-bottom:2px;}
+.struct-desc{font-size:.78rem;color:var(--text-muted);line-height:1.4;grid-column:2;}
+@media(max-width:700px){
+  .explorer-wrap{flex-direction:column;align-items:center;}
+  .body-side{flex:none;width:100%;}
+}
+
+/* ── STREAK TOAST ── */
+.streak-toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-60px);
+  background:linear-gradient(135deg,var(--gold),#ff9a3c);color:#1a1000;
+  padding:10px 24px;border-radius:100px;font-weight:700;font-size:.9rem;
+  z-index:999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+.streak-toast.show{transform:translateX(-50%) translateY(70px);}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- STREAK TOAST -->
+<div class="streak-toast" id="streakToast">🔥 Sequência de <span id="streakNum">3</span>!</div>
+
+<!-- TOP NAV -->
+<nav id="topNav">
+  <div class="nav-logo">⚕ AnatomiaFisio</div>
+  <button class="nav-btn" onclick="showScreen('menu')">Menu</button>
+  <button class="nav-btn" onclick="showScreen('home')">Quiz</button>
+  <button class="nav-btn" onclick="showScreen('explorer')">Explorador</button>
+  <div class="streak-badge" id="navStreak">🔥 <span id="navStreakNum">0</span> dias</div>
+  <div class="nav-user">Olá, <strong id="navUsername">—</strong></div>
+  <button class="nav-btn" onclick="logout()" style="color:var(--wrong);border-color:rgba(255,69,103,.3)">Sair</button>
+</nav>
+
+<!-- ════ LOGIN ════ -->
+<div class="screen active" id="login">
+  <div class="login-card">
+    <div class="logo-badge">⚕ AnatomiaFisio</div>
+    <h1 class="login-title">Bem-vindo!</h1>
+    <p class="login-sub">Plataforma de anatomia clínica e fisioterapia</p>
+    <div class="form-tabs">
+      <button class="tab-btn active" onclick="switchTab('loginForm')">Entrar</button>
+      <button class="tab-btn" onclick="switchTab('registerForm')">Cadastrar</button>
+    </div>
+    <div id="loginForm">
+      <div class="form-group"><label class="form-label">Usuário</label>
+        <input class="form-input" id="loginUser" type="text" placeholder="seu_usuario" autocomplete="username"></div>
+      <div class="form-group"><label class="form-label">Senha</label>
+        <input class="form-input" id="loginPass" type="password" placeholder="••••••" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn-primary" onclick="doLogin()">Entrar →</button>
+    </div>
+    <div id="registerForm" style="display:none">
+      <div class="form-group"><label class="form-label">Usuário</label>
+        <input class="form-input" id="regUser" type="text" placeholder="meu_usuario"></div>
+      <div class="form-group"><label class="form-label">Senha</label>
+        <input class="form-input" id="regPass" type="password" placeholder="mínimo 4 caracteres"
+          onkeydown="if(event.key==='Enter')doRegister()"></div>
+      <button class="btn-primary" onclick="doRegister()">Criar Conta →</button>
+    </div>
+    <div class="err-msg" id="authErr"></div>
+  </div>
+</div>
+
+<!-- ════ MENU ════ -->
+<div class="screen" id="menu">
+  <h2 class="menu-title">O que deseja fazer?</h2>
+  <p class="menu-sub">Escolha entre praticar com quizzes ou explorar o corpo humano interativamente.</p>
+  <div class="mode-grid">
+    <div class="mode-card" style="--mc:#00d4aa" onclick="showScreen('home')">
+      <span class="mode-icon">🧠</span>
+      <div class="mode-name">Quiz Clínico</div>
+      <div class="mode-desc">10 perguntas por rodada, banco de questões com anatomia técnica, ranking e ofensiva</div>
+    </div>
+    <div class="mode-card" style="--mc:#0091ff" onclick="showScreen('explorer')">
+      <span class="mode-icon">🫀</span>
+      <div class="mode-name">Explorador Corporal</div>
+      <div class="mode-desc">Clique em regiões do corpo para ver ossos, músculos e articulações com nomenclatura técnica</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ HOME (quiz setup) ════ -->
+<div class="screen" id="home" style="justify-content:flex-start">
+  <div class="home-header">
+    <h1 class="home-title">Quiz Clínico</h1>
+    <p style="color:var(--text-muted);font-size:.9rem;margin:6px 0 18px">Selecione categorias e inicie a rodada</p>
+    <div class="stats-row" id="homeStats">
+      <div class="stat-chip"><span class="val" id="hsBest">–</span><span class="lbl">Recorde</span></div>
+      <div class="stat-chip"><span class="val" id="hsGames">0</span><span class="lbl">Partidas</span></div>
+      <div class="stat-chip"><span class="val" id="hsStreak">0🔥</span><span class="lbl">Ofensiva</span></div>
+      <div class="stat-chip"><span class="val" id="hsAvg">–</span><span class="lbl">Média</span></div>
+    </div>
+  </div>
+  <div style="max-width:760px;width:100%;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:.75rem;color:var(--text-muted)">Categorias disponíveis:</span>
+    <span class="all-toggle" id="allToggle" onclick="toggleAll()">Desmarcar todas</span>
+  </div>
+  <div class="category-grid" id="categoryGrid"></div>
+  <button class="btn-primary" style="max-width:300px;width:100%" onclick="startQuiz()">Iniciar Rodada →</button>
+</div>
+
+<!-- ════ QUIZ ════ -->
+<div class="screen" id="quiz">
+  <div class="quiz-header">
+    <svg class="timer-ring" viewBox="0 0 40 40">
+      <circle class="timer-track" cx="20" cy="20" r="18"/>
+      <circle class="timer-fill" id="timerFill" cx="20" cy="20" r="18"/>
+      <text class="timer-text" id="timerText" x="20" y="20">25</text>
+    </svg>
+    <div class="q-counter">Questão <span id="qNum">1</span>/10</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="score-badge">★ <span id="liveScore">0</span></div>
+  </div>
+  <div class="category-label" id="qCategory">— categoria —</div>
+  <div class="question-card" id="questionCard">
+    <div class="q-number-bg" id="qNumBg">1</div>
+    <p class="question-text" id="questionText">Carregando...</p>
+  </div>
+  <div class="options-grid" id="optionsGrid"></div>
+  <div class="feedback-box" id="feedbackBox">
+    <span class="feedback-icon" id="feedbackIcon"></span>
+    <div><strong id="feedbackTitle"></strong><span id="feedbackText"></span></div>
+  </div>
+  <button class="btn-next" id="btnNext" onclick="nextQuestion()">Próxima →</button>
+</div>
+
+<!-- ════ RESULT ════ -->
+<div class="screen" id="result">
+  <div class="result-circle" id="resultCircle" style="--pct:0">
+    <div class="result-inner">
+      <div class="result-score-num" id="finalScore">0/10</div>
+      <div class="result-score-label">acertos</div>
+    </div>
+  </div>
+  <h2 class="result-title" id="resultTitle">Boa tentativa!</h2>
+  <p class="result-msg" id="resultMsg"></p>
+  <div class="medals-row" id="medalsRow"></div>
+
+  <!-- RANKING -->
+  <div class="ranking-section">
+    <div class="review-title">🏆 Ranking</div>
+    <div class="rank-tabs">
+      <button class="rank-tab active" onclick="loadRanking('daily',this)">Hoje</button>
+      <button class="rank-tab" onclick="loadRanking('alltime',this)">Geral</button>
+    </div>
+    <table class="rank-table" id="rankTable">
+      <thead><tr><th>#</th><th>Jogador</th><th>Melhor</th><th>Partidas</th><th>🔥</th></tr></thead>
+      <tbody id="rankBody"></tbody>
+    </table>
+  </div>
+
+  <div class="review-section">
+    <div class="review-title">Revisão da Rodada</div>
+    <div id="reviewList"></div>
+  </div>
+  <button class="btn-restart" onclick="goHome()">↩ Jogar Novamente</button>
+</div>
+
+<!-- ════ EXPLORER ════ -->
+<div class="screen" id="explorer">
+  <div class="explorer-wrap">
+    <div class="body-side">
+      <div class="body-toggle">
+        <button class="body-toggle-btn active" onclick="setBodyView('front',this)">Frente</button>
+        <button class="body-toggle-btn" onclick="setBodyView('back',this)">Verso</button>
+      </div>
+      <div class="body-svg-wrap" id="bodySvgWrap"></div>
+    </div>
+    <div class="info-panel">
+      <div class="info-panel-inner" id="infoPanelInner">
+        <div class="info-placeholder">
+          <span class="big-icon">👆</span>
+          <p style="font-size:.9rem;font-weight:600">Clique em uma região</p>
+          <p style="font-size:.78rem;text-align:center">Selecione uma área do corpo para ver ossos, músculos e articulações com nomenclatura técnica</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #app -->
+
+<script>
+/* ═══════════════════════════════════════════════════
+   QUESTIONS BANK — Expanded with technical terminology
+═══════════════════════════════════════════════════ */
+const QUESTIONS = [
+  // ── OMBRO ──
+  {cat:"Ombro",q:"Qual músculo é o principal responsável pelo início da abdução glenoumeral (0–15°)?",opts:["Músculo deltoide","Músculo supraespinhoso","Músculo infraespinhoso","Músculo subescapular"],a:1,exp:"O músculo supraespinhoso (m. supraspinatus) inicia a abdução; acima de 15° o deltoide assume."},
+  {cat:"Ombro",q:"Qual articulação apresenta maior mobilidade no complexo articular do ombro?",opts:["Articulação esternoclavicular","Articulação acromioclavicular","Articulação glenoumeral","Articulação escapulotorácica"],a:2,exp:"A articulação glenoumeral é esferoide com cavidade rasa — alta mobilidade, menor estabilidade óssea."},
+  {cat:"Ombro",q:"O ritmo escapuloumeral durante abdução plena (180°) distribui-se em:",opts:["1:1 (glenoumeral:escapular)","2:1 (glenoumeral:escapular)","3:1 (glenoumeral:escapular)","1:2 (glenoumeral:escapular)"],a:1,exp:"A cada 3° de abdução: 2° ocorrem na glenoumeral e 1° na escapulotorácica — proporção 2:1."},
+  {cat:"Ombro",q:"Qual nervo inerva o músculo supraespinhoso (m. supraspinatus)?",opts:["Nervo axilar (n. axillaris)","Nervo musculocutâneo","Nervo supraescapular (n. suprascapularis)","Nervo toracodorsal"],a:2,exp:"O nervo supraescapular (C5-C6) inerva os músculos supraespinhoso e infraespinhoso."},
+  {cat:"Ombro",q:"O arco coracoacromial é formado pelo acrômio e pelo:",opts:["Processo glenoide","Ligamento coracoumeral","Ligamento coracoacromial","Processo coracoide isolado"],a:2,exp:"O arco coracoacromial (acrômio + ligamento coracoacromial) forma o teto do espaço subacromial."},
+  {cat:"Ombro",q:"Qual músculo do manguito dos rotadores (rotator cuff) realiza rotação lateral da articulação glenoumeral?",opts:["M. subescapular","M. supraespinhoso","M. infraespinhoso","M. redondo maior"],a:2,exp:"O músculo infraespinhoso (m. infraspinatus) é o principal rotador lateral, auxiliado pelo m. redondo menor."},
+  {cat:"Ombro",q:"A lesão de Bankart envolve qual estrutura labral da articulação glenoumeral?",opts:["Labro superior","Labro anteroinferior","Labro posterior","Labro superior e posterior"],a:1,exp:"A lesão de Bankart acomete o labro glenoidal anteroinferior — clássica em luxação anterior recorrente."},
+  {cat:"Ombro",q:"Qual músculo realiza a adução e extensão da articulação glenoumeral, inervado pelo nervo toracodorsal?",opts:["M. deltoide","M. peitoral maior","M. grande dorsal (latissimus dorsi)","M. redondo menor"],a:2,exp:"O m. grande dorsal (latissimus dorsi) aduz, estende e roda medialmente o úmero; inervado pelo n. toracodorsal (C6-C8)."},
+  {cat:"Ombro",q:"A bursa subacromial-subdeltóidea está localizada entre o músculo supraespinhoso e:",opts:["A cabeça do úmero","O acrômio e o deltoide","O processo coracoide","A cápsula glenoumeral"],a:1,exp:"A bursa subacromial situa-se entre o tendão do supraespinhoso e o acrômio/deltoide — reduz o atrito no espaço subacromial."},
+  {cat:"Ombro",q:"O teste de Neer para a síndrome do impacto subacromial é realizado com:",opts:["Abdução ativa com resistência","Flexão glenoumeral passiva com rotação interna forçada pelo examinador","Extensão com compressão axial","Adução horizontal com resistência"],a:1,exp:"Neer: elevação passiva do ombro com rotação interna — comprime o m. supraespinhoso contra o arco coracoacromial."},
+  {cat:"Ombro",q:"Qual ligamento glenoumeral é o principal estabilizador anterior estático da articulação glenoumeral?",opts:["Ligamento glenoumeral superior","Ligamento glenoumeral médio","Ligamento glenoumeral inferior (componente anterior)","Ligamento coracoumeral"],a:2,exp:"O ligamento glenoumeral inferior (LGUI) — especialmente o componente anterior — é o principal estabilizador estático contra luxação anterior."},
+  {cat:"Ombro",q:"Qual músculo forma a parede anterior da fossa axilar e realiza flexão e adução glenoumeral?",opts:["M. subescapular","M. peitoral maior","M. coracobraquial","M. serrátil anterior"],a:1,exp:"O m. peitoral maior (pectoralis major) forma a parede anterior da axila; flexiona, aduz e roda medialmente o úmero."},
+  {cat:"Ombro",q:"A escápula está fixada ao tórax principalmente pelo músculo:",opts:["M. trapézio","M. romboide","M. serrátil anterior (serratus anterior)","M. subescapular"],a:2,exp:"O m. serrátil anterior (serratus anterior) ancora a escápula na parede torácica; paralisia causa escapula alata."},
+  {cat:"Ombro",q:"Qual nervo pode ser lesado em fratura do colo cirúrgico do úmero, causando déficit de abdução?",opts:["Nervo radial","Nervo ulnar","Nervo axilar (n. axillaris)","Nervo musculocutâneo"],a:2,exp:"O nervo axilar (C5-C6) circunda o colo cirúrgico do úmero — lesão causa paralisia do m. deltoide e m. redondo menor."},
+  {cat:"Ombro",q:"O músculo subescapular (m. subscapularis) realiza qual movimento da articulação glenoumeral?",opts:["Rotação lateral e abdução","Rotação medial e adução","Extensão e abdução","Flexão e rotação lateral"],a:1,exp:"O m. subescapular é o único rotador medial do manguito dos rotadores — também participa da adução glenoumeral."},
+
+  // ── COTOVELO ──
+  {cat:"Cotovelo",q:"A articulação umeroulnar é classificada como articulação do tipo:",opts:["Gínglimo (dobradiça)","Trocóide","Elipsoide","Selar"],a:0,exp:"A articulação umeroulnar (humeroulnar) é um gínglimo — apenas flexão e extensão."},
+  {cat:"Cotovelo",q:"Qual músculo é o flexor primário do cotovelo e supinador do antebraço?",opts:["M. braquial (brachialis)","M. bíceps braquial (biceps brachii)","M. braquiorradial","M. pronador redondo"],a:1,exp:"O m. bíceps braquial flexiona o cotovelo E supina potentemente — ação máxima com cotovelo a 90°."},
+  {cat:"Cotovelo",q:"A epicondilite lateral (cotovelo de tenista) acomete principalmente qual tendão?",opts:["Extensor ulnar do carpo","Extensor radial curto do carpo (ECRB / extensor carpi radialis brevis)","Extensor dos dedos","M. ancôneo"],a:1,exp:"O ECRB (extensor carpi radialis brevis) é o tendão mais acometido na epicondilite lateral."},
+  {cat:"Cotovelo",q:"Qual nervo passa pelo túnel cubital (canal de Guyon ulnar no cotovelo) e pode ser comprimido?",opts:["Nervo mediano","Nervo radial","Nervo ulnar (n. ulnaris)","Nervo musculocutâneo"],a:2,exp:"O nervo ulnar passa pelo sulco ulnar (túnel cubital) — compressão causa síndrome do túnel cubital."},
+  {cat:"Cotovelo",q:"O músculo braquiorradial (m. brachioradialis) é inervado pelo nervo:",opts:["Mediano","Ulnar","Radial (n. radialis)","Musculocutâneo"],a:2,exp:"O m. braquiorradial é inervado pelo nervo radial (C5-C6) — único flexor do cotovelo inervado pelo radial."},
+  {cat:"Cotovelo",q:"A pronação do antebraço é realizada principalmente pelos músculos:",opts:["M. bíceps braquial e supinador","M. pronador redondo (pronator teres) e pronador quadrado (pronator quadratus)","M. braquiorradial e extensor radial","M. flexor radial do carpo e palmar longo"],a:1,exp:"M. pronador redondo (proximal, forte) e m. pronador quadrado (distal, preciso) são os pronadores primários."},
+  {cat:"Cotovelo",q:"Em qual posição do antebraço o músculo bíceps braquial exerce maior força de supinação?",opts:["Supinação completa","Pronação completa","Posição neutra com cotovelo a 90°","Extensão completa do cotovelo"],a:2,exp:"Com cotovelo a 90° e antebraço em neutro, o bíceps tem o melhor braço de momento para supinação."},
+  {cat:"Cotovelo",q:"O ligamento colateral ulnar (LCU) do cotovelo — principal estabilizador medial — tem componente anterior que resiste ao estresse em:",opts:["Valgo","Varo","Hiperextensão","Rotação axial"],a:0,exp:"O feixe anterior do LCU resiste ao estresse em valgo — importante em arremessadores (lesão por estresse repetitivo)."},
+  {cat:"Cotovelo",q:"Qual nervo, ao ser comprimido no túnel radial (pronador redondo), causa dor no antebraço anterior sem déficit sensitivo no polegar?",opts:["Nervo interósseo posterior","Nervo interósseo anterior (n. interosseus anterior)","Nervo radial superficial","Nervo mediano"],a:1,exp:"Compressão do nervo interósseo anterior (ramo do mediano) — síndrome de Kiloh-Nevin: fraqueza do m. flexor longo do polegar e FPD de D2."},
+  {cat:"Cotovelo",q:"A osteocondrite dissecante do cotovelo afeta mais frequentemente qual estrutura óssea?",opts:["Epicôndilo medial","Capítulo (capitulum) umeral","Olécrano","Processo coronoide"],a:1,exp:"O capítulo (capitulum) umeral é o local mais frequente de osteocondrite dissecante no cotovelo — comum em ginastas."},
+
+  // ── MÃO & PUNHO ──
+  {cat:"Mão & Punho",q:"Qual osso do carpo é o mais frequentemente fraturado?",opts:["Semilunar (lunatum)","Escafoide (scaphoideum)","Pisiforme","Trapézio"],a:1,exp:"O escafoide responde por ~70% das fraturas do carpo — risco de necrose avascular pela irrigação retrógrada."},
+  {cat:"Mão & Punho",q:"O nervo mediano (n. medianus) passa pelo túnel do carpo, localizado entre o retináculo dos flexores e:",opts:["Os ossos do carpo","O retináculo dos extensores","O tendão do flexor ulnar do carpo","O pisiforme"],a:0,exp:"O túnel do carpo é formado pelo retináculo dos flexores e pelos ossos do carpo — o nervo mediano é a estrutura mais vulnerável."},
+  {cat:"Mão & Punho",q:"O teste de Finkelstein avalia qual patologia?",opts:["Síndrome do túnel do carpo","Tenosinovite estenosante de De Quervain","Dedo em gatilho (tenossinovite estenosante digital)","Artrite reumatoide do punho"],a:1,exp:"Finkelstein: polegar em flexão passiva + desvio ulnar forçado — reproduz dor na estilóide radial (De Quervain)."},
+  {cat:"Mão & Punho",q:"Os músculos lumbricais (mm. lumbricales) da mão realizam qual ação nas articulações metacarpofalângicas (MCF)?",opts:["Flexão das MCF","Extensão das MCF","Abdução das MCF","Adução das MCF"],a:0,exp:"Os lumbricais flexionam as MCF e estendem as IFP/IFD via expansão extensora dorsal."},
+  {cat:"Mão & Punho",q:"O músculo flexor profundo dos dedos (flexor digitorum profundus) é inervado por:",opts:["Apenas nervo mediano","Apenas nervo ulnar","Nervo mediano (D2-D3) e nervo ulnar (D4-D5)","Nervo radial"],a:2,exp:"O FPD tem dupla inervação: ramos D2-D3 pelo nervo interósseo anterior (mediano) e D4-D5 pelo nervo ulnar."},
+  {cat:"Mão & Punho",q:"Qual músculo é o principal abdutor do polegar no plano da palma (abdução palmar)?",opts:["M. abdutor curto do polegar (abductor pollicis brevis)","M. abdutor longo do polegar","M. oponente do polegar","M. flexor curto do polegar"],a:0,exp:"O m. abdutor curto do polegar realiza a abdução palmar do polegar e é inervado pelo ramo recorrente do nervo mediano."},
+  {cat:"Mão & Punho",q:"A lesão do nervo ulnar na loja de Guyon causa déficit sensitivo em:",opts:["Face palmar do polegar e D2","Borda ulnar da mão, D5 e metade ulnar de D4","Face dorsal de D2-D3","Toda a palma da mão"],a:1,exp:"Lesão do nervo ulnar na loja de Guyon: anestesia na borda ulnar, D5 e metade ulnar de D4; paresia dos músculos hipotênares e interósseos."},
+  {cat:"Mão & Punho",q:"O arco palmar superficial é formado principalmente pela artéria:",opts:["Radial","Ulnar (a. ulnaris) — completado pela artéria radial","Interóssea anterior","Interóssea posterior"],a:1,exp:"O arco palmar superficial é formado principalmente pela a. ulnar, completado pelo ramo palmar superficial da a. radial."},
+  {cat:"Mão & Punho",q:"Qual é a função do músculo extensor do indicador (extensor indicis)?",opts:["Flexão da IFP do indicador","Extensão independente do indicador na articulação MCF","Adução do indicador","Supinação do antebraço"],a:1,exp:"O m. extensor do indicador (extensor indicis) permite extensão independente do D2 — importante para apontar."},
+  {cat:"Mão & Punho",q:"Na fratura do escafoide (scaphoideum), o suprimento vascular que coloca o fragmento proximal em risco de necrose entra pelo:",opts:["Polo proximal","Polo distal / cintura — distal ao local de fratura","Face volar","Face dorsal diretamente"],a:1,exp:"O escafoide recebe >80% do suprimento pela cintura e polo distal — fragmento proximal fica isquêmico em fraturas na cintura ou polo proximal."},
+
+  // ── COLUNA ──
+  {cat:"Coluna",q:"Os discos intervertebrais com maior incidência de hérnias na coluna lombar são:",opts:["L1-L2","L2-L3","L3-L4","L4-L5 e L5-S1"],a:3,exp:"L4-L5 e L5-S1 concentram >90% das hérnias lombares por maior carga biomecânica e mobilidade."},
+  {cat:"Coluna",q:"Qual ligamento longitudinal limita a extensão excessiva da coluna vertebral e o deslizamento anterior dos corpos?",opts:["Ligamento longitudinal posterior","Ligamento longitudinal anterior","Ligamento flavum (ligamentum flavum)","Ligamento interespinhoso"],a:1,exp:"O ligamento longitudinal anterior corre na face anterior dos corpos vertebrais — limita extensão excessiva."},
+  {cat:"Coluna",q:"A estenose do canal vertebral lombar provoca tipicamente:",opts:["Dor apenas em repouso","Claudicação neurogênica (melhora com flexão do tronco/sentar)","Dor que piora ao sentar","Fraqueza muscular proximal bilateral"],a:1,exp:"Claudicação neurogênica: dor/parestesia nas MMII ao caminhar, aliviada ao sentar/fletir — aumenta o diâmetro do canal."},
+  {cat:"Coluna",q:"Uma hérnia discal paramediana em L4-L5 comprime qual raiz nervosa?",opts:["Raiz L3","Raiz L4","Raiz L5","Raiz S1"],a:2,exp:"Em L4-L5, a raiz L5 desce para sair no forame L5-S1 e é comprimida — déficit de extensão do hálux (m. extensor longo do hálux)."},
+  {cat:"Coluna",q:"O músculo multífido (m. multifidus) tem função primária de:",opts:["Flexão do tronco","Estabilização segmentar da coluna vertebral","Rotação contralateral do tronco","Extensão da cabeça"],a:1,exp:"O m. multifidus é o principal estabilizador segmentar profundo da coluna — ativação antecipada."},
+  {cat:"Coluna",q:"A cifose torácica fisiológica normal mede aproximadamente (ângulo de Cobb):",opts:["10–20°","20–45°","50–60°","60–75°"],a:1,exp:"Cifose torácica fisiológica: 20–45° (Cobb). Valores acima indicam hipercifose estrutural."},
+  {cat:"Coluna",q:"O reflexo aquileu (aquiléo) avalia a integridade da raiz nervosa:",opts:["L3-L4","L4-L5","L5-S1","S2-S3"],a:2,exp:"O reflexo do tendão calcâneo (Aquiles) avalia L5-S1 — especificamente a raiz S1."},
+  {cat:"Coluna",q:"A articulação zigapofisária (faceta articular) lombar tem orientação que:",opts:["Permite ampla rotação axial","Restringe a rotação axial e permite flexoextensão","Facilita a translação anterior","Não influencia o movimento"],a:1,exp:"As facetas lombares são orientadas no plano sagital — limitam rotação axial e facilitam flexoextensão."},
+  {cat:"Coluna",q:"Qual estrutura do disco intervertebral é composta por anéis concêntricos de fibras colágenas?",opts:["Núcleo pulposo (nucleus pulposus)","Anel fibroso (annulus fibrosus)","Placa terminal cartilaginosa","Ligamento longitudinal posterior"],a:1,exp:"O anel fibroso (annulus fibrosus) tem lamelas concêntricas de colágeno tipo I — confere resistência à tração e torção."},
+  {cat:"Coluna",q:"O músculo transverso espinhal (transversospinalis) inclui quais músculos profundos?",opts:["Iliocostal, longuíssimo e espinhoso","Semiespinhoso, multífido e rotadores (rotatores)","Reto do abdome e oblíquos","Quadrado lombar e psoas"],a:1,exp:"O grupo transverso-espinhal: m. semiespinhoso, m. multífido e mm. rotadores — estabilizadores e extensores segmentares."},
+  {cat:"Coluna",q:"Na coluna cervical, qual articulação permite o movimento de rotação da cabeça em ~50%?",opts:["Articulação atlantoccipital (C0-C1)","Articulação atlantoaxial (C1-C2)","Articulação C2-C3","Articulação C4-C5"],a:1,exp:"A articulação atlantoaxial (C1-C2) é trocóide — responsável por ~50% da rotação cervical total."},
+  {cat:"Coluna",q:"A espondilolistese é definida como:",opts:["Fratura do arco vertebral","Deslizamento anterior de uma vértebra sobre a inferior","Curvatura lateral da coluna","Cifose excessiva da coluna lombar"],a:1,exp:"Espondilolistese: translação (deslizamento) de um corpo vertebral sobre o adjacente inferior — grau 1 a 4 (até >75% da largura vertebral)."},
+
+  // ── QUADRIL ──
+  {cat:"Quadril",q:"O ângulo de anteversão femoral (torção femoral) normal no adulto é aproximadamente:",opts:["5°","15°","30°","45°"],a:1,exp:"Anteversão femoral no adulto: ~10–15°. Acima de 20° = anteversão excessiva — associada à marcha com rotação interna."},
+  {cat:"Quadril",q:"Qual músculo tem papel primário na estabilização da pelve durante a fase de apoio unipodal?",opts:["M. glúteo máximo (gluteus maximus)","M. glúteo médio (gluteus medius)","M. iliopsoas","M. tensor da fáscia lata"],a:1,exp:"O m. glúteo médio impede a queda contralateral da pelve (sinal de Trendelenburg positivo na fraqueza)."},
+  {cat:"Quadril",q:"A bursa trocantérica está localizada entre o trocânter maior e:",opts:["M. glúteo mínimo","M. glúteo médio","Trato iliotibial (tractus iliotibialis)","M. iliopsoas"],a:2,exp:"A bursa trocantérica situa-se entre o trocânter maior e o trato iliotibial/glúteo médio — síndrome da dor trocantérica."},
+  {cat:"Quadril",q:"O teste de FABER (Patrick) avalia principalmente:",opts:["Tendão do iliopsoas","Articulação sacroilíaca e articulação coxofemoral","Ligamento inguinal","Nervo femoral"],a:1,exp:"FABER (Flexão, ABdução, Rotação Externa) testa a articulação coxofemoral e a articulação sacroilíaca."},
+  {cat:"Quadril",q:"O ângulo cervicodiafisário (colodiafisário) normal do adulto é de:",opts:["100–110°","115–135°","140–150°","155–165°"],a:1,exp:"Ângulo cervicodiafisário adulto: ~126° (115–135°). Acima = coxa valga; abaixo = coxa vara."},
+  {cat:"Quadril",q:"Qual estrutura é o principal ligamento de contenção anterior da articulação coxofemoral?",opts:["Ligamento isquiofemoral","Ligamento pubofemoral","Ligamento iliofemoral (de Bigelow)","Ligamento redondo (ligamentum teres)"],a:2,exp:"O ligamento iliofemoral (de Bigelow) é o mais resistente do corpo — limita extensão e rotação lateral excessivas."},
+  {cat:"Quadril",q:"O músculo piriforme (m. piriformis) realiza qual ação na articulação coxofemoral com o quadril em extensão?",opts:["Flexão e abdução","Rotação lateral e abdução","Adução e rotação medial","Extensão e rotação medial"],a:1,exp:"Com o quadril estendido, o m. piriforme realiza rotação lateral e abdução; com quadril >60° de flexão, torna-se rotador medial."},
+  {cat:"Quadril",q:"A síndrome do impacto femoroacetabular (FAI) do tipo CAM é caracterizada por:",opts:["Excesso de cobertura acetabular","Deformidade não esférica da cabeça/colo femoral","Instabilidade da articulação","Necrose avascular da cabeça femoral"],a:1,exp:"FAI tipo CAM: deformidade na transição cabeça-colo femoral (aspecto de alça de pistola) — choca contra o rebordo acetabular na flexão."},
+  {cat:"Quadril",q:"Qual nervo inerva o músculo glúteo máximo (gluteus maximus)?",opts:["Nervo glúteo superior","Nervo glúteo inferior (n. gluteus inferior)","Nervo isquiático","Nervo femoral"],a:1,exp:"O m. glúteo máximo é inervado pelo nervo glúteo inferior (L5-S1-S2) — principal extensor e rotador lateral do quadril."},
+  {cat:"Quadril",q:"O labro acetabular (labrum acetabuli) tem as funções de:",opts:["Apenas lubrificação","Aprofundamento da cavidade acetabular e vedamento (pressão intra-articular)","Produção de líquido sinovial","Transmissão de forças ao fêmur"],a:1,exp:"O labro acetabular aprofunda a cavidade, cria pressão intra-articular negativa (vedamento) e distribui cargas articulares."},
+  {cat:"Quadril",q:"Qual teste avalia o encurtamento do músculo iliopsoas ao avaliar a articulação coxofemoral?",opts:["Teste de Ober","Teste de Thomas","Teste de FABER","Teste de Trendelenburg"],a:1,exp:"Teste de Thomas: decúbito dorsal com joelhos à borda da maca; elevação do membro testado indica encurtamento do iliopsoas/reto femoral."},
+  {cat:"Quadril",q:"A necrose avascular (osteonecrose) da cabeça femoral ocorre com maior frequência em qual quadrante?",opts:["Posteromedial","Anterossuperior","Posterolateral","Anteroinferior"],a:1,exp:"O quadrante anterossuperior da cabeça femoral recebe menor vascularização e é o mais sujeito à osteonecrose."},
+
+  // ── JOELHO ──
+  {cat:"Joelho",q:"Qual ligamento limita a translação anterior da tíbia e a rotação medial excessiva?",opts:["LCA (ligamento cruzado anterior)","LCP (ligamento cruzado posterior)","LCM (ligamento colateral medial)","LCL (ligamento colateral lateral)"],a:0,exp:"O LCA é o principal limitador da translação anterior tibial e da rotação medial excessiva."},
+  {cat:"Joelho",q:"O teste de Lachman é mais sensível que a gaveta anterior porque:",opts:["Avalia em 90° de flexão","Avalia em 20–30° de flexão, reduzindo a ação dos isquiotibiais","É realizado em extensão total","Avalia meniscos simultaneamente"],a:1,exp:"A 20–30° os isquiotibiais relaxam — o LCA é testado isoladamente com menor interferência muscular."},
+  {cat:"Joelho",q:"Qual menisco é mais frequentemente lesionado no joelho?",opts:["Menisco medial","Menisco lateral","Ambos com igual frequência","Varia com o mecanismo de lesão"],a:0,exp:"O menisco medial é menos móvel (fixo ao LCM) — mais susceptível a lesão, especialmente em rotação com valgo forçado."},
+  {cat:"Joelho",q:"A síndrome patelofemoral está associada à qual alteração biomecânica?",opts:["Excesso de rotação lateral do joelho","Aumento do ângulo Q e alteração do deslizamento patelar","Hiperextensão do joelho","Deficiência de flexão plantar"],a:1,exp:"Ângulo Q aumentado → deslizamento patelar lateral → sobrecarga da faceta lateral da articulação patelofemoral."},
+  {cat:"Joelho",q:"Qual nervo pode ser lesado em luxação posterior do joelho?",opts:["Nervo femoral","Nervo obturador","Nervo fibular comum (n. fibularis communis)","Nervo tibial"],a:2,exp:"A luxação posterior do joelho pode lesar o nervo fibular comum — déficit de dorsiflexão e eversão do pé."},
+  {cat:"Joelho",q:"O sinal do ressalto lateral (pivot shift) indica lesão de qual estrutura?",opts:["LCP","LCA","Menisco medial","LCL"],a:1,exp:"O pivot shift detecta instabilidade rotatória anterolateral — sinal patognomônico de ruptura do LCA."},
+  {cat:"Joelho",q:"O corpo adiposo infrapatelar (de Hoffa) situa-se:",opts:["Acima do polo superior da patela","Entre o ligamento patelar e a cápsula articular anterior","No espaço poplíteo","Dentro do canal femoral"],a:1,exp:"O corpo adiposo de Hoffa preenche o espaço entre ligamento patelar, tíbia e cápsula — pode ser pinçado (síndrome de Hoffa)."},
+  {cat:"Joelho",q:"Qual músculo é o principal extensor do joelho?",opts:["M. bíceps femoral","M. quadríceps femoral (quadriceps femoris)","M. sartório","M. grácil"],a:1,exp:"O m. quadríceps femoral (com 4 ventres: reto femoral, vasto lateral, vasto medial, vasto intermédio) é o principal extensor do joelho."},
+  {cat:"Joelho",q:"O ligamento colateral medial (LCM) resiste principalmente ao estresse em:",opts:["Varo","Valgo","Hiperextensão","Rotação axial lateral"],a:1,exp:"O LCM resiste ao estresse em valgo — lesão comum em contato lateral ao joelho com pé fixo."},
+  {cat:"Joelho",q:"A 'tríade infeliz' (unhappy triad) de O'Donoghue envolve lesão de:",opts:["LCA, LCL e menisco lateral","LCA, LCM e menisco medial","LCP, LCM e menisco medial","LCA, LCP e LCM"],a:1,exp:"Tríade infeliz: LCA + LCM + menisco medial — mecanismo clássico de valgo com rotação externa e contato."},
+  {cat:"Joelho",q:"Qual músculo isquiotibial realiza flexão do joelho E rotação lateral da tíbia?",opts:["M. semitendíneo","M. semimembranáceo","M. bíceps femoral (cabeça longa)","M. poplíteo"],a:2,exp:"O m. bíceps femoral flexiona o joelho e gira a tíbia lateralmente (rotação externa) quando o joelho está fletido."},
+
+  // ── TORNOZELO & PÉ ──
+  {cat:"Tornozelo & Pé",q:"Qual ligamento do tornozelo é mais frequentemente lesionado em entorses por inversão?",opts:["Ligamento deltoide","Ligamento talofibular posterior (LTFP)","Ligamento talofibular anterior (LTFA)","Ligamento calcaneonavicular plantar"],a:2,exp:"O LTFA é o mais fraco e anterior — primeiro a romper em entorse por inversão + flexão plantar."},
+  {cat:"Tornozelo & Pé",q:"A fasciopatia plantar (fasciíte plantar) causa dor caracteristicamente em qual momento?",opts:["Ao final do dia","Primeiros passos pela manhã (rigidez matinal)","Durante corrida intensa apenas","Apenas à palpação profunda"],a:1,exp:"Rigidez matinal com dor nos primeiros passos — clássico da fasciopatia plantar por microrrupturas e reparação noturna."},
+  {cat:"Tornozelo & Pé",q:"O músculo tibial anterior (tibialis anterior) realiza qual movimento?",opts:["Flexão plantar e inversão","Dorsiflexão e inversão do pé","Eversão e flexão plantar","Dorsiflexão e eversão"],a:1,exp:"O m. tibial anterior (nervo fibular profundo) realiza dorsiflexão + inversão — fraqueza causa pé caído."},
+  {cat:"Tornozelo & Pé",q:"O tendão do calcâneo (Aquiles) é formado pela fusão das aponeuroses do:",opts:["M. gastrocnêmio e m. sóleo","M. gastrocnêmio e m. plantar delgado","M. sóleo e m. flexor longo dos dedos","M. tibial posterior e m. sóleo"],a:0,exp:"O tendão calcâneo = fusão dos ventres musculares do m. gastrocnêmio + m. sóleo (tríceps sural)."},
+  {cat:"Tornozelo & Pé",q:"O teste de Thompson (Simmonds) avalia a integridade do:",opts:["Ligamento deltoide","Fáscia plantar","Tendão do calcâneo (Aquiles)","Tendão do fibular longo"],a:2,exp:"Thompson: comprime a panturrilha em prono — ausência de flexão plantar indica ruptura do tendão do calcâneo."},
+  {cat:"Tornozelo & Pé",q:"A articulação talocrural (tibiotársica) é classificada como:",opts:["Articulação selar","Articulação gínglimo (dobradiça sinovial)","Articulação elipsoide","Articulação plana"],a:1,exp:"A articulação talocrural é um gínglimo — realiza dorsiflexão e flexão plantar."},
+  {cat:"Tornozelo & Pé",q:"O músculo fibular longo (fibularis longus) realiza qual movimento?",opts:["Dorsiflexão e inversão","Flexão plantar e eversão","Dorsiflexão e eversão","Inversão e flexão plantar"],a:1,exp:"O m. fibular longo realiza flexão plantar e eversão; cruza sob o pé para sustentar o arco transverso."},
+  {cat:"Tornozelo & Pé",q:"O arco longitudinal medial do pé é mantido estaticamente principalmente pelo:",opts:["M. tibial anterior","Ligamento calcaneonavicular plantar (spring ligament) e fáscia plantar","Tendão do tibial posterior","M. flexor curto dos dedos"],a:1,exp:"O arco longitudinal medial é mantido pelo ligamento calcaneonavicular plantar + fáscia plantar; o m. tibial posterior é o suporte dinâmico."},
+  {cat:"Tornozelo & Pé",q:"A síndrome do túnel do tarso causa compressão do nervo:",opts:["Fibular superficial","Tibial (n. tibialis) — na face medial do tornozelo","Safeno","Sural"],a:1,exp:"O nervo tibial é comprimido no túnel do tarso (retináculo dos flexores, maléolo medial) — parestesia plantar."},
+  {cat:"Tornozelo & Pé",q:"Qual osso do tarso articula com a tíbia, fíbula e calcâneo?",opts:["Navicular","Cuboide","Tálus (talus)","Cuneiforme medial"],a:2,exp:"O tálus articula superiormente com a tíbia/fíbula (talocrural) e inferiormente com o calcâneo (subtalar/talocalcânea)."},
+
+  // ── NEUROANATOMIA ──
+  {cat:"Neuro",q:"Qual é o dermátomo correspondente à face medial do joelho?",opts:["L2","L3","L4","L5"],a:2,exp:"L4 inerva a face medial do joelho e pé — orienta o exame clínico em hérnias L3-L4."},
+  {cat:"Neuro",q:"A lesão do nervo radial (n. radialis) no sulco espiral do úmero resulta em:",opts:["Garra cubital","Mão caída (wrist drop)","Garra medial da mão","Déficit de flexão do cotovelo"],a:1,exp:"Mão caída (wrist drop) = paralisia dos extensores do punho/dedos por lesão do nervo radial no sulco espiral."},
+  {cat:"Neuro",q:"O plexo braquial (plexus brachialis) origina-se das raízes:",opts:["C4-T1","C5-T1","C5-T2","C4-C8"],a:1,exp:"O plexo braquial é formado pelas raízes C5, C6, C7, C8 e T1."},
+  {cat:"Neuro",q:"A paralisia de Erb-Duchenne compromete quais raízes?",opts:["C8-T1","C7-C8","C5-C6","C6-C7"],a:2,exp:"Erb-Duchenne: C5-C6 — postura de 'gorjeta de garçom' (adução, rotação medial, cotovelo estendido e antebraço pronado)."},
+  {cat:"Neuro",q:"Qual neurotransmissor é liberado na junção neuromuscular (placa motora)?",opts:["Noradrenalina","Dopamina","Acetilcolina","Glutamato"],a:2,exp:"Acetilcolina é liberada na placa motora — liga-se a receptores nicotínicos pós-juncional."},
+  {cat:"Neuro",q:"O reflexo patelar (L3-L4) é um exemplo de arco reflexo:",opts:["Monossináptico de estiramento","Cutâneo polissináptico","Autonômico","De retirada"],a:0,exp:"O reflexo patelar é monossináptico — fuso muscular do quadríceps → neurônio motor alfa diretamente."},
+  {cat:"Neuro",q:"A lesão do neurônio motor superior (NMS) causa:",opts:["Hipotonia e flacidez","Hipertonia espástica e hiper-reflexia + sinal de Babinski","Atrofia muscular precoce e fasciculações","Ausência de reflexos"],a:1,exp:"Lesão de NMS: espasticidade, hiper-reflexia, Babinski — diferente da lesão de NMI (flacidez, atrofia, fasciulações)."},
+  {cat:"Neuro",q:"A escala de Ashworth modificada avalia:",opts:["Força muscular (Medical Research Council)","Espasticidade — resistência ao movimento passivo","Coordenação (ataxia)","Propriocepção"],a:1,exp:"Ashworth modificada: 0 a 4 — graus de espasticidade (resistência ao movimento passivo)."},
+  {cat:"Neuro",q:"O sinal de Tinel é positivo quando a percussão sobre um nervo provoca:",opts:["Dor irradiada sem parestesia","Parestesia ou formigamento no território do nervo distal ao ponto percutido","Contratura muscular reflexa","Espasmo vascular"],a:1,exp:"Sinal de Tinel: percussão sobre o nervo gera parestesia distalmente — indica regeneração ou compressão nervosa."},
+  {cat:"Neuro",q:"Qual ramo do plexo lombar (L2-L4) inerva o músculo quadríceps femoral?",opts:["Nervo obturador","Nervo femoral (n. femoralis)","Nervo genitofemoral","Nervo safeno"],a:1,exp:"O nervo femoral (L2-L4) inerva o m. quadríceps femoral e fornece sensibilidade à face anterior da coxa e perna medial (via n. safeno)."},
+
+  // ── BIOMECÂNICA ──
+  {cat:"Biomecânica",q:"Na análise da marcha, a fase de apoio corresponde a aproximadamente qual percentual do ciclo?",opts:["40%","60%","75%","50%"],a:1,exp:"Fase de apoio ≈ 60% do ciclo de marcha; fase de balanço ≈ 40%."},
+  {cat:"Biomecânica",q:"O momento de força (torque) é calculado como:",opts:["Força × braço de momento (distância perpendicular ao eixo)","Massa × aceleração","Potência / tempo","Impulso × velocidade"],a:0,exp:"Torque (N·m) = F × d⊥ — força multiplicada pelo braço de momento."},
+  {cat:"Biomecânica",q:"Qual tipo de contração muscular gera maior força com menor ativação elétrica (EMG)?",opts:["Concêntrica","Excêntrica","Isométrica","Isocinética"],a:1,exp:"Contração excêntrica: maior tensão (120–150% da isométrica máxima) com menor ativação EMG — eficiente porém lesiva."},
+  {cat:"Biomecânica",q:"O centro de massa do corpo humano em posição anatômica estática localiza-se:",opts:["Na altura do umbigo","Na altura de S2, ligeiramente anterior ao sacro","Na crista ilíaca","No processo xifoide"],a:1,exp:"Centro de massa: ~55% da estatura corporal, próximo a S2 — levemente anterior ao sacro."},
+  {cat:"Biomecânica",q:"A força de reação do solo (FRS) durante a marcha em velocidade normal pode atingir:",opts:["0,5 × peso corporal","1,0–1,2 × peso corporal","1,5–2,0 × peso corporal","3–5 × peso corporal"],a:1,exp:"FRS na marcha normal: ~1,0–1,2× PC; na corrida pode atingir 2,5–3× PC."},
+  {cat:"Biomecânica",q:"A lei de Wolff descreve que o osso se adapta:",opts:["Apenas ao envelhecimento","Às demandas mecânicas (deposição onde há estresse, reabsorção onde há pouco)","Somente durante a infância","Independentemente da carga mecânica"],a:1,exp:"Lei de Wolff: o tecido ósseo se remodela em função das forças mecânicas aplicadas — base para reabilitação com carga."},
+  {cat:"Biomecânica",q:"Qual variável biomecânica quantifica a 'dose' de força aplicada ao longo do tempo?",opts:["Torque","Potência mecânica","Impulso (F × Δt)","Trabalho mecânico"],a:2,exp:"Impulso = força × tempo — quantifica a mudança de quantidade de movimento; fundamental na análise de impacto."},
+  {cat:"Biomecânica",q:"Na análise de marcha, o evento de 'contato inicial' (heel strike) no membro inferior direito ocorre em:",opts:["100% do ciclo","0% do ciclo (início do ciclo)","50% do ciclo","25% do ciclo"],a:1,exp:"O contato inicial (heel strike) define o início do ciclo de marcha (0%) — o pé esquerdo toca o solo em ~50%."},
+
+  // ── TECIDOS ──
+  {cat:"Tecidos & Histologia",q:"A fase inflamatória aguda do processo de cicatrização ocorre principalmente em:",opts:["0–3 dias","4–7 dias","7–21 dias","21–60 dias"],a:0,exp:"Fase inflamatória: primeiros 3 dias — infiltrado neutrofílico, macrófagos, dor, calor, rubor, tumor."},
+  {cat:"Tecidos & Histologia",q:"O colágeno do tipo I é predominante em qual tecido?",opts:["Cartilagem hialina (tipo II)","Tendão, ligamento e osso cortical","Membrana basal (tipo IV)","Vasos sanguíneos"],a:1,exp:"Colágeno tipo I: resistente à tração — predomina em tendões, ligamentos e osso cortical."},
+  {cat:"Tecidos & Histologia",q:"A cartilagem hialina articular é nutrida principalmente por:",opts:["Vasos pericondrais","Difusão do líquido sinovial","Vasos subcondrais diretos","Sistema linfático articular"],a:1,exp:"A cartilagem articular hialina é avascular — nutrida por difusão do líquido sinovial, limitando sua regeneração."},
+  {cat:"Tecidos & Histologia",q:"Qual célula é responsável pela síntese de colágeno no tendão?",opts:["Osteoblasto","Condrócito","Tenócito (fibroblasto tendinoso)","Sinoviócito tipo B"],a:2,exp:"Tenócitos (fibroblastos especializados) sintetizam colágeno tipo I — organizados em colunas paralelas ao eixo do tendão."},
+  {cat:"Tecidos & Histologia",q:"A tendinopatia crônica (tendinose) é histologicamente caracterizada por:",opts:["Infiltrado inflamatório intenso","Degeneração mucoide, desorientação do colágeno e neovascularização anômala","Calcificação homogênea","Fibrose peritendinosa isolada"],a:1,exp:"Tendinose: processo degenerativo, NÃO inflamatório — degeneração mucoide, desorientação do colágeno, neovascularização patológica."},
+  {cat:"Tecidos & Histologia",q:"As fases da cicatrização tecidual em ordem correta são:",opts:["Proliferação → Inflamação → Remodelação","Inflamação → Proliferação → Remodelação (maturação)","Remodelação → Inflamação → Proliferação","Inflamação → Remodelação → Proliferação"],a:1,exp:"Cicatrização: 1ª Inflamação (0–7d) → 2ª Proliferação/fibroplasia (4–21d) → 3ª Remodelação/maturação (21d–2 anos)."},
+  {cat:"Tecidos & Histologia",q:"O tecido ósseo cortical (compacto) é organizado em unidades estruturais chamadas:",opts:["Trabéculas","Ósteons (sistema de Havers)","Lacunas","Canalículos isolados"],a:1,exp:"O osso cortical é composto por ósteons (sistemas de Havers) — cilindros concêntricos de lamelas com canal central vascular."},
+  {cat:"Tecidos & Histologia",q:"A sinovite é a inflamação de qual tecido articular?",opts:["Cartilagem articular","Membrana sinovial (synovium)","Cápsula fibrosa","Ligamentos periarticulares"],a:1,exp:"Sinovite: inflamação da membrana sinovial — produção excessiva de líquido sinovial, dor e edema articular."},
+
+  // ── FISIOLOGIA MUSCULAR ──
+  {cat:"Fisiologia Muscular",q:"As fibras musculares do tipo I (lentas oxidativas) são caracterizadas por:",opts:["Alta fadiga, alta potência","Baixa fadiga, alta resistência aeróbia, muitas mitocôndrias","Alta potência explosiva","Ativação preferencial em exercícios de alta intensidade"],a:1,exp:"Tipo I (slow twitch): resistentes à fadiga, ricas em mitocôndrias, capilares e mioglobina — atividades aeróbias."},
+  {cat:"Fisiologia Muscular",q:"A unidade contrátil básica do músculo esquelético é:",opts:["Miofibrila","Sarcômero (sarcomere)","Filamento de miosina","Disco Z"],a:1,exp:"O sarcômero é a unidade contrátil — delimitado por discos Z, contém filamentos de actina e miosina."},
+  {cat:"Fisiologia Muscular",q:"No ciclo actina-miosina (teoria dos filamentos deslizantes), qual íon é essencial?",opts:["Sódio (Na⁺)","Potássio (K⁺)","Cálcio (Ca²⁺)","Magnésio (Mg²⁺)"],a:2,exp:"Ca²⁺ liberado pelo retículo sarcoplasmático liga-se à troponina C → desloca tropomiosina → expõe sítios ativos da actina."},
+  {cat:"Fisiologia Muscular",q:"O fenômeno de DOMS (dor muscular de início tardio) está associado principalmente a:",opts:["Contrações concêntricas de alta velocidade","Contrações excêntricas — microlesões das miofibrilas","Acúmulo de lactato","Espasmo muscular reflexo"],a:1,exp:"DOMS ocorre 24–72h após contrações excêntricas — microrupturas miofibrilares, inflamação e edema intersticial."},
+  {cat:"Fisiologia Muscular",q:"A hipertrofia muscular por treinamento de força ocorre principalmente por:",opts:["Hiperplasia (aumento do número de fibras)","Aumento da área de secção transversa (CSA) de cada fibra","Redução do tecido conectivo","Melhora exclusiva da eficiência neural"],a:1,exp:"Hipertrofia = aumento da CSA — mais miofilamentos, proteínas contráteis e fluido intracelular."},
+  {cat:"Fisiologia Muscular",q:"As fibras do tipo IIx (antigas IIb) em humanos são caracterizadas por:",opts:["Alta resistência à fadiga","Alta velocidade de contração e alta potência, com fadiga rápida","Dependência exclusiva do metabolismo aeróbio","Elevado conteúdo de mioglobina"],a:1,exp:"Tipo IIx: fibras rápidas glicolíticas — alta potência e velocidade, mas alta fadigabilidade (poucos mitocôndrias)."},
+  {cat:"Fisiologia Muscular",q:"O órgão tendinoso de Golgi (OTG) é ativado principalmente por:",opts:["Estiramento passivo do músculo","Tensão muscular — especialmente em contração ativa","Temperatura tecidual elevada","Hipóxia muscular"],a:1,exp:"O OTG monitora tensão (ativa e passiva) no tendão — inibição autogênica protege o músculo de sobrecarga excessiva."},
+  {cat:"Fisiologia Muscular",q:"O fuso neuromuscular (muscle spindle) responde principalmente a:",opts:["Tensão ativa do músculo","Comprimento muscular e variação de comprimento (estiramento)","Temperatura intramuscular","Pressão extramuscular"],a:1,exp:"O fuso neuromuscular (fibras intrafusais) monitora o comprimento muscular e sua taxa de variação — dispara o reflexo de estiramento."},
+
+  // ── PATOLOGIA ORTOPÉDICA ──
+  {cat:"Patologia Ortopédica",q:"A osteoporose é definida pela OMS como uma DMO com T-score:",opts:["Entre -1,0 e -2,5 DP","≤ -2,5 DP (desvios-padrão)","Entre 0 e -1,0 DP","< -3,0 DP exclusivamente"],a:1,exp:"T-score ≤ -2,5 = osteoporose; -1,0 a -2,5 = osteopenia; > -1,0 = normal."},
+  {cat:"Patologia Ortopédica",q:"Qual é a fratura mais comum em idosos osteoporóticos com maior morbimortalidade?",opts:["Fratura diafisária do fêmur","Fratura do colo do fêmur (colo femoral)","Fratura da cabeça do úmero","Fratura de Colles"],a:1,exp:"Fratura do colo femoral em idosos osteoporóticos — alta morbimortalidade por imobilidade e complicações sistêmicas."},
+  {cat:"Patologia Ortopédica",q:"Na classificação de Gustilo-Anderson para fraturas expostas, o grau IIIC indica:",opts:["Ferida < 1cm, mínima contaminação","Fratura exposta com lesão arterial requerendo reparo vascular","Perda óssea moderada sem lesão vascular","Contaminação grave sem lesão vascular"],a:1,exp:"Gustilo IIIC: fratura exposta + lesão arterial necessitando reparo — maior risco de amputação."},
+  {cat:"Patologia Ortopédica",q:"A síndrome compartimental aguda é diagnosticada clinicamente pelos 6P's, incluindo:",opts:["Palidez, pulso, pressão","Pain (dor desproporcional), Pressure (pressão), Paresthesia, Paresia/paralisia, Pallor, Pulselessness","Apenas ausência de pulso","Apenas dor e edema"],a:1,exp:"6P's: Dor desproporcional (principal), Parestesia, Pressão aumentada, Paresia, Palidez, Ausência de Pulso (tardio)."},
+  {cat:"Patologia Ortopédica",q:"O sinal de Phalen positivo na síndrome do túnel do carpo reproduz parestesia em quais dedos?",opts:["D4-D5 (território ulnar)","D1-D2-D3 e metade radial de D4 (território do mediano)","Todos os dedos","Apenas D1"],a:1,exp:"Phalen (flexão máxima do punho por 60s): reproduz parestesia no território do nervo mediano (D1-D3 e metade radial de D4)."},
+  {cat:"Patologia Ortopédica",q:"A doença de Osgood-Schlatter acomete qual estrutura?",opts:["Placa epifisária da cabeça do fêmur","Tuberosidade tibial (apófise tibial anterior)","Apófise do calcâneo","Epicôndilo lateral"],a:1,exp:"Osgood-Schlatter: apofisiopatia tracionante da tuberosidade tibial — adolescentes em crescimento com atividade física intensa."},
+  {cat:"Patologia Ortopédica",q:"Na artrose (osteoartrite), a lesão primária acomete qual tecido articular?",opts:["Membrana sinovial","Cartilagem articular hialina","Ligamentos periarticulares","Tecido ósseo esponjoso"],a:1,exp:"Osteoartrite: degeneração primária da cartilagem articular hialina — fissuras, fibrilação, perda focal e progressiva."},
+
+  // ── NEURO FUNCIONAL ──
+  {cat:"Neuro Funcional",q:"Na escala de Brunnstrom, o estágio 1 corresponde a:",opts:["Movimentos seletivos completos","Espasticidade moderada","Flacidez total sem atividade reflexa ou voluntária","Movimentos sinérgicos básicos"],a:2,exp:"Brunnstrom 1: flacidez imediata pós-AVC, sem movimentos voluntários ou reflexos — pior prognóstico funcional agudo."},
+  {cat:"Neuro Funcional",q:"A espasticidade após lesão medular é consequência de lesão do:",opts:["Neurônio motor inferior (NMI)","Neurônio motor superior (NMS)","Cerebelo","Núcleos basais (gânglios da base)"],a:1,exp:"Lesão de NMS remove inibição descendente → espasticidade e hiper-reflexia."},
+  {cat:"Neuro Funcional",q:"O Índice de Barthel avalia:",opts:["Espasticidade","Independência funcional nas atividades da vida diária (AVDs)","Força muscular global","Equilíbrio postural estático"],a:1,exp:"Índice de Barthel: 10 itens de AVDs — 0–100; 100 = independência total."},
+  {cat:"Neuro Funcional",q:"A escala de ASIA (American Spinal Injury Association) classifica lesões medulares baseando-se em:",opts:["Nível de dor apenas","Preservação sensorial e motora abaixo do nível da lesão","Grau de espasticidade","Presença de reflexos apenas"],a:1,exp:"ASIA A (completa) a ASIA E (normal) — classifica função motora e sensitiva abaixo do nível da lesão medular."},
+  {cat:"Neuro Funcional",q:"O fenômeno de plasticidade neuronal após AVC refere-se à:",opts:["Morte programada de neurônios","Reorganização das conexões neurais e formação de novos circuitos","Calcificação do tecido cerebral","Redução do edema cerebral"],a:1,exp:"Plasticidade neuronal: reorganização sináptica, representação cortical e formação de novos circuitos — base da reabilitação neurológica."},
+
+  // ── CORE ──
+  {cat:"Core & Estabilização",q:"Qual músculo forma a parede anterior da 'caixa de estabilização do core' e é ativado antecipadamente ao movimento dos membros?",opts:["M. reto abdominal","M. transverso abdominal (transversus abdominis)","M. oblíquo externo","M. iliocostal"],a:1,exp:"O m. transverso abdominal ativa em antecipação (feedforward) ao movimento — estabilizador profundo primário."},
+  {cat:"Core & Estabilização",q:"O diafragma, ao se contrair, contribui para a estabilização lombar por meio de:",opts:["Aumento da pressão intra-abdominal","Compressão direta dos corpos vertebrais","Ativação reflexa dos multífidos","Relaxamento do m. psoas maior"],a:0,exp:"Contração do diafragma + assoalho pélvico + m. transverso abdominal aumenta a pressão intra-abdominal, protegendo a coluna."},
+  {cat:"Core & Estabilização",q:"O músculo quadrado lombar (quadratus lumborum) tem ação primária de:",opts:["Flexão anterior do tronco","Inclinação lateral ipsilateral e fixação da 12ª costela","Rotação contralateral do tronco","Extensão isolada da coluna"],a:1,exp:"M. quadrado lombar: inclinação lateral ipsilateral + fixação da 12ª costela — também estabilizador lateral da coluna."},
+
+  // ── PÉLVIS & SI ──
+  {cat:"Pélvis & SI",q:"Qual teste é considerado específico para disfunção da articulação sacroilíaca?",opts:["Teste de Ober","Teste de Gaenslen","Teste de Lachman","Teste de Thomas"],a:1,exp:"Gaenslen: membro em flexão máxima, outro em hiperextensão — testa a SI por estresse em torsão."},
+  {cat:"Pélvis & SI",q:"A nutação do sacro (nutation) refere-se ao movimento de:",opts:["Base sacral posterior e ápice anterior","Base sacral anterior e ápice posterior","Rotação do sacro sobre eixo vertical","Flexão lateral do sacro"],a:1,exp:"Nutação: base sacral vai anterioinferior, ápice vai posterior — aumenta o diâmetro do estreito inferior pélvico."},
+  {cat:"Pélvis & SI",q:"O anel pélvico é formado pelas articulações:",opts:["Coxofemorais bilaterais","Sacroilíacas (bilaterais) e sínfise púbica","Lombossacrais e coxofemorais","Sacrococcígeas e sacroilíacas"],a:1,exp:"O anel pélvico é fechado pelas 2 articulações sacroilíacas (posteriores) + sínfise púbica (anterior)."},
+
+  // ── RESPIRATÓRIA ──
+  {cat:"Fisio Respiratória",q:"A capacidade pulmonar total (CPT) corresponde a:",opts:["Volume corrente (VC)","Volume residual (VR) + capacidade vital (CV)","Volume residual apenas","Volume inspiratório de reserva (VIR)"],a:1,exp:"CPT = VR + CV — o volume máximo que os pulmões podem conter após inspiração máxima."},
+  {cat:"Fisio Respiratória",q:"O DPOC é caracterizado espirometricamente por:",opts:["Redução da CVF com VEF1/CVF normal","VEF1/CVF < 0,70 pós-broncodilatador","Aumento do VEF1 com CVF reduzida","Padrão restritivo exclusivo"],a:1,exp:"Diagnóstico espirométrico de DPOC: índice de Tiffeneau (VEF1/CVF) < 0,70 após broncodilatador."},
+  {cat:"Fisio Respiratória",q:"Qual músculo é o principal responsável pela inspiração tranquila?",opts:["Intercostais externos","M. escalenos (scaleni)","Diafragma","M. esternocleidomastoideo"],a:2,exp:"O diafragma realiza ~70–80% do trabalho inspiratório em repouso — desce e aumenta o diâmetro vertical."},
+  {cat:"Fisio Respiratória",q:"A drenagem postural é uma técnica de fisioterapia respiratória que utiliza:",opts:["Vibração mecânica sobre o tórax","Posicionamento gravitacional para drenar secreções de segmentos pulmonares específicos","Pressão positiva expiratória","Técnica de huffing apenas"],a:1,exp:"Drenagem postural: o paciente é posicionado de forma que a gravidade facilite o deslocamento de secreções do segmento a ser drenado."},
+
+  // ── AVANÇADO ──
+  {cat:"Avançado",q:"O FNP (facilitação neuromuscular proprioceptiva) baseia-se em:",opts:["Inibição autogênica (OTG) e inibição recíproca","Contração isométrica máxima isolada","Estimulação criogênica","Compressão articular passiva"],a:0,exp:"FNP usa reflexos spinais: inibição autogênica (OTG) e inibição recíproca — aumenta a ADM de forma neurofisiológica."},
+  {cat:"Avançado",q:"A síndrome do piriforme pode causar dor glútea e irradiação por irritação do:",opts:["Nervo femoral","Nervo obturador","Nervo isquiático (n. ischiadicus)","Nervo safeno"],a:2,exp:"O m. piriforme hipertrofiado pode comprimir o nervo isquiático (ciático) — simulando ciatalgia."},
+  {cat:"Avançado",q:"A eletromiografia de superfície (EMGs) é utilizada principalmente para:",opts:["Avaliação da velocidade de condução nervosa","Registro da atividade elétrica muscular superficial","Medida de densidade mineral óssea","Avaliação de pressão intra-articular"],a:1,exp:"EMGs capta potenciais de ação muscular de superfície — útil em biofeedback, análise da marcha e pesquisa clínica."},
+  {cat:"Avançado",q:"O método Pilates, aplicado em fisioterapia, tem embasamento principal em:",opts:["Hipertrofia muscular máxima","Controle motor, estabilização central e alinhamento postural","Ganho de resistência cardiovascular aeróbia","Treinamento de velocidade e potência"],a:1,exp:"Pilates terapêutico: estabilização central (core control), controle motor consciente e alinhamento postural."},
+  {cat:"Avançado",q:"A terapia por ondas de choque extracorpóreas (ESWT) tem maior evidência para:",opts:["Fraturas agudas","Tendinopatias crônicas e calcificações tendinosas","Lesões musculares agudas","Síndrome do túnel do carpo"],a:1,exp:"ESWT: forte evidência em tendinopatia calcânea, epicondilite lateral e ombro calcário — estimula remodelação tecidual."},
+  {cat:"Avançado",q:"O laser de baixa intensidade (LLLT / fotobiomodulação) atua por:",opts:["Aquecimento tecidual profundo","Fotobiomodulação — estimula a cadeia respiratória mitocondrial sem calor","Efeito ablativo do colágeno","Cauterização de tecido cicatricial"],a:1,exp:"LLLT: fótons estimulam o citocromo c oxidase mitocondrial → maior síntese de ATP, redução de inflamação."},
+  {cat:"Avançado",q:"O teste de Adams (forward bend test) é usado na triagem de:",opts:["Hipercifose torácica","Espondilolistese","Escoliose (deformidade tridimensional da coluna)","Hérnia de disco lombar"],a:2,exp:"Teste de Adams: flexão anterior do tronco revela giba costal ou lombar — indica rotação vertebral associada à escoliose."},
+  {cat:"Avançado",q:"A instabilidade craniocervical é contraindicação absoluta para:",opts:["Eletroestimulação neuromuscular","Técnicas de manipulação e thrust cervical","Acupuntura cervical","Exercícios isométricos cervicais"],a:1,exp:"Instabilidade craniocervical (Down, AR, trauma) = contraindicação absoluta a manipulações de alta velocidade (HVT) — risco de lesão medular."},
+  {cat:"Avançado",q:"A corrente de TENS (estimulação elétrica nervosa transcutânea) no modo convencional (alta frequência) atua por:",opts:["Teoria das comportas (gate control) — modulação da dor no corno posterior da medula","Liberação de β-endorfinas centrais","Bloqueio neuromuscular","Redução da velocidade de condução nervosa"],a:0,exp:"TENS convencional (>50 Hz): ativa fibras A-beta, bloqueando a transmissão nociceptiva no corno dorsal (teoria das comportas)."},
+];
+
+/* ═══════════════════════════════════════
+   CATEGORIES
+═══════════════════════════════════════ */
+const CATEGORIES = [
+  {id:"Ombro",icon:"🦾",color:"#00d4aa"},
+  {id:"Cotovelo",icon:"💪",color:"#0091ff"},
+  {id:"Mão & Punho",icon:"🖐️",color:"#a78bfa"},
+  {id:"Coluna",icon:"🦴",color:"#f59e0b"},
+  {id:"Quadril",icon:"🏃",color:"#ec4899"},
+  {id:"Joelho",icon:"🦵",color:"#10b981"},
+  {id:"Tornozelo & Pé",icon:"🦶",color:"#06b6d4"},
+  {id:"Neuro",icon:"🧠",color:"#8b5cf6"},
+  {id:"Biomecânica",icon:"⚙️",color:"#f97316"},
+  {id:"Tecidos & Histologia",icon:"🔬",color:"#84cc16"},
+  {id:"Core & Estabilização",icon:"🎯",color:"#eab308"},
+  {id:"Pélvis & SI",icon:"🦷",color:"#f43f5e"},
+  {id:"Fisio Respiratória",icon:"🫁",color:"#38bdf8"},
+  {id:"Fisiologia Muscular",icon:"⚡",color:"#fb923c"},
+  {id:"Patologia Ortopédica",icon:"🩺",color:"#a3e635"},
+  {id:"Neuro Funcional",icon:"🧩",color:"#e879f9"},
+  {id:"Avançado",icon:"🏆",color:"#fbbf24"},
+];
+
+/* ═══════════════════════════════════════
+   BODY EXPLORER DATA
+═══════════════════════════════════════ */
+const BODY_REGIONS = {
+  cabeca: {
+    name:"Cabeça e Pescoço",sub:"Crânio, vértebras cervicais, musculatura cervical",
+    structs:{
+      Ossos:[
+        {name:"Crânio (cranium)",lat:"Os cranii",desc:"Conjunto de 22 ossos; calvária (frontal, parietais, occipital, temporal, esfenóide, etmóide) + ossos da face."},
+        {name:"Mandíbula (mandibula)",lat:"Mandibula",desc:"Único osso móvel do crânio; articula na ATM (articulação temporomandibular)."},
+        {name:"Atlas (C1)",lat:"Atlas",desc:"1ª vértebra cervical sem corpo vertebral; suporta o crânio na articulação atlantoccipital."},
+        {name:"Áxis (C2)",lat:"Axis",desc:"Possui o processo odontoide (dens) — eixo de rotação da cabeça na articulação atlantoaxial."},
+        {name:"Vértebras cervicais C3-C7",lat:"Vertebrae cervicales",desc:"Apresentam forame transversário para a artéria vertebral; processos espinhosos bífidos em C3-C6."},
+      ],
+      Articulações:[
+        {name:"Articulação atlantoccipital (C0-C1)",lat:"Art. atlantooccipitalis",desc:"Côndilo occipital + massa lateral do atlas — realiza flexão/extensão e inclinação lateral da cabeça."},
+        {name:"Articulação atlantoaxial (C1-C2)",lat:"Art. atlantoaxialis mediana e lateralis",desc:"Articulação trocóide — responsável por ~50% da rotação cervical total."},
+        {name:"Articulação temporomandibular (ATM)",lat:"Art. temporomandibularis",desc:"Côndilo mandibular + fossa mandibular do temporal; disco intra-articular; abertura, fechamento, protrusão, retrusão e lateralidade."},
+      ],
+      Músculos:[
+        {name:"Músculo esternocleidomastoideo (ECM)",lat:"M. sternocleidomastoideus",desc:"Flexão ipsilateral + rotação contralateral da cabeça; inervado pelo n. acessório (XI PC)."},
+        {name:"Músculo trapézio (parte superior)",lat:"M. trapezius — pars descendens",desc:"Extensão e inclinação ipsilateral da cabeça; eleva e roda a escápula; n. acessório (XI) e C3-C4."},
+        {name:"Músculo semispinalis capitis",lat:"M. semispinalis capitis",desc:"Extensão bilateral e rotação contralateral da cabeça; parte do grupo transverso-espinhal."},
+        {name:"Músculos suboccipitais",lat:"Mm. suboccipitales",desc:"Grupo de 4 músculos (reto posterior maior/menor, oblíquo superior/inferior) — controle fino da cabeça; n. suboccipital (C1)."},
+        {name:"Músculo escaleno anterior/médio/posterior",lat:"Mm. scaleni",desc:"Flexão cervical ipsilateral e elevação das costelas 1-2; n. cervical (C4-C8). O triângulo dos escalenos contém o plexo braquial."},
+      ]
+    }
+  },
+  ombro: {
+    name:"Cintura Escapular e Ombro",sub:"Clavícula, escápula, úmero proximal, articulação glenoumeral e manguito dos rotadores",
+    structs:{
+      Ossos:[
+        {name:"Clavícula (clavicula)",lat:"Clavicula",desc:"Único osso que conecta o esqueleto axial ao apendicular; transmite forças entre membro superior e tórax."},
+        {name:"Escápula (scapula)",lat:"Scapula",desc:"Osso triangular posterior; apresenta espinha da escápula, acrômio, processo coracoide e cavidade glenoidal."},
+        {name:"Úmero proximal",lat:"Humerus — extremitas proximalis",desc:"Cabeça umeral, colo anatômico, colo cirúrgico, tubérculo maior (teres) e tubérculo menor (teres)."},
+      ],
+      Articulações:[
+        {name:"Articulação glenoumeral",lat:"Art. humeri (glenoumeralis)",desc:"Esferoide — cabeça do úmero + cavidade glenoidal; maior mobilidade do corpo; estabilidade depende do manguito e labro."},
+        {name:"Articulação acromioclavicular",lat:"Art. acromioclavicularis",desc:"Plana sinovial; ligamentos coracoclaviculares (trapezoide e conoide) são os principais estabilizadores."},
+        {name:"Articulação esternoclavicular",lat:"Art. sternoclavicularis",desc:"Sellar com disco intra-articular; única articulação verdadeira do membro superior com o esqueleto axial."},
+        {name:"Espaço subacromial",lat:"Spatium subacromiale",desc:"Espaço funcional entre a cabeça umeral e o arco coracoacromial; contém bursa subacromial e tendão do supraespinhoso."},
+      ],
+      Músculos:[
+        {name:"Músculo supraespinhoso",lat:"M. supraspinatus",desc:"Inicia a abdução glenoumeral (0–15°); manguito dos rotadores; n. supraescapular (C5-C6)."},
+        {name:"Músculo infraespinhoso",lat:"M. infraspinatus",desc:"Principal rotador lateral; manguito; n. supraescapular (C5-C6)."},
+        {name:"Músculo subescapular",lat:"M. subscapularis",desc:"Único rotador medial do manguito; n. subescapular superior e inferior (C5-C6)."},
+        {name:"Músculo redondo menor",lat:"M. teres minor",desc:"Rotador lateral auxiliar; manguito; n. axilar (C5)."},
+        {name:"Músculo deltoide",lat:"M. deltoideus",desc:"3 porções (anterior, média, posterior); abdução (>15°), flexão e extensão glenoumeral; n. axilar (C5-C6)."},
+        {name:"Músculo serrátil anterior",lat:"M. serratus anterior",desc:"Ancora a escápula ao tórax; rotação superior da escápula; n. torácico longo (C5-C7); paralisia → escápula alata."},
+        {name:"Músculo grande dorsal",lat:"M. latissimus dorsi",desc:"Adução, extensão e rotação medial do úmero; n. toracodorsal (C6-C8)."},
+        {name:"Músculo peitoral maior",lat:"M. pectoralis major",desc:"Flexão, adução e rotação medial; n. peitorais medial e lateral (C5-T1)."},
+      ]
+    }
+  },
+  cotovelo: {
+    name:"Cotovelo e Antebraço",sub:"Úmero distal, rádio, ulna, articulações e músculos do cotovelo",
+    structs:{
+      Ossos:[
+        {name:"Úmero distal",lat:"Humerus — extremitas distalis",desc:"Capítulo (para o rádio), tróclea (para a ulna), fossa coronóidea, fossa olecraniana, epicôndilos medial e lateral."},
+        {name:"Rádio (radius)",lat:"Radius",desc:"Cabeça radial articula com o capítulo; o rádio gira sobre a ulna na pronossupinação."},
+        {name:"Ulna (ulna)",lat:"Ulna",desc:"Olécrano + processo coronóide formam a incisura troclear — articulação em dobradiça com a tróclea umeral."},
+      ],
+      Articulações:[
+        {name:"Articulação umeroulnar",lat:"Art. humeroulnaris",desc:"Gínglimo — tróclea + incisura troclear; flexão e extensão do cotovelo."},
+        {name:"Articulação umerorradial",lat:"Art. humeroradialis",desc:"Esferoide modificada — capítulo + fóvea da cabeça radial; flexão, extensão e prono-supinação."},
+        {name:"Articulação radioulnar proximal",lat:"Art. radioulnaris proximalis",desc:"Trocóide — permite a prono-supinação junto com a radioulnar distal."},
+      ],
+      Músculos:[
+        {name:"Músculo bíceps braquial",lat:"M. biceps brachii",desc:"Flexor primário do cotovelo + supinador potente; n. musculocutâneo (C5-C6)."},
+        {name:"Músculo braquial",lat:"M. brachialis",desc:"Flexor puro do cotovelo (independe da prono-supinação); n. musculocutâneo (C5-C6) + ramo radial."},
+        {name:"Músculo tríceps braquial",lat:"M. triceps brachii",desc:"Único extensor do cotovelo (3 cabeças: longa, lateral, medial); n. radial (C6-C8)."},
+        {name:"Músculo pronador redondo",lat:"M. pronator teres",desc:"Pronador primário do antebraço; n. mediano (C6-C7)."},
+        {name:"Músculo supinador",lat:"M. supinator",desc:"Supinador do antebraço (cotovelo estendido); n. interósseo posterior/radial profundo (C5-C6)."},
+        {name:"Extensor radial curto do carpo (ECRB)",lat:"M. extensor carpi radialis brevis",desc:"Extensão e desvio radial do punho; origem no epicôndilo lateral — lesado na epicondilite lateral."},
+      ]
+    }
+  },
+  mao: {
+    name:"Punho e Mão",sub:"Ossos do carpo, metacarpo, falanges, tendões e nervos da mão",
+    structs:{
+      Ossos:[
+        {name:"Escafoide (scaphoideum)",lat:"Os scaphoideum",desc:"Osso do carpo mais fraturado (~70%); vascularização retrógrada — risco de necrose avascular."},
+        {name:"Semilunar (lunatum)",lat:"Os lunatum",desc:"Osso do carpo mais frequentemente luxado; articulação com o rádio na fila proximal."},
+        {name:"Piramidal, Pisiforme",lat:"Os triquetrum, Os pisiforme",desc:"Fila proximal ulnar; o pisiforme é osso sesamóide no tendão do flexor ulnar do carpo."},
+        {name:"Trapézio, Trapezoide, Capitato, Hamato",lat:"Ossa carpalia — fila distal",desc:"Fila distal do carpo; o hamato tem o hamus (gancho) — relação com o nervo ulnar na loja de Guyon."},
+        {name:"Metacarpos I–V",lat:"Ossa metacarpalia",desc:"5 ossos metacarpais; base, diáfise, cabeça; articulam distalmente com as falanges."},
+        {name:"Falanges (proximal, média, distal)",lat:"Phalanges",desc:"14 falanges; D1 tem apenas proximal e distal; D2-D5 têm proximal, média e distal."},
+      ],
+      Articulações:[
+        {name:"Articulação radiocárpica",lat:"Art. radiocarpalis",desc:"Elipsoide — rádio + fila proximal do carpo; flexão, extensão, desvio radial e ulnar."},
+        {name:"Articulações metacarpofalângicas (MCF)",lat:"Art. metacarpophalangeae",desc:"Condilares — flexão, extensão, abdução, adução e circundução dos dedos."},
+        {name:"Articulações interfalângicas (IFP e IFD)",lat:"Art. interphalangeae",desc:"Gínglimos — apenas flexão e extensão."},
+        {name:"Articulação carpometacárpica do polegar (CMC I)",lat:"Art. carpometacarpalis pollicis",desc:"Selar — permite oposição do polegar; grande mobilidade em todos os planos."},
+      ],
+      Músculos:[
+        {name:"Músculo flexor profundo dos dedos (FPD)",lat:"M. flexor digitorum profundus",desc:"Flexiona as IFDs; inervação dupla — mediano (D2-D3) e ulnar (D4-D5)."},
+        {name:"Músculo flexor superficial dos dedos (FSD)",lat:"M. flexor digitorum superficialis",desc:"Flexiona as IFPs; inervado pelo nervo mediano (C7-T1)."},
+        {name:"Músculos lumbricais",lat:"Mm. lumbricales",desc:"Flexão das MCF + extensão das IFPs/IFDs; L1-L2 pelo mediano, L3-L4 pelo ulnar."},
+        {name:"Músculos interósseos dorsais",lat:"Mm. interossei dorsales",desc:"Abdução dos dedos (DABA — Dorsais ABuzam); inervados pelo nervo ulnar."},
+        {name:"Músculos interósseos palmares",lat:"Mm. interossei palmares",desc:"Adução dos dedos (PAFA — Palmares ADuzem Fingers Adduction); n. ulnar."},
+        {name:"Músculo abdutor curto do polegar",lat:"M. abductor pollicis brevis",desc:"Abdução palmar do polegar; ramo recorrente do n. mediano — 'nervo dos pianistas'."},
+        {name:"Músculo oponente do polegar",lat:"M. opponens pollicis",desc:"Oposição do polegar; n. mediano (ramo recorrente)."},
+      ]
+    }
+  },
+  coluna: {
+    name:"Coluna Vertebral",sub:"Vértebras, discos intervertebrais, ligamentos e músculos paravertebrais",
+    structs:{
+      Ossos:[
+        {name:"Corpo vertebral",lat:"Corpus vertebrae",desc:"Elemento de suporte de carga; composto de osso esponjoso revestido por osso cortical."},
+        {name:"Processo espinhoso",lat:"Processus spinosus",desc:"Palpável na linha mediana posterior — ponto de referência clínico; local de inserção muscular e ligamentar."},
+        {name:"Processo transverso",lat:"Processus transversus",desc:"Lateral ao arco vertebral; inserção de músculos e ligamentos; nas torácicas, articula com os tubérculos costais."},
+        {name:"Pedículo vertebral",lat:"Pediculus arcus vertebrae",desc:"Delimita superiormente e inferiormente o forame intervertebral — raízes nervosas passam pelo forame."},
+        {name:"Lâmina",lat:"Lamina arcus vertebrae",desc:"Une os pedículos ao processo espinhoso; cirurgia de laminectomia remove as lâminas para acesso ao canal."},
+        {name:"Faceta articular (processo articular)",lat:"Processus articularis",desc:"Superior e inferior em cada vértebra; formam as articulações zigapofisárias (facetárias) — orientação varia por região."},
+      ],
+      Articulações:[
+        {name:"Disco intervertebral",lat:"Discus intervertebralis",desc:"Núcleo pulposo (gel) + anel fibroso (colágeno) — amortecimento e mobilidade; ausente em C1-C2."},
+        {name:"Articulação zigapofisária (facetária)",lat:"Art. zygapophysialis",desc:"Articulação sinovial plana entre processos articulares; orientação determina o tipo de movimento permitido."},
+        {name:"Articulação atlantoaxial",lat:"Art. atlantoaxialis",desc:"Trocóide — ~50% da rotação cervical total; estabilizada pelo ligamento transverso do atlas."},
+        {name:"Articulação lombossacral (L5-S1)",lat:"Art. lumbosacralis",desc:"Ponto de maior carga da coluna; inclinação da plataforma sacral (ângulo de Ferguson) influencia as forças de cisalhamento."},
+      ],
+      Músculos:[
+        {name:"Músculo multífido (multifidus)",lat:"M. multifidus",desc:"Principal estabilizador segmentar; ativa em feedforward ao movimento dos membros; atrofia significativa após lombalgia."},
+        {name:"Músculo eretor da espinha",lat:"M. erector spinae",desc:"3 colunas: iliocostal, longuíssimo, espinhoso — extensão bilateral e inclinação ipsilateral da coluna."},
+        {name:"Músculo transverso abdominal",lat:"M. transversus abdominis",desc:"Estabilizador profundo anterior; pressão intra-abdominal; co-contração com o multífido — base da estabilização lombar."},
+        {name:"Músculo quadrado lombar",lat:"M. quadratus lumborum",desc:"Inclinação lateral + fixação da 12ª costela; estabilizador lateral da coluna lombar."},
+        {name:"Músculo psoas maior",lat:"M. psoas major",desc:"Flexor da articulação coxofemoral + flexor da coluna lombar; encurtamento = hiperlordose; n. femoral (L1-L3)."},
+      ]
+    }
+  },
+  pelve: {
+    name:"Pelve e Quadril",sub:"Ossos pélvicos, cabeça femoral, músculos glúteos e pelvitrôcanteres",
+    structs:{
+      Ossos:[
+        {name:"Ílio (os ilium)",lat:"Os ilium",desc:"Porção superior do coxal; fossa ilíaca, crista ilíaca, espinha ilíaca anterossuperior (EIAS) e posterossuperior (EIPS)."},
+        {name:"Ísquio (os ischii)",lat:"Os ischii",desc:"Porção posteroinferior; tuberosidade isquiática (origem dos isquiotibiais); espinha isquiática."},
+        {name:"Púbis (os pubis)",lat:"Os pubis",desc:"Porção anterior; sínfise púbica; ramo superior e inferior do púbis."},
+        {name:"Sacro (os sacrum)",lat:"Os sacrum",desc:"5 vértebras fundidas; articulação sacroilíaca bilateral; canal sacral; foramens sacrais."},
+        {name:"Fêmur proximal",lat:"Femur — extremitas proximalis",desc:"Cabeça femoral, colo femoral, trocânter maior, trocânter menor; anteversão femoral ~15°."},
+      ],
+      Articulações:[
+        {name:"Articulação coxofemoral (quadril)",lat:"Art. coxae",desc:"Esferoide multiaxial — cabeça femoral + acetábulo; labro acetabular aprofunda a cavidade."},
+        {name:"Articulação sacroilíaca (ASI)",lat:"Art. sacroiliaca",desc:"Articulação sinovial plana com fortes ligamentos — mínima mobilidade; nutação/contranutação."},
+        {name:"Sínfise púbica",lat:"Symphysis pubica",desc:"Articulação fibrocartilaginosa com disco interpúbico — transfere cargas entre os hemipelvis."},
+      ],
+      Músculos:[
+        {name:"Músculo glúteo máximo",lat:"M. gluteus maximus",desc:"Principal extensor e rotador lateral do quadril; n. glúteo inferior (L5-S1-S2)."},
+        {name:"Músculo glúteo médio",lat:"M. gluteus medius",desc:"Abdução e estabilização da pelve na fase de apoio; n. glúteo superior (L4-S1); fraqueza → Trendelenburg."},
+        {name:"Músculo glúteo mínimo",lat:"M. gluteus minimus",desc:"Abdução e rotação medial do quadril; n. glúteo superior (L4-S1)."},
+        {name:"Músculo iliopsoas",lat:"M. iliopsoas (iliacus + psoas major)",desc:"Principal flexor do quadril (>90° de flexão); n. femoral (L1-L3)."},
+        {name:"Músculo piriforme",lat:"M. piriformis",desc:"Rotador lateral (quadril estendido); n. piriforme (S1-S2); relação com n. isquiático."},
+        {name:"Músculos isquiotibiais",lat:"Mm. ischiocruralii",desc:"Bíceps femoral, semitendinoso, semimembranáceo — extensão do quadril + flexão do joelho; n. isquiático."},
+      ]
+    }
+  },
+  joelho: {
+    name:"Joelho",sub:"Fêmur distal, tíbia proximal, patela, ligamentos, meniscos e músculos",
+    structs:{
+      Ossos:[
+        {name:"Fêmur distal",lat:"Femur — extremitas distalis",desc:"Côndilo medial e lateral, sulco troclear (para a patela), fossa intercondiliana."},
+        {name:"Tíbia proximal",lat:"Tibia — extremitas proximalis",desc:"Platô tibial medial e lateral, tuberosidade tibial (inserção do tendão patelar), eminência intercondiliana."},
+        {name:"Patela (patella)",lat:"Patella",desc:"Maior osso sesamóide do corpo; aumenta o braço de momento do mecanismo extensor do joelho em ~30%."},
+        {name:"Fíbula proximal",lat:"Fibula — caput fibulae",desc:"Cabeça da fíbula; inserção do LCL e do bíceps femoral; relação com o nervo fibular comum."},
+      ],
+      Articulações:[
+        {name:"Articulação femorotibial medial e lateral",lat:"Art. genus — femorotibialis",desc:"Côndilo femoral + platô tibial; meniscos aprofundam e distribuem a carga."},
+        {name:"Articulação patelofemoral",lat:"Art. genus — femoropatellaris",desc:"Patela desliza no sulco troclear; disfunção do deslizamento → síndrome da dor patelofemoral."},
+        {name:"Menisco medial e lateral",lat:"Meniscus medialis et lateralis",desc:"Fibrocartilagem; distribuem carga, aumentam a congruência e absorvem impacto; o medial é mais fixo e mais lesionado."},
+      ],
+      Músculos:[
+        {name:"M. quadríceps femoral",lat:"M. quadriceps femoris",desc:"4 ventres: reto femoral, vasto lateral, vasto medial, vasto intermédio; extensão do joelho; n. femoral."},
+        {name:"Ligamento cruzado anterior (LCA)",lat:"Lig. cruciatum anterius",desc:"Limita translação anterior da tíbia e rotação medial; deformidade em valgo+rotação = mecanismo clássico de lesão."},
+        {name:"Ligamento cruzado posterior (LCP)",lat:"Lig. cruciatum posterius",desc:"Limita translação posterior da tíbia; estrutura mais forte dos cruzados."},
+        {name:"Ligamento colateral medial (LCM)",lat:"Lig. collaterale tibiale",desc:"Resiste ao estresse em valgo; aderido ao menisco medial."},
+        {name:"Ligamento colateral lateral (LCL)",lat:"Lig. collaterale fibulare",desc:"Resiste ao estresse em varo; não aderido ao menisco lateral."},
+        {name:"Músculo poplíteo",lat:"M. popliteus",desc:"Desbloqueio do joelho (rotação medial da tíbia ao início da flexão); n. tibial."},
+      ]
+    }
+  },
+  tornozelo: {
+    name:"Tornozelo e Pé",sub:"Tálus, calcâneo, ossos do tarso, metatarsos, tendões e ligamentos",
+    structs:{
+      Ossos:[
+        {name:"Tálus (talus)",lat:"Talus (astragalus)",desc:"Articula com tíbia/fíbula (talocrural) e calcâneo (subtalar); recebe toda a carga da perna."},
+        {name:"Calcâneo (calcaneus)",lat:"Calcaneus",desc:"Maior osso do tarso; tuberosidade posterior (inserção do tendão do calcâneo); sustentáculo do tálus."},
+        {name:"Navicular (os naviculare)",lat:"Os naviculare",desc:"Osso cunhado na face medial; articulação talonavicular; inserção do tendão do tibial posterior."},
+        {name:"Cuboide, cuneiformes I–III",lat:"Os cuboideum; Ossa cuneiformia",desc:"Completam o tarso médio e distal; cuneiformes articulam com os metatarsos I-III; cuboide com IV-V."},
+        {name:"Metatarsos I–V",lat:"Ossa metatarsalia",desc:"5 metatarsais; o 1° é mais curto e robusto; a base do 5° é inserção do fibular curto."},
+      ],
+      Articulações:[
+        {name:"Articulação talocrural (tibiotársica)",lat:"Art. talocruralis",desc:"Gínglimo — tíbia + maléolo medial/lateral + domo do tálus; dorsiflexão e flexão plantar."},
+        {name:"Articulação subtalar (talocalcânea)",lat:"Art. subtalaris",desc:"Tripla — inversão e eversão do retropé; compensatória às rotações da perna."},
+        {name:"Articulação de Chopart (mediotársica)",lat:"Art. tarsi transversa",desc:"Talonavicular + calcaneocuboide — adaptação do pé em terrenos irregulares."},
+        {name:"Articulação de Lisfranc (tarsometatársica)",lat:"Art. tarsometatarsalis",desc:"TMT I-V — propulsão; lesão de Lisfranc é grave e frequentemente subdiagnosticada."},
+      ],
+      Músculos:[
+        {name:"Músculo tibial anterior",lat:"M. tibialis anterior",desc:"Dorsiflexão + inversão; n. fibular profundo (L4-L5); fraqueza → pé caído."},
+        {name:"Músculo tríceps sural",lat:"M. triceps surae (gastrocnêmio + sóleo)",desc:"Flexão plantar potente; tendão do calcâneo (Aquiles); n. tibial (S1-S2)."},
+        {name:"Músculo tibial posterior",lat:"M. tibialis posterior",desc:"Inversão + flexão plantar + sustentação dinâmica do arco longitudinal medial; n. tibial."},
+        {name:"Músculo fibular longo e curto",lat:"Mm. fibulares (peronei) longus et brevis",desc:"Eversão + flexão plantar; n. fibular superficial (L5-S1). O fibular curto insere na base do 5° metatarso."},
+        {name:"Músculo extensor longo do hálux",lat:"M. extensor hallucis longus",desc:"Extensão do hálux + dorsiflexão; n. fibular profundo (L5). Déficit → sinal de compressão de L5."},
+        {name:"Fáscia plantar (aponeurose plantar)",lat:"Aponeurosis plantaris",desc:"Estrutura fibrosa do arco; origem na tuberosidade do calcâneo; tensão aumentada pelo mecanismo de guincho (windlass)."},
+      ]
+    }
+  }
+};
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+const API = '';  // same origin
+let token='', username='', isAdmin=false;
+let userStreak=0, userLongest=0;
+let selectedCats=new Set(CATEGORIES.map(c=>c.id));
+let quizQuestions=[], currentQ=0, score=0, streak=0, bestStreak=0, answers=[];
+let timerInterval=null, timeLeft=25;
+let currentBodyView='front', currentRegion=null, currentStructTab='Ossos';
+
+/* ═══════════════════════════════════════
+   AUTH
+═══════════════════════════════════════ */
+function switchTab(form){
+  document.getElementById('loginForm').style.display = form==='loginForm'?'block':'none';
+  document.getElementById('registerForm').style.display = form==='registerForm'?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',
+    (i===0&&form==='loginForm')||(i===1&&form==='registerForm')));
+  document.getElementById('authErr').textContent='';
+}
+
+async function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value;
+  try{
+    const res=await fetch(`${API}/api/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+    const d=await res.json();
+    if(!res.ok){document.getElementById('authErr').textContent=d.error;return;}
+    onLogin(d);
+  }catch(e){document.getElementById('authErr').textContent='Erro de conexão com o servidor';}
+}
+
+async function doRegister(){
+  const u=document.getElementById('regUser').value.trim();
+  const p=document.getElementById('regPass').value;
+  try{
+    const res=await fetch(`${API}/api/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+    const d=await res.json();
+    if(!res.ok){document.getElementById('authErr').textContent=d.error;return;}
+    onLogin({...d,streak:1,longest:1});
+  }catch(e){document.getElementById('authErr').textContent='Erro de conexão com o servidor';}
+}
+
+function onLogin(d){
+  token=d.token; username=d.username; isAdmin=d.is_admin;
+  userStreak=d.streak||0; userLongest=d.longest||0;
+  document.getElementById('navUsername').textContent=username;
+  document.getElementById('navStreakNum').textContent=userStreak;
+  document.getElementById('topNav').classList.add('visible');
+  loadMyStats();
+  showScreen('menu');
+}
+
+function logout(){
+  token=''; username=''; isAdmin=false;
+  document.getElementById('topNav').classList.remove('visible');
+  showScreen('login');
+}
+
+/* ═══════════════════════════════════════
+   MY STATS
+═══════════════════════════════════════ */
+async function loadMyStats(){
+  try{
+    const res=await fetch(`${API}/api/me/stats`,{headers:{Authorization:`Bearer ${token}`}});
+    const d=await res.json();
+    document.getElementById('hsBest').textContent=d.best!=null?`${d.best}/10`:'–';
+    document.getElementById('hsGames').textContent=d.games||0;
+    document.getElementById('hsStreak').textContent=`${d.streak||0}🔥`;
+    document.getElementById('hsAvg').textContent=d.avg!=null?d.avg:'–';
+  }catch(e){}
+}
+
+/* ═══════════════════════════════════════
+   HOME / CATEGORIES
+═══════════════════════════════════════ */
+function buildCategoryGrid(){
+  const grid=document.getElementById('categoryGrid');
+  grid.innerHTML='';
+  CATEGORIES.forEach(cat=>{
+    const count=QUESTIONS.filter(q=>q.cat===cat.id).length;
+    const div=document.createElement('div');
+    div.className='cat-card selected';
+    div.style.setProperty('--cat-color',cat.color);
+    div.dataset.id=cat.id;
+    div.innerHTML=`<div class="cat-check">✓</div>
+      <span class="cat-icon">${cat.icon}</span>
+      <div class="cat-name">${cat.id}</div>
+      <div class="cat-count">${count} questões</div>`;
+    div.onclick=()=>toggleCat(cat.id,div);
+    grid.appendChild(div);
+  });
+}
+
+function toggleCat(id,el){
+  selectedCats.has(id)?selectedCats.delete(id):selectedCats.add(id);
+  el.classList.toggle('selected',selectedCats.has(id));
+}
+
+function toggleAll(){
+  const allSel=selectedCats.size===CATEGORIES.length;
+  if(allSel){selectedCats.clear();document.querySelectorAll('.cat-card').forEach(e=>e.classList.remove('selected'));
+    document.getElementById('allToggle').textContent='Selecionar todas';}
+  else{CATEGORIES.forEach(c=>selectedCats.add(c.id));document.querySelectorAll('.cat-card').forEach(e=>e.classList.add('selected'));
+    document.getElementById('allToggle').textContent='Desmarcar todas';}
+}
+
+/* ═══════════════════════════════════════
+   START QUIZ
+═══════════════════════════════════════ */
+function startQuiz(){
+  const pool=QUESTIONS.filter(q=>selectedCats.has(q.cat));
+  if(pool.length<10){alert('Selecione mais categorias para ter pelo menos 10 questões!');return;}
+  const shuffled=[...pool].sort(()=>Math.random()-.5);
+  quizQuestions=shuffled.slice(0,10);
+  currentQ=0; score=0; streak=0; bestStreak=0; answers=[];
+  showScreen('quiz');
+  renderQuestion();
+}
+
+/* ═══════════════════════════════════════
+   RENDER QUESTION
+═══════════════════════════════════════ */
+function renderQuestion(){
+  const q=quizQuestions[currentQ];
+  const idx=currentQ+1;
+  document.getElementById('qNum').textContent=idx;
+  document.getElementById('progressFill').style.width=`${(currentQ/10)*100}%`;
+  document.getElementById('liveScore').textContent=score;
+  document.getElementById('qNumBg').textContent=idx;
+  const catInfo=CATEGORIES.find(c=>c.id===q.cat);
+  document.getElementById('qCategory').innerHTML=`${catInfo?.icon||'📚'} ${q.cat}`;
+  document.getElementById('questionText').textContent=q.q;
+  const letters=['A','B','C','D','E'];
+  const shuffled=[0,1,2,3].sort(()=>Math.random()-.5);
+  const grid=document.getElementById('optionsGrid');
+  grid.innerHTML='';
+  shuffled.forEach((origIdx,pos)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.dataset.orig=origIdx;
+    btn.innerHTML=`<span class="option-letter">${letters[pos]}</span><span>${q.opts[origIdx]}</span>`;
+    btn.onclick=()=>selectAnswer(origIdx,btn);
+    grid.appendChild(btn);
+  });
+  document.getElementById('feedbackBox').classList.remove('show','correct-fb','wrong-fb');
+  const bnext=document.getElementById('btnNext');
+  bnext.classList.remove('show');
+  bnext.textContent=idx===10?'🏁 Ver Resultado':'Próxima →';
+  startTimer();
+}
+
+/* ═══════════════════════════════════════
+   TIMER
+═══════════════════════════════════════ */
+function startTimer(){
+  clearInterval(timerInterval); timeLeft=25; updateTimerUI();
+  timerInterval=setInterval(()=>{timeLeft--;updateTimerUI();if(timeLeft<=0){clearInterval(timerInterval);timeUp();}},1000);
+}
+function updateTimerUI(){
+  const fill=document.getElementById('timerFill'),txt=document.getElementById('timerText');
+  fill.style.strokeDashoffset=113*(1-timeLeft/25);
+  const c=timeLeft>10?'#00d4aa':timeLeft>5?'#f5c842':'#ff4567';
+  fill.style.stroke=c; txt.textContent=timeLeft; txt.style.fill=c;
+}
+function timeUp(){
+  const q=quizQuestions[currentQ];
+  Array.from(document.getElementById('optionsGrid').children).forEach(btn=>{
+    btn.disabled=true;
+    if(parseInt(btn.dataset.orig)===q.a)btn.classList.add('correct');
+  });
+  streak=0;
+  answers.push({q:q.q,chosen:null,correct:q.a,correctText:q.opts[q.a],ok:false});
+  showFeedback(false,q.exp);
+}
+
+/* ═══════════════════════════════════════
+   ANSWER
+═══════════════════════════════════════ */
+function selectAnswer(origIdx,clickedBtn){
+  clearInterval(timerInterval);
+  const q=quizQuestions[currentQ];
+  const correct=origIdx===q.a;
+  Array.from(document.getElementById('optionsGrid').children).forEach(btn=>{
+    btn.disabled=true;
+    const oi=parseInt(btn.dataset.orig);
+    if(oi===q.a)btn.classList.add('correct');
+    else if(btn===clickedBtn&&!correct)btn.classList.add('wrong');
+  });
+  if(correct){score++;streak++;if(streak>bestStreak)bestStreak=streak;if(streak>=3)showStreakToast(streak);}
+  else{streak=0;}
+  document.getElementById('liveScore').textContent=score;
+  answers.push({q:q.q,chosen:q.opts[origIdx],correct:q.a,correctText:q.opts[q.a],ok:correct});
+  showFeedback(correct,q.exp);
+}
+
+function showFeedback(correct,exp){
+  const fb=document.getElementById('feedbackBox');
+  fb.classList.add('show',correct?'correct-fb':'wrong-fb');
+  document.getElementById('feedbackIcon').textContent=correct?'✅':'❌';
+  document.getElementById('feedbackTitle').textContent=correct?'Correto! ':'Incorreto — ';
+  document.getElementById('feedbackText').textContent=exp;
+  document.getElementById('btnNext').classList.add('show');
+}
+
+function showStreakToast(n){
+  const t=document.getElementById('streakToast');
+  document.getElementById('streakNum').textContent=n;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function nextQuestion(){
+  currentQ++;
+  if(currentQ>=10)showResult();
+  else renderQuestion();
+}
+
+/* ═══════════════════════════════════════
+   RESULT
+═══════════════════════════════════════ */
+async function showResult(){
+  clearInterval(timerInterval);
+  // Submit to server
+  try{
+    await fetch(`${API}/api/quiz/submit`,{
+      method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
+      body:JSON.stringify({score,categories:[...selectedCats]})
+    });
+  }catch(e){}
+  showScreen('result');
+  loadMyStats();
+  const pct=Math.round((score/10)*100);
+  document.getElementById('resultCircle').style.setProperty('--pct',pct);
+  document.getElementById('finalScore').textContent=`${score}/10`;
+  const msgs={10:['Perfeição Absoluta! 🏆','Domínio total das questões desta rodada. Conhecimento de especialista!'],
+    8:['Excelente Desempenho! 🌟','Conhecimento sólido de anatomia clínica. Refine os pontos incorretos.'],
+    6:['Bom Progresso! 💪','Base consistente. Revise as questões erradas e foque nas áreas difíceis.'],
+    4:['Continue Praticando! 📚','Lacunas importantes. Use a revisão abaixo para estudar os temas.'],
+    0:['Persistência é o Caminho 🔄','Mais estudo necessário. A repetição é a chave da memorização clínica!']};
+  const key=score>=10?10:score>=8?8:score>=6?6:score>=4?4:0;
+  document.getElementById('resultTitle').textContent=msgs[key][0];
+  document.getElementById('resultMsg').textContent=msgs[key][1];
+  const medals=[{icon:'🎯',val:`${score}/10`,lbl:'Acertos'},{icon:'⚡',val:`${pct}%`,lbl:'Taxa'},
+    {icon:'🔥',val:bestStreak,lbl:'Maior Seq.'},{icon:'📅',val:`${userStreak}🔥`,lbl:'Ofensiva'}];
+  document.getElementById('medalsRow').innerHTML=medals.map(m=>
+    `<div class="medal"><span class="m-icon">${m.icon}</span><div class="m-val">${m.val}</div><div class="m-lbl">${m.lbl}</div></div>`
+  ).join('');
+  document.getElementById('reviewList').innerHTML=answers.map((a,i)=>`
+    <div class="review-item">
+      <div class="review-dot ${a.ok?'ok':'fail'}" style="grid-row:1"></div>
+      <div><div class="review-q">${i+1}. ${a.q}</div>
+      <div class="review-ans">${a.ok?`<span>✓ ${a.correctText}</span>`:`<span class="wrong-ans">✗ ${a.chosen||'Tempo esgotado'}</span> → <span>Correto: ${a.correctText}</span>`}</div></div>
+    </div>`).join('');
+  loadRanking('daily', document.querySelector('.rank-tab.active'));
+}
+
+/* ═══════════════════════════════════════
+   RANKING
+═══════════════════════════════════════ */
+async function loadRanking(type, btn){
+  document.querySelectorAll('.rank-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  try{
+    const res=await fetch(`${API}/api/ranking/${type}`);
+    const rows=await res.json();
+    const medals=['🥇','🥈','🥉'];
+    document.getElementById('rankBody').innerHTML=rows.map((r,i)=>{
+      const isMe=r.username===username;
+      return `<tr class="${isMe?'rank-highlight':''}">
+        <td class="rank-num">${medals[i]||i+1}</td>
+        <td class="rank-name">${r.username}${isMe?' ◀':''}</td>
+        <td class="rank-score">${r.best}/10</td>
+        <td>${r.games||r.games}</td>
+        <td><div class="rank-streak-cell">🔥${r.streak||0}</div></td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px">Sem dados ainda</td></tr>';
+  }catch(e){}
+}
+
+/* ═══════════════════════════════════════
+   BODY EXPLORER
+═══════════════════════════════════════ */
+const FRONT_ZONES=[
+  {id:'cabeca',label:'Cabeça/\nPescoço',x:95,y:20,w:70,h:55},
+  {id:'ombro',label:'Cintura\nEscapular',x:30,y:75,w:200,h:50},
+  {id:'cotovelo',label:'Cotovelo/\nAntebraço',x:15,y:135,w:60,h:55},
+  {id:'mao',label:'Punho\ne Mão',x:5,y:198,w:55,h:50},
+  {id:'cotovelo',label:'Cotovelo/\nAntebraço',x:185,y:135,w:60,h:55},
+  {id:'mao',label:'Punho\ne Mão',x:200,y:198,w:55,h:50},
+  {id:'coluna',label:'Coluna/\nTronco',x:75,y:130,w:110,h:80},
+  {id:'pelve',label:'Pelve e\nQuadril',x:65,y:215,w:130,h:65},
+  {id:'joelho',label:'Joelho',x:60,y:290,w:50,h:50},
+  {id:'joelho',label:'Joelho',x:150,y:290,w:50,h:50},
+  {id:'tornozelo',label:'Tornozelo\ne Pé',x:50,y:350,w:55,h:60},
+  {id:'tornozelo',label:'Tornozelo\ne Pé',x:155,y:350,w:55,h:60},
+];
+const BACK_ZONES=[
+  {id:'cabeca',label:'Cabeça/\nPescoço',x:95,y:20,w:70,h:55},
+  {id:'ombro',label:'Cintura\nEscapular',x:30,y:75,w:200,h:55},
+  {id:'cotovelo',label:'Cotovelo/\nAntebraço',x:10,y:135,w:65,h:55},
+  {id:'mao',label:'Punho\ne Mão',x:2,y:198,w:58,h:50},
+  {id:'cotovelo',label:'Cotovelo/\nAntebraço',x:185,y:135,w:65,h:55},
+  {id:'mao',label:'Punho\ne Mão',x:200,y:198,w:58,h:50},
+  {id:'coluna',label:'Coluna\nVertebral',x:75,y:130,w:110,h:85},
+  {id:'pelve',label:'Pelve e\nGlúteos',x:65,y:215,w:130,h:65},
+  {id:'joelho',label:'Joelho',x:58,y:290,w:52,h:50},
+  {id:'joelho',label:'Joelho',x:150,y:290,w:52,h:50},
+  {id:'tornozelo',label:'Tornozelo\ne Pé',x:48,y:350,w:58,h:60},
+  {id:'tornozelo',label:'Tornozelo\ne Pé',x:154,y:350,w:58,h:60},
+];
+
+function buildBodySVG(view){
+  const zones=view==='front'?FRONT_ZONES:BACK_ZONES;
+  // Human body outline SVG paths (simplified)
+  const frontBody=`<path d="M130 5 C115 5 105 15 103 30 C100 45 95 58 90 68 C80 72 65 75 55 80 C45 85 35 90 30 100 C25 110 25 125 28 138 C20 140 15 150 15 165 C15 180 18 195 20 210 C16 212 12 220 10 235 C8 250 8 265 10 280 C12 300 15 315 18 330 C20 345 22 355 22 368 C22 380 25 395 30 408 L40 408 C42 395 44 380 45 368 C46 355 47 345 48 330 C50 315 53 300 56 285 C58 270 60 255 62 240 C65 255 67 270 70 285 C73 300 75 315 77 330 C79 345 82 355 84 368 C85 380 87 395 88 408 L100 408 C102 395 103 380 103 368 C102 355 100 345 98 330 C95 315 92 300 90 285 C88 270 86 255 85 240 C88 245 95 250 100 252 C105 250 112 245 115 240 C114 255 112 270 110 285 C108 300 105 315 103 330 C101 345 98 355 98 368 C97 380 97 395 100 408 L112 408 C113 395 114 380 116 368 C117 355 118 345 120 330 C122 315 126 300 130 285 C134 300 138 315 140 330 C142 345 143 355 144 368 C146 380 147 395 148 408 L162 408 C165 395 163 380 162 368 C162 355 160 345 157 330 C155 315 152 300 150 285 C148 270 146 255 145 240 C148 245 155 250 160 252 C165 250 172 245 175 240 C174 255 172 270 170 285 C168 300 165 315 162 330 C160 345 157 355 156 368 C155 380 155 395 158 408 L172 408 C176 395 177 380 178 368 C179 355 180 345 182 330 C185 315 188 300 190 285 C192 270 195 255 196 240 C198 265 200 280 202 295 C204 310 207 325 210 340 C212 355 215 370 218 385 L228 385 C225 370 222 355 220 340 C218 325 216 310 215 295 C215 280 217 265 220 250 C222 265 225 275 230 285 C233 295 236 308 237 322 L247 322 C246 308 244 295 242 285 C238 270 234 252 232 235 C230 220 226 208 220 210 C222 195 225 180 225 165 C225 150 220 140 212 138 C215 125 215 110 210 100 C205 90 195 85 185 80 C175 75 160 72 170 68 C165 58 160 45 157 30 C155 15 145 5 130 5 Z" fill="none" stroke="rgba(0,212,170,0.15)" stroke-width="1.5"/>`;
+  
+  let svgContent=`<svg viewBox="0 0 260 420" xmlns="http://www.w3.org/2000/svg" style="width:260px;height:420px;">
+  <defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  ${frontBody}`;
+
+  // Body silhouette fill
+  svgContent+=`<ellipse cx="130" cy="30" rx="28" ry="28" fill="rgba(0,212,170,0.04)" stroke="rgba(0,212,170,0.12)" stroke-width="1"/>`;
+  // Neck
+  svgContent+=`<rect x="118" y="55" width="24" height="22" rx="4" fill="rgba(0,212,170,0.04)" stroke="rgba(0,212,170,0.1)" stroke-width="1"/>`;
+  // Torso
+  svgContent+=`<rect x="80" y="75" width="100" height="140" rx="10" fill="rgba(0,212,170,0.04)" stroke="rgba(0,212,170,0.1)" stroke-width="1"/>`;
+  // Arms
+  svgContent+=`<rect x="35" y="78" width="46" height="145" rx="10" fill="rgba(0,212,170,0.04)" stroke="rgba(0,212,170,0.1)" stroke-width="1"/>`;
+  svgContent+=`<rect x="179" y="78" width="46" height="145" rx="10" fill="rgba(0,212,170,0.04)" stroke="rgba(0,212,170,0.1)" stroke-width="1"/>`;
+  // Legs
+  svgContent+=`<rect x="82" y="215" width="58" height="200" rx="10" fill="rgba(0,212,170,0.04)" stroke="rgba(0,212,170,0.1)" stroke-width="1"/>`;
+  svgContent+=`<rect x="120" y="215" width="58" height="200" rx="10" fill="rgba(0,212,170,0.04)" stroke="rgba(0,212,170,0.1)" stroke-width="1"/>`;
+
+  zones.forEach((z,i)=>{
+    const isActive=currentRegion===z.id;
+    svgContent+=`<rect class="body-zone${isActive?' active':''}" data-region="${z.id}"
+      x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="8"
+      onclick="selectRegion('${z.id}')" style="cursor:pointer;fill:${isActive?'rgba(0,212,170,0.22)':'rgba(0,212,170,0.07)'};stroke:${isActive?'#00d4aa':'rgba(0,212,170,0.25)'};stroke-width:${isActive?2:1.5};transition:all .25s"/>`;
+    const lines=z.label.split('\n');
+    const cy=z.y+z.h/2+(lines.length>1?-6:0);
+    lines.forEach((line,li)=>{
+      svgContent+=`<text x="${z.x+z.w/2}" y="${cy+li*13}" text-anchor="middle" dominant-baseline="middle"
+        font-family="Outfit,sans-serif" font-size="8.5" font-weight="600"
+        fill="${isActive?'#00d4aa':'rgba(107,127,163,0.9)'}" style="pointer-events:none;transition:fill .25s">${line}</text>`;
+    });
+  });
+  svgContent+='</svg>';
+  return svgContent;
+}
+
+function setBodyView(v,btn){
+  currentBodyView=v;
+  document.querySelectorAll('.body-toggle-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('bodySvgWrap').innerHTML=buildBodySVG(v);
+}
+
+function selectRegion(id){
+  currentRegion=id;
+  document.getElementById('bodySvgWrap').innerHTML=buildBodySVG(currentBodyView);
+  renderInfoPanel(id);
+}
+
+function renderInfoPanel(id){
+  const r=BODY_REGIONS[id];
+  if(!r){return;}
+  if(!currentStructTab||!r.structs[currentStructTab])currentStructTab=Object.keys(r.structs)[0];
+  const tabs=Object.keys(r.structs);
+  let html=`<div class="region-title">${r.name}</div>
+    <div class="region-sub">${r.sub}</div>
+    <div class="struct-tabs">${tabs.map(t=>`<button class="struct-tab${t===currentStructTab?' active':''}" onclick="selectStructTab('${id}','${t}')">${t}</button>`).join('')}</div>
+    <div class="struct-list">`;
+  const typeIcon={Ossos:'🦴',Articulações:'🔗',Músculos:'💪'};
+  (r.structs[currentStructTab]||[]).forEach(s=>{
+    html+=`<div class="struct-item">
+      <div class="struct-icon">${typeIcon[currentStructTab]||'📌'}</div>
+      <div class="struct-name">${s.name}</div>
+      <div class="struct-latin">${s.lat}</div>
+      <div class="struct-desc">${s.desc}</div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('infoPanelInner').innerHTML=html;
+}
+
+function selectStructTab(regionId,tab){
+  currentStructTab=tab;
+  renderInfoPanel(regionId);
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='home'){buildCategoryGrid();loadMyStats();}
+  if(id==='explorer'){
+    if(!document.getElementById('bodySvgWrap').innerHTML)
+      document.getElementById('bodySvgWrap').innerHTML=buildBodySVG('front');
+  }
+}
+function goHome(){clearInterval(timerInterval);showScreen('menu');}
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+window.onload=()=>{
+  buildCategoryGrid();
+};
+</script>
+</body>
+</html>
