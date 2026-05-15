@@ -928,398 +928,772 @@ const CATEGORIES = [
    BODY EXPLORER DATA (condensed per region)
 ════════════════════════════════════════ */
 const BODY_DATA = {
-  cabeca:{name:"Cabeça e Pescoço",sub:"Crânio, ATM, vértebras cervicais e musculatura cervical",bilateral:true,
-    structs:{
-      Ossos:[
-        {n:"Crânio",l:"Os cranii",d:"22 ossos: calvária (frontal, parietais, occipital, temporais, esfenoide, etmoide) + 14 da face. Protege encéfalo.",i:"🦴",nerv:""},
-        {n:"Atlas (C1)",l:"Vertebra cervicalis I",d:"Sem corpo vertebral. Anel ósseo com massas laterais. Articula com occipital (nod de cabeça).",i:"🦴",nerv:""},
-        {n:"Áxis (C2)",l:"Vertebra cervicalis II",d:"Processo odontoide (dens) — pivô da rotação C1-C2. Responsável por ~50% da rotação cervical.",i:"🦴",nerv:""},
-        {n:"Mandíbula",l:"Mandibula",d:"Único osso móvel do crânio. Côndilo mandibular articula na ATM. Motor: n. mandibular (V3).",i:"🦴",nerv:"N. trigêmio V3"},
-        {n:"Osso hioide",l:"Os hyoideum",d:"Sem articulação óssea direta. Base da língua e inserção de múscs. supra/infrahioideos.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Articulação atlantooccipital",l:"Art. atlantooccipitalis",d:"Côndilo occipital + fóvea atlas. Bicondilar. Flexão/extensão ('sim') e inclinação lateral.",i:"🔗",nerv:""},
-        {n:"Articulação atlantoaxial",l:"Art. atlantoaxialis",d:"Trocóide (~50% rotação cervical). Estabilização pelo lig. transverso e alar.",i:"🔗",nerv:""},
-        {n:"ATM — Articulação Temporomandibular",l:"Art. temporomandibularis",d:"Côndilo + fossa mandibular + disco fibrocartilaginoso. Abertura, fechamento, protrusão, retrusão, laterotrusão.",i:"🔗",nerv:"N. auriculotemporal (V3)"},
-      ],
-      Músculos:[
-        {n:"M. esternocleidomastoideo",l:"M. sternocleidomastoideus",d:"Flexão ipsilateral + rotação contralateral da cabeça. Inserção no processo mastoide.",i:"💪",nerv:"N. acessório XI + C2-C3"},
-        {n:"Mm. suboccipitais",l:"Mm. suboccipitales",d:"4 músculos: controle fino de C0-C1 e C1-C2. Reto post. maior/menor, oblíquo sup./inf.",i:"💪",nerv:"N. suboccipital C1"},
-        {n:"Mm. escalenos",l:"Mm. scaleni",d:"Flexão cervical ipsilateral + elevação costelas 1-2. Triângulo contém plexo braquial.",i:"💪",nerv:"C4-C8"},
-        {n:"M. longo do pescoço",l:"M. longus colli",d:"Principal flexor profundo cervical. Estabilizador segmentar — ativação feedforward.",i:"💪",nerv:"C2-C6"},
-        {n:"Mm. mastigadores",l:"M. masseter; M. temporalis",d:"Elevação/fechamento mandibular. Motor da mastigação.",i:"💪",nerv:"N. mandibular V3"},
-      ],
-      Nervos:[
-        {n:"Plexo cervical (C1-C4)",l:"Plexus cervicalis",d:"Inerva pescoço, pele cefálica posterior e diafragma (n. frênico C3-C5).",i:"⚡",nerv:"C1-C4"},
-        {n:"N. trigêmio (V)",l:"N. trigeminus",d:"3 divisões: oftálmica, maxilar, mandibular. Sensitivo da face + motor da mastigação.",i:"⚡",nerv:"V par craniano"},
-        {n:"N. acessório (XI)",l:"N. accessorius",d:"Motor ECM e trapézio. Lesão: incapacidade de elevar ombro ipsilateral.",i:"⚡",nerv:"XI par craniano"},
-      ],
-      Vasos:[
-        {n:"A. carótida comum",l:"A. carotis communis",d:"Divide em carótida interna (encéfalo) e externa (face/pescoço) ao nível de C4.",i:"🩸",nerv:""},
-        {n:"A. vertebral",l:"A. vertebralis",d:"Da a. subclávia. Ascende pelos forames transversários C6-C1. Irriga tronco e cerebelo.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  ombro:{name:"Cintura Escapular e Ombro",sub:"Glenoumeral, manguito dos rotadores, bursa subacromial — aplica ao lado selecionado",bilateral:false,
-    structs:{
-      Ossos:[
-        {n:"Clavícula",l:"Clavicula",d:"Conecta membro superior ao esqueleto axial. Fratura mais comum no 1/3 médio.",i:"🦴",nerv:""},
-        {n:"Escápula",l:"Scapula",d:"Triângulo com espinha, acrômio, coracoide e cavidade glenoidal. Flutua sobre o tórax.",i:"🦴",nerv:""},
-        {n:"Úmero proximal",l:"Humerus — extremitas proximalis",d:"Cabeça umeral, colo anatômico e cirúrgico. Tubérculo maior: supraespinhoso, infraespinhoso, redondo menor. Menor: subescapular.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Articulação glenoumeral",l:"Art. humeri",d:"Esferoide — maior mobilidade do corpo. Labro aprofunda cavidade. Ritmo escapuloumeral 2:1.",i:"🔗",nerv:"N. axilar C5-C6"},
-        {n:"Articulação acromioclavicular",l:"Art. acromioclavicularis",d:"Plana sinovial. Ligs coracoclaviculares (trapezoide e conoide). Lesão em queda sobre ombro.",i:"🔗",nerv:""},
-        {n:"Articulação esternoclavicular",l:"Art. sternoclavicularis",d:"Selar com disco intra-articular. Única articulação sinovial verdadeira com esqueleto axial.",i:"🔗",nerv:""},
-        {n:"Espaço subacromial",l:"Spatium subacromiale",d:"Entre cabeça umeral e arco coracoacromial. Contém bursa e tendão do supraespinhoso.",i:"🔗",nerv:""},
-      ],
-      Músculos:[
-        {n:"M. supraespinhoso",l:"M. supraspinatus",d:"Inicia abdução 0–15°. Zona crítica hipovascular ~1cm da inserção. Mais frequente de ruptura.",i:"💪",nerv:"N. supraescapular C5-C6"},
-        {n:"M. infraespinhoso",l:"M. infraspinatus",d:"Principal rotador lateral. Teste de Patte / rotação lateral resistida.",i:"💪",nerv:"N. supraescapular C5-C6"},
-        {n:"M. subescapular",l:"M. subscapularis",d:"Único rotador medial do manguito. Preenche fossa subescapular. Lift-off test.",i:"💪",nerv:"N. subescapular C5-C6"},
-        {n:"M. redondo menor",l:"M. teres minor",d:"Rotador lateral auxiliar. Porção inferior do manguito.",i:"💪",nerv:"N. axilar C5"},
-        {n:"M. deltoide",l:"M. deltoideus",d:"Porção anterior (flexão), média (abdução >15°), posterior (extensão).",i:"💪",nerv:"N. axilar C5-C6"},
-        {n:"M. serrátil anterior",l:"M. serratus anterior",d:"Ancora escápula ao tórax. Rotação superior. Paralisia → escápula alata.",i:"💪",nerv:"N. torácico longo C5-C7"},
-        {n:"M. grande dorsal",l:"M. latissimus dorsi",d:"Adução, extensão e rotação medial do úmero.",i:"💪",nerv:"N. toracodorsal C6-C8"},
-        {n:"M. peitoral maior",l:"M. pectoralis major",d:"Flexão, adução e rotação medial. Porções clavicular e esternocostal.",i:"💪",nerv:"N. peitorais C5-T1"},
-      ],
-      Nervos:[
-        {n:"N. axilar",l:"N. axillaris",d:"C5-C6. Circunda o colo cirúrgico do úmero. Inerva deltoide e redondo menor.",i:"⚡",nerv:"C5-C6"},
-        {n:"N. supraescapular",l:"N. suprascapularis",d:"Pela incisura supraescapular. Inerva supraespinhoso e infraespinhoso.",i:"⚡",nerv:"C5-C6"},
-        {n:"N. torácico longo",l:"N. thoracicus longus",d:"Face lateral do tórax. Inerva serrátil anterior. Lesão: escápula alata.",i:"⚡",nerv:"C5-C6-C7"},
-      ],
-      Vasos:[
-        {n:"A. axilar",l:"A. axillaris",d:"Continuação da subclávia. Ramos: torácica, toracoacromial, circunflexas umerais.",i:"🩸",nerv:""},
-        {n:"A. circunflexa umeral posterior",l:"A. circumflexa humeri posterior",d:"Circunda o colo cirúrgico com o n. axilar. Irriga cabeça umeral e deltoide.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  cotovelo:{name:"Cotovelo e Antebraço",sub:"Articulações do cotovelo, músculos flexores/extensores e nervos — aplica ao lado selecionado",bilateral:false,
-    structs:{
-      Ossos:[
-        {n:"Úmero distal",l:"Humerus distalis",d:"Capítulo (para rádio), tróclea (para ulna), fossa olecraniana, epicôndilos medial e lateral.",i:"🦴",nerv:""},
-        {n:"Rádio proximal",l:"Radius proximalis",d:"Cabeça radial gira na pronossupinação. Ligamento anular estabiliza.",i:"🦴",nerv:""},
-        {n:"Ulna proximal",l:"Ulna proximalis",d:"Olécrano + processo coronóide = incisura troclear. Inserção do tríceps no olécrano.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Art. umeroulnar",l:"Art. humeroulnaris",d:"Gínglimo — flexão 0–150° e extensão. Ângulo de carregamento ~10–15°.",i:"🔗",nerv:""},
-        {n:"Art. umerorradial",l:"Art. humeroradialis",d:"Esferoide modificada. Participa da flexão e prono-supinação.",i:"🔗",nerv:""},
-        {n:"Art. radioulnar proximal",l:"Art. radioulnaris proximalis",d:"Trocóide. Estabilizada pelo ligamento anular do rádio.",i:"🔗",nerv:""},
-      ],
-      Músculos:[
-        {n:"M. bíceps braquial",l:"M. biceps brachii",d:"Supinação máxima a 90° de flexão. Inserção na tuberosidade bicipital do rádio.",i:"💪",nerv:"N. musculocutâneo C5-C6"},
-        {n:"M. braquial",l:"M. brachialis",d:"Flexor puro (independe da prono-supinação). Motor mais poderoso do cotovelo.",i:"💪",nerv:"N. musculocutâneo C5-C6"},
-        {n:"M. tríceps braquial",l:"M. triceps brachii",d:"Único extensor do cotovelo. Cabeça longa, lateral e medial. Inserção no olécrano.",i:"💪",nerv:"N. radial C6-C8"},
-        {n:"M. pronador redondo",l:"M. pronator teres",d:"Pronador primário. N. mediano passa entre suas duas cabeças (umeral e ulnar).",i:"💪",nerv:"N. mediano C6-C7"},
-        {n:"M. supinador",l:"M. supinator",d:"Supinador com cotovelo estendido. N. interósseo posterior perfura (Arcada de Frohse).",i:"💪",nerv:"N. interósseo posterior C5-C6"},
-        {n:"ECRB",l:"M. extensor carpi radialis brevis",d:"Origem no epicôndilo lateral. Tensão máxima em pronação + flexão — local da epicondilite lateral.",i:"💪",nerv:"N. radial C6-C7"},
-      ],
-      Nervos:[
-        {n:"N. mediano (cotovelo)",l:"N. medianus",d:"Entre as duas cabeças do pronador redondo. Dá N. interósseo anterior. Síndrome do pronador.",i:"⚡",nerv:"C6-T1"},
-        {n:"N. ulnar (sulco cubital)",l:"N. ulnaris",d:"Sulco ulnar (túnel cubital). Lesão: déficit borda ulnar D4-D5, fraqueza dos interósseos.",i:"⚡",nerv:"C8-T1"},
-        {n:"N. radial (cotovelo)",l:"N. radialis",d:"Divide em superficial (sensitivo) e n. interósseo posterior (motor) ao nível do capítulo.",i:"⚡",nerv:"C5-T1"},
-      ],
-      Vasos:[
-        {n:"A. braquial",l:"A. brachialis",d:"Principal artéria do braço. Divide-se em a. radial e ulnar ao nível do colo do rádio.",i:"🩸",nerv:""},
-        {n:"A. radial proximal",l:"A. radialis",d:"Palpável no punho (pulso radial). Ramo recorrente anastomosa com braquial.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  mao:{name:"Punho e Mão",sub:"Ossos do carpo, metacarpos, falanges, tendões, nervos e vasos — aplica ao lado selecionado",bilateral:false,
-    structs:{
-      Ossos:[
-        {n:"Escafoide",l:"Os scaphoideum",d:"~70% das fraturas do carpo. Vascularização retrógrada. Dor na tabaqueira anatômica.",i:"🦴",nerv:""},
-        {n:"Semilunar",l:"Os lunatum",d:"Mais frequentemente luxado. Luxação perilunar comprime n. mediano.",i:"🦴",nerv:""},
-        {n:"Hamato",l:"Os hamatum",d:"Hamus (gancho). Fratura: atletas de raquete. Canal de Guyon delimitado medialmente.",i:"🦴",nerv:""},
-        {n:"Metacarpos I–V",l:"Ossa metacarpalia",d:"Fratura do boxeador: colo do 5° metacarpo. Metacarpo I: robusto, base do polegar.",i:"🦴",nerv:""},
-        {n:"Falanges",l:"Phalanges manus",d:"14 falanges. D1: 2 (proximal + distal). D2-D5: 3 (proximal, média, distal).",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Art. radiocárpica",l:"Art. radiocarpalis",d:"Elipsoide. Flexão 70°, extensão 75°, desvio radial 20°, ulnar 35°.",i:"🔗",nerv:""},
-        {n:"CMC do polegar (CMC I)",l:"Art. carpometacarpalis pollicis",d:"Selar — máxima mobilidade. Permite oposição. Rizartrose: desgaste frequente.",i:"🔗",nerv:"N. radial sensitivo"},
-        {n:"Art. MCF",l:"Art. metacarpophalangeae",d:"Condilares. Flexão 90°, extensão 20–30°, abdução/adução.",i:"🔗",nerv:""},
-        {n:"Túnel do carpo",l:"Canalis carpi",d:"Retináculo dos flexores + ossos do carpo. Contém 9 tendões + n. mediano.",i:"🔗",nerv:"N. mediano"},
-        {n:"Canal de Guyon",l:"Canalis ulnaris",d:"Pisiforme + hamato. Contém a. e n. ulnar. 3 zonas de compressão.",i:"🔗",nerv:"N. ulnar"},
-      ],
-      Músculos:[
-        {n:"M. FPD (flexor profundo dos dedos)",l:"M. flexor digitorum profundus",d:"Flexão IFD. D2-D3: n. interósseo anterior; D4-D5: n. ulnar.",i:"💪",nerv:"N. mediano + N. ulnar"},
-        {n:"Mm. lumbricais",l:"Mm. lumbricales",d:"Flexão MCF + extensão IFP/IFD. L1-L2: n. mediano; L3-L4: n. ulnar.",i:"💪",nerv:"N. mediano + N. ulnar"},
-        {n:"Mm. interósseos dorsais",l:"Mm. interossei dorsales",d:"DABA — dorsais abduzem. 4 músculos bipenados. N. ulnar profundo.",i:"💪",nerv:"N. ulnar C8-T1"},
-        {n:"Mm. interósseos palmares",l:"Mm. interossei palmares",d:"PAFA — palmares aduzem. 3 músculos. Expansão extensora.",i:"💪",nerv:"N. ulnar C8-T1"},
-        {n:"M. abdutor curto do polegar",l:"M. abductor pollicis brevis",d:"Abdução palmar. Atrofia tenar: sinal de síndrome do túnel do carpo avançada.",i:"💪",nerv:"N. mediano T1"},
-        {n:"M. adutor do polegar",l:"M. adductor pollicis",d:"Adução do polegar. 2 cabeças. Sinal de Froment na fraqueza.",i:"💪",nerv:"N. ulnar profundo C8-T1"},
-        {n:"Mm. hipotênares",l:"Mm. hypothenaris",d:"Abdutor, flexor curto e oponente do D5. Eminência hipotenar.",i:"💪",nerv:"N. ulnar C8-T1"},
-      ],
-      Nervos:[
-        {n:"N. mediano (mão)",l:"N. medianus",d:"Túnel do carpo. Sensitivo: palmar D1-D3 e metade radial D4. Motor: tenares (LOAF).",i:"⚡",nerv:"C6-T1"},
-        {n:"N. ulnar (mão)",l:"N. ulnaris",d:"Canal de Guyon. Sensitivo: D5 e metade ulnar D4. Motor: interósseos, hipotênares.",i:"⚡",nerv:"C8-T1"},
-        {n:"N. radial superficial",l:"N. radialis superficialis",d:"Sensitivo: dorso radial da mão, D1-D2, metade radial D3.",i:"⚡",nerv:"C6-C7"},
-      ],
-      Vasos:[
-        {n:"Arco palmar superficial",l:"Arcus palmaris superficialis",d:"Principalmente a. ulnar. Dá artérias digitais palmares comuns.",i:"🩸",nerv:""},
-        {n:"Arco palmar profundo",l:"Arcus palmaris profundus",d:"Principalmente a. radial. Mais proximal que o superficial.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  coluna:{name:"Coluna Vertebral",sub:"7 cervicais, 12 torácicas, 5 lombares, sacro, cóccix — estruturas e biomecânica",bilateral:true,
-    structs:{
-      Ossos:[
-        {n:"Vértebras cervicais C1–C7",l:"Vertebrae cervicales",d:"C1: sem corpo. C2: odontoide. C3-C6: bífidas. C7: maior processo espinhoso palpável.",i:"🦴",nerv:""},
-        {n:"Vértebras torácicas T1–T12",l:"Vertebrae thoracicae",d:"Facetas costais. Menor mobilidade. Cifose fisiológica 20–45° (Cobb).",i:"🦴",nerv:""},
-        {n:"Vértebras lombares L1–L5",l:"Vertebrae lumbales",d:"Maiores corpos. Processos transversos horizontais. Lordose fisiológica 40–60°.",i:"🦴",nerv:""},
-        {n:"Sacro",l:"Os sacrum",d:"5 vértebras fundidas. Base sacral, promontório, foramens sacrais.",i:"🦴",nerv:"S1-S5"},
-        {n:"Cóccix",l:"Os coccygis",d:"3–5 vértebras rudimentares. Inserção glúteo máximo, levantador do ânus.",i:"🦴",nerv:"N. coccígeo"},
-      ],
-      Articulações:[
-        {n:"Disco intervertebral",l:"Discus intervertebralis",d:"Núcleo pulposo (proteoglicanos) + anel fibroso (colágeno tipo I). 23 discos. Herniação posterolateral.",i:"🔗",nerv:"N. sinovertebral"},
-        {n:"Art. zigapofisária (facetária)",l:"Art. zygapophysialis",d:"Cervical: 45° coronal → rotação. Torácica: frontal → rotação. Lombar: sagital → flexoextensão.",i:"🔗",nerv:"Ramos medianos"},
-        {n:"Art. lombossacral L5-S1",l:"Art. lumbosacralis",d:"Maior cisalhamento da coluna. Ângulo de Ferguson ~30°. Principal local de espondilolistese.",i:"🔗",nerv:""},
-      ],
-      Músculos:[
-        {n:"M. multífido",l:"M. multifidus",d:"2–5 segmentos. Estabilizador segmentar profundo. Atrofia ipsilateral após lombalgia.",i:"💪",nerv:"Ramos dorsais mediais"},
-        {n:"M. eretor da espinha",l:"M. erector spinae",d:"3 colunas: iliocostal, longuíssimo, espinhoso. Extensão bilateral.",i:"💪",nerv:"Ramos dorsais"},
-        {n:"M. transverso abdominal",l:"M. transversus abdominis",d:"Parede anterior do core. Co-contração com multífido. Ativação feedforward.",i:"💪",nerv:"N. iliohipogástrico T7-L1"},
-        {n:"M. quadrado lombar",l:"M. quadratus lumborum",d:"Inclinação lateral ipsilateral + fixação 12ª costela.",i:"💪",nerv:"T12-L4"},
-        {n:"M. psoas maior",l:"M. psoas major",d:"Flexor do quadril e coluna lombar. Encurtamento → hiperlordose.",i:"💪",nerv:"N. lombar L1-L3"},
-      ],
-      Nervos:[
-        {n:"Raiz L4",l:"Radix nervosa L4",d:"Dermátomo: face medial joelho, maléolo medial. Motor: quadríceps. Reflexo patelar.",i:"⚡",nerv:"L4"},
-        {n:"Raiz L5",l:"Radix nervosa L5",d:"Dermátomo: face lateral perna, dorso pé, hálux. Motor: extensor longo do hálux.",i:"⚡",nerv:"L5"},
-        {n:"Raiz S1",l:"Radix nervosa S1",d:"Dermátomo: face lateral do pé, calcanhar. Motor: plantiflexores. Reflexo aquileu.",i:"⚡",nerv:"S1"},
-      ],
-      Vasos:[
-        {n:"A. espinal anterior",l:"A. spinalis anterior",d:"Irriga 2/3 anteriores da medula. Das aa. vertebrais.",i:"🩸",nerv:""},
-        {n:"A. espinal posterior",l:"A. spinalis posterior",d:"Irriga 1/3 posterior da medula (colunas dorsais). 2 artérias.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  pelve:{name:"Pelve e Quadril",sub:"Articulação coxofemoral, glúteos, pelvitrôcanteres e labro acetabular — aplica ao lado selecionado",bilateral:false,
-    structs:{
-      Ossos:[
-        {n:"Coxal (ílio+ísquio+púbis)",l:"Os coxae",d:"Fusão dos 3 ossos no acetábulo. EIAS: referência palpável. Tuberosidade isquiática: inserção isquiotibiais.",i:"🦴",nerv:""},
-        {n:"Acetábulo",l:"Acetabulum",d:"Ílio (superior), ísquio (postero-inferior), púbis (anterior). Fossa acetabular + superfície lunada.",i:"🦴",nerv:""},
-        {n:"Fêmur proximal",l:"Femur proximalis",d:"Cabeça femoral (2/3 esfera), colo femoral (ângulo 126°), trocânter maior + menor. Anteversão ~15°.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Articulação coxofemoral",l:"Art. coxae",d:"Esferoide multiaxial. Labro acetabular: aprofunda, veda, distribui carga. Ligamento transverso fecha fissura.",i:"🔗",nerv:"N. femoral, obturador, isquiático"},
-        {n:"Articulação sacroilíaca",l:"Art. sacroiliaca",d:"Sinovial posterior + sindesmosse anterior. Nutação/contranutação.",i:"🔗",nerv:"Nn. lombares e sacrais"},
-      ],
-      Músculos:[
-        {n:"M. glúteo máximo",l:"M. gluteus maximus",d:"Principal extensor e rotador lateral. Ativação máxima em escadas e corrida.",i:"💪",nerv:"N. glúteo inferior L5-S1-S2"},
-        {n:"M. glúteo médio",l:"M. gluteus medius",d:"Abdução e estabilização pélvica. Fraqueza → Trendelenburg.",i:"💪",nerv:"N. glúteo superior L4-S1"},
-        {n:"M. glúteo mínimo",l:"M. gluteus minimus",d:"Abdução e rotação medial. Sinergia com glúteo médio.",i:"💪",nerv:"N. glúteo superior L4-S1"},
-        {n:"M. iliopsoas",l:"M. iliopsoas",d:"Principal flexor do quadril. Psoas: L1-L5. Ilíaco: fossa ilíaca. Inserção: trocânter menor.",i:"💪",nerv:"N. femoral L1-L3"},
-        {n:"M. piriforme",l:"M. piriformis",d:"Rotador lateral. N. isquiático pode passar através dele → síndrome do piriforme.",i:"💪",nerv:"N. piriforme S1-S2"},
-        {n:"Mm. isquiotibiais",l:"Mm. ischiocruralii",d:"Bíceps femoral (longa: n. tibial; curta: n. fibular), semitendinoso, semimembranáceo.",i:"💪",nerv:"N. isquiático L5-S2"},
-        {n:"Mm. adutores",l:"Mm. adductores",d:"Adução e flexão. Adutor magno: extensão (feixe isquiocondilar). Pubalgia atlética.",i:"💪",nerv:"N. obturador L2-L4"},
-      ],
-      Nervos:[
-        {n:"N. isquiático",l:"N. ischiadicus",d:"Maior nervo do corpo. Abaixo do piriforme. Divide em tibial e fibular no ápice da fossa poplítea.",i:"⚡",nerv:"L4-S3"},
-        {n:"N. femoral",l:"N. femoralis",d:"Sob o ligamento inguinal. Motor: iliopsoas e quadríceps. Sensitivo: face anterior coxa + n. safeno.",i:"⚡",nerv:"L2-L4"},
-        {n:"N. obturador",l:"N. obturatorius",d:"Canal obturatório. Motor: adutores. Sensitivo: face medial coxa.",i:"⚡",nerv:"L2-L4"},
-      ],
-      Vasos:[
-        {n:"A. femoral",l:"A. femoralis",d:"Da a. ilíaca externa abaixo do lig. inguinal. A. femoral profunda: irriga coxa.",i:"🩸",nerv:""},
-        {n:"A. circunflexa femoral medial",l:"A. circumflexa femoris medialis",d:"Principal suprimento da cabeça femoral. Na face posterior do colo. Lesada em fraturas do colo.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  joelho:{name:"Joelho",sub:"Fêmur distal, tíbia proximal, patela, ligamentos cruzados, meniscos e músculos — aplica ao lado selecionado",bilateral:false,
-    structs:{
-      Ossos:[
-        {n:"Fêmur distal",l:"Femur distalis",d:"Côndilo medial (mais proeminente) e lateral. Sulco troclear para patela. Fossa intercondiliana: LCA e LCP.",i:"🦴",nerv:""},
-        {n:"Tíbia proximal",l:"Tibia proximalis",d:"Platô tibial medial (côncavo) e lateral (convexo). Tuberosidade tibial: inserção tendão patelar.",i:"🦴",nerv:""},
-        {n:"Patela",l:"Patella",d:"Sesamóide no tendão quadricipital. Aumenta braço de momento ~30%. Facetas medial, lateral e ímpar.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Menisco medial",l:"Meniscus medialis",d:"Em C. Mais fixo (aderido ao LCM). Lesão mais frequente. McMurray: rotação externa + valgo.",i:"🔗",nerv:"N. articular posterior"},
-        {n:"Menisco lateral",l:"Meniscus lateralis",d:"Em O quase fechado. Mais móvel. Tendão do poplíteo passa por uma fenda.",i:"🔗",nerv:"N. articular posterior"},
-        {n:"LCA",l:"Lig. cruciatum anterius",d:"Limita translação anterior da tíbia. Lachman (20–30°) + pivot shift. Lesão: 2–8x mais comum em mulheres.",i:"🔗",nerv:""},
-        {n:"LCP",l:"Lig. cruciatum posterius",d:"Limita translação posterior. Mais resistente que LCA. Gaveta posterior positiva.",i:"🔗",nerv:""},
-        {n:"LCM",l:"Lig. collaterale tibiale",d:"Superficial + profundo (aderido menisco medial). Resiste estresse em valgo.",i:"🔗",nerv:""},
-        {n:"LCL",l:"Lig. collaterale fibulare",d:"Separado do menisco lateral pelo poplíteo. Resiste estresse em varo.",i:"🔗",nerv:""},
-      ],
-      Músculos:[
-        {n:"M. quadríceps femoral",l:"M. quadriceps femoris",d:"VMO: estabilizador medial da patela. 4 porções. Principal extensor do joelho.",i:"💪",nerv:"N. femoral L2-L4"},
-        {n:"Mm. isquiotibiais (joelho)",l:"Mm. ischiocruralii",d:"Bíceps femoral: rotação lateral tíbia. Semimembranáceo+semitendinoso: rotação medial.",i:"💪",nerv:"N. isquiático L5-S2"},
-        {n:"M. poplíteo",l:"M. popliteus",d:"'Abre a fechadura do joelho' — rotação medial da tíbia ao iniciar flexão.",i:"💪",nerv:"N. tibial L4-S1"},
-        {n:"Pes anserinus",l:"M. sartorius + gracilis + semitendinosus",d:"Inserção medial proximal da tíbia. Bursa do pes anserinus.",i:"💪",nerv:"N. femoral + obturador + isquiático"},
-        {n:"M. gastrocnêmio",l:"M. gastrocnemius",d:"Flexão plantar + flexão do joelho. Cabeças medial e lateral.",i:"💪",nerv:"N. tibial S1-S2"},
-      ],
-      Nervos:[
-        {n:"N. fibular comum (joelho)",l:"N. fibularis communis",d:"Circunda a cabeça da fíbula. Divide em superficial (eversão) e profundo (dorsiflexão). Lesão → pé caído.",i:"⚡",nerv:"L4-S2"},
-        {n:"N. tibial (fossa poplítea)",l:"N. tibialis",d:"Centro da fossa poplítea. Inerva tríceps sural e poplíteo.",i:"⚡",nerv:"L4-S3"},
-      ],
-      Vasos:[
-        {n:"A. poplítea",l:"A. poplitea",d:"Continuação da femoral. Aneurisma poplíteo: complicação de luxação do joelho.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  tornozelo:{name:"Tornozelo e Pé",sub:"Tálus, calcâneo, tarso, metatarsos, tendões e ligamentos — aplica ao lado selecionado",bilateral:false,
-    structs:{
-      Ossos:[
-        {n:"Tálus",l:"Talus",d:"Recebe toda carga. Sem inserções musculares. Osteonecrose avascular pós-fratura.",i:"🦴",nerv:""},
-        {n:"Calcâneo",l:"Calcaneus",d:"Maior osso do tarso. Tuberosidade: inserção Aquiles. Sustentáculo do tálus.",i:"🦴",nerv:""},
-        {n:"Navicular",l:"Os naviculare",d:"Tuberosidade: inserção tibial posterior. Navicular acessório em 10–14%.",i:"🦴",nerv:""},
-        {n:"Metatarsos I–V",l:"Ossa metatarsalia",d:"Base do 5°: inserção fibular curto (fratura de avulsão/Jones). 1°: 2 sesamóides plantares.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Art. talocrural (tibiotársica)",l:"Art. talocruralis",d:"Mortaça. Dorsiflexão 20°, flexão plantar 50°. Estabilidade óssea em dorsiflexão.",i:"🔗",nerv:"N. tibial + fibular profundo"},
-        {n:"Art. subtalar (talocalcânea)",l:"Art. subtalaris",d:"3 facetas. Inversão 35°, eversão 15°. Compensatória às rotações da perna.",i:"🔗",nerv:"N. tibial posterior"},
-        {n:"Art. de Lisfranc",l:"Art. tarsometatarsalis",d:"Lig. de Lisfranc: cuneiforme medial → base 2° metatarso. Lesão grave e subdiagnosticada.",i:"🔗",nerv:""},
-      ],
-      Músculos:[
-        {n:"M. tibial anterior",l:"M. tibialis anterior",d:"Dorsiflexão + inversão. Fraqueza = pé caído (steppage). Raiz L4-L5.",i:"💪",nerv:"N. fibular profundo L4-L5"},
-        {n:"M. tríceps sural",l:"M. triceps surae",d:"Gastrocnêmio + sóleo = Aquiles. Flexão plantar potente. Zona avascular 2–6cm do Aquiles.",i:"💪",nerv:"N. tibial S1-S2"},
-        {n:"M. tibial posterior",l:"M. tibialis posterior",d:"Inversão + sustentação dinâmica do arco longitudinal. Insuficiência: pé plano adquirido.",i:"💪",nerv:"N. tibial L4-L5"},
-        {n:"M. fibular longo",l:"M. fibularis longus",d:"Eversão + flexão plantar. Cruza sob o pé → sustenta arco transverso.",i:"💪",nerv:"N. fibular superficial L5-S1"},
-        {n:"M. fibular curto",l:"M. fibularis brevis",d:"Eversão. Base do 5° metatarso. Avulsão em entorse de inversão.",i:"💪",nerv:"N. fibular superficial L5-S1"},
-        {n:"Fáscia plantar",l:"Aponeurosis plantaris",d:"Da tuberosidade medial calcânea. Mecanismo de guincho (windlass) na extensão do hálux.",i:"💪",nerv:""},
-      ],
-      Nervos:[
-        {n:"N. fibular superficial",l:"N. fibularis superficialis",d:"Motor: fibulares longo e curto. Sensitivo: dorso do pé.",i:"⚡",nerv:"L5-S1"},
-        {n:"N. fibular profundo",l:"N. fibularis profundus",d:"Motor: dorsiflexores, extensor do hálux. Sensitivo: 1° espaço interdigital.",i:"⚡",nerv:"L4-L5"},
-        {n:"N. tibial (tornozelo)",l:"N. tibialis",d:"Túnel do tarso. Divide em plantar medial e lateral.",i:"⚡",nerv:"L4-S3"},
-        {n:"N. sural",l:"N. suralis",d:"Sensitivo: face lateral do pé e 5° dedo. Enxerto neural.",i:"⚡",nerv:"S1-S2"},
-      ],
-      Vasos:[
-        {n:"A. tibial anterior → dorsal do pé",l:"A. tibialis anterior / dorsalis pedis",d:"Palpável entre extensor hálux e D2. Pulso pediosa.",i:"🩸",nerv:""},
-        {n:"A. tibial posterior",l:"A. tibialis posterior",d:"Compartimento posterior profundo. Túnel do tarso. Divide em plantar medial e lateral.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  pelve_feminino:{name:"Pelve Feminina",sub:"Órgãos reprodutores femininos, estruturas ligamentares e vasculatura específica",bilateral:false,gender:'female',
-    structs:{
-      Ossos:[
-        {n:"Pelve feminina (ginecoide)",l:"Pelvis gynaecoidea",d:"Mais larga e rasa que a masculina. Ângulo subpúbico >90° (arco pubiano largo). Abertura pélvica maior facilita o parto.",i:"🦴",nerv:""},
-        {n:"Sacro feminino",l:"Os sacrum (femininum)",d:"Mais largo, curto e menos curvado que o masculino. Base sacral mais ampla. Conjugata vera obstétrica ~11cm.",i:"🦴",nerv:""},
-        {n:"Cóccix feminino",l:"Os coccygis (femininum)",d:"Mais móvel que o masculino — recua durante o parto para ampliar o canal pélvico.",i:"🦴",nerv:"N. coccígeo"},
-        {n:"Sínfise púbica feminina",l:"Symphysis pubica (feminina)",d:"Mais curta (3–4cm) e com menor ângulo subpúbico que o masculino. Relaxa sob ação da relaxina na gestação.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Articulação sacroilíaca (feminina)",l:"Art. sacroiliaca (feminina)",d:"Maior mobilidade que a masculina, especialmente na gestação pela ação da relaxina. Permite nutação aumentada no parto.",i:"🔗",nerv:"Nn. L4-S3"},
-        {n:"Sínfise púbica — relaxamento gravídico",l:"Symphysis pubica gravídica",d:"Sob ação da relaxina, o fibrocartilagem interpúbico amolece — aumento de até 9mm na diástase. Dor pélvica periparto.",i:"🔗",nerv:"N. ilioinguinal"},
-        {n:"Art. coxofemoral feminina",l:"Art. coxae (feminina)",d:"Maior anteversão acetabular e femoral que o masculino. Ângulo Q aumentado (~17°) — maior risco de disfunção patelofemoral.",i:"🔗",nerv:"N. femoral, obturador, isquiático"},
-      ],
-      Músculos:[
-        {n:"M. elevador do ânus (feminino)",l:"M. levator ani (femininum)",d:"3 feixes: pubovaginal (substitui puborretal anterior), pubococcígeo e iliococcígeo. Suporte do útero, vagina e reto.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. pubovaginal",l:"M. pubovaginalis",d:"Feixe anterior do elevador do ânus. Comprime a vagina e auxilia na continência urinária.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. bulboesponjoso (feminino)",l:"M. bulbospongiosus (femininum)",d:"Envolve o bulbo do vestíbulo. Comprime a vagina e contribui para a ereção do clitóris.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. isquiocavernoso (feminino)",l:"M. ischiocavernosus (femininum)",d:"Comprime a crura do clitóris — mantém ereção clitoriana.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. esfíncter externo da uretra (feminino)",l:"M. sphincter urethrae externus (femininum)",d:"Envolve a uretra e parte anterior da vagina. Continência urinária voluntária. Lesão no parto.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. transverso superficial do períneo (feminino)",l:"M. transversus perinei superficialis",d:"Estabiliza o corpo perineal. Base do períneo feminino.",i:"💪",nerv:"N. pudendo S3-S4"},
-      ],
-      Nervos:[
-        {n:"N. pudendo (feminino)",l:"N. pudendus (femininum)",d:"S2-S4. Sensitivo e motor do períneo feminino. Canal de Alcock. Bloqueio utilizado no parto.",i:"⚡",nerv:"S2-S4"},
-        {n:"N. ilioinguinal (feminino)",l:"N. ilioinguinalis",d:"L1. Sensitivo: monte púbico, lábio maior, face medial superior da coxa.",i:"⚡",nerv:"L1"},
-        {n:"N. genitofemoral — ramo genital (feminino)",l:"N. genitofemoralis — r. genitalis",d:"L1-L2. Sensitivo: lábio maior e monte pubiano. Reflexo cremastérico ausente na mulher.",i:"⚡",nerv:"L1-L2"},
-        {n:"N. cutâneo femoral posterior (períneo feminino)",l:"N. cutaneus femoris posterior",d:"S1-S3. Ramos perineais: sensitivo dos lábios maiores e face posterior da coxa proximal.",i:"⚡",nerv:"S1-S3"},
-        {n:"Plexo uterovaginal (de Frankenhauser)",l:"Plexus uterovaginalis",d:"Fibras simpáticas e parassimpáticas para útero, vagina, bexiga. Origem no plexo hipogástrico inferior.",i:"⚡",nerv:"T10-L1 (simpático) / S2-S4 (parassimpático)"},
-      ],
-      Vasos:[
-        {n:"A. uterina",l:"A. uterina",d:"Da a. ilíaca interna. Cruza ureter ('água sob a ponte'). Ramos: a. vaginal, a. ovárica anastomótica, aa. helicinas do endométrio.",i:"🩸",nerv:""},
-        {n:"A. ovárica",l:"A. ovarica",d:"Da aorta abdominal (L2). Desce pelo ligamento suspensor do ovário. Anastomosa com a. uterina.",i:"🩸",nerv:""},
-        {n:"A. vaginal",l:"A. vaginalis",d:"Da a. uterina ou ilíaca interna. Irriga a vagina em sua extensão, anastomosando com a. pudenda interna.",i:"🩸",nerv:""},
-        {n:"Plexo venoso uterino",l:"Plexus venosus uterinus",d:"Drena para v. ilíaca interna. Dilata significativamente na gestação.",i:"🩸",nerv:""},
-        {n:"Plexo venoso vaginal",l:"Plexus venosus vaginalis",d:"Comunica-se com plexo vesical e retal. Drena para v. ilíaca interna.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  utero:{name:"Útero, Trompas e Ovários",sub:"Órgãos reprodutores internos femininos — estrutura, ligamentos e relações",bilateral:false,gender:'female',
-    structs:{
-      Ossos:[
-        {n:"Estreito superior da pelve",l:"Apertura pelvis superior",d:"Delimitado pelo promontório sacral, linhas arqueadas e sínfise púbica. Diâmetro anteroposterior (conjugata vera) ~11cm.",i:"🦴",nerv:""},
-        {n:"Estreito inferior da pelve",l:"Apertura pelvis inferior",d:"Ísquio, sacro e cóccix. Diâmetro transverso ~11cm. Canal de saída do feto.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Fórnice vaginal",l:"Fornix vaginae",d:"Fundo de saco entre colo uterino e paredes vaginais. Fórnice posterior: acesso ao fundo de saco de Douglas (culdocentese).",i:"🔗",nerv:"Plexo uterovaginal"},
-        {n:"Junção útero-tubária",l:"Junctio uterotubaria",d:"União da tuba uterina ao corno uterino. Local de reimplantação na cirurgia tubária.",i:"🔗",nerv:"Plexo uterovaginal"},
-      ],
-      Músculos:[
-        {n:"Miométrio",l:"Myometrium",d:"3 camadas de músculo liso: longitudinal externa, circular média, plexiforme interna. Contrações do trabalho de parto.",i:"💪",nerv:"Plexo uterovaginal T10-L1"},
-        {n:"M. esfíncter interno do colo uterino",l:"M. sphincter cervicis internus",d:"Músculo liso circular ao redor do orifício interno do colo. Mantém a gravidez — incompetência cervical.",i:"💪",nerv:"Simpático T10-L1"},
-        {n:"Mm. das tubas uterinas",l:"Mm. tubae uterinae",d:"Muscular da tuba: longitudinal e circular. Movimentos peristálticos transportam o ovócito.",i:"💪",nerv:"Plexo ovárico"},
-      ],
-      Nervos:[
-        {n:"N. ovárico (plexo)",l:"Plexus ovaricus",d:"Acompanha a. ovárica. Fibras simpáticas de T10-T11. Dor ovárica referida em T10 (nível umbilical).",i:"⚡",nerv:"T10-T11"},
-        {n:"Plexo hipogástrico inferior (feminino)",l:"Plexus hypogastricus inferior",d:"Principal plexo autônomo pélvico feminino. Inerva útero, vagina, bexiga e reto.",i:"⚡",nerv:"T10-L2 (simpático) / S2-S4 (parassimpático)"},
-        {n:"Nn. esplâncnicos pélvicos (feminino)",l:"Nn. splanchnici pelvici",d:"S2-S4. Parassimpático sacral. Ereção clitoriana, secreção vaginal, peristaltismo uterino.",i:"⚡",nerv:"S2-S4"},
-      ],
-      Vasos:[
-        {n:"A. ilíaca interna (feminina)",l:"A. iliaca interna (feminina)",d:"Principal artéria pélvica. Divisão anterior: uterina, vaginal, pudenda interna, obturatória.",i:"🩸",nerv:""},
-        {n:"V. ovárica direita",l:"V. ovarica dextra",d:"Drena diretamente para a v. cava inferior. Predisposição a trombose.",i:"🩸",nerv:""},
-        {n:"V. ovárica esquerda",l:"V. ovarica sinistra",d:"Drena para a v. renal esquerda (ângulo reto — maior pressão). Síndrome de Nutcracker.",i:"🩸",nerv:""},
-        {n:"Plexo pampiniforme feminino",l:"Plexus pampiniformis (femininum)",d:"Rede venosa no ligamento largo. Origem das veias ováricas. Análogo ao masculino.",i:"🩸",nerv:""},
-        {n:"Linfáticos uterinos",l:"Vasa lymphatica uterina",d:"Fundo/corpo: linfonodos paraaórticos (L2). Colo uterino: linfonodos ilíacos internos e obturatórios.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  mama:{name:"Mama Feminina",sub:"Glândula mamária, ligamentos, vascularização e drenagem linfática",bilateral:false,gender:'female',
-    structs:{
-      Ossos:[
-        {n:"Costelas 2–6 (base da mama)",l:"Costae II–VI",d:"Base óssea de suporte da mama. Extensão lateral até linha axilar anterior.",i:"🦴",nerv:""},
-        {n:"Fáscia peitoral",l:"Fascia pectoralis",d:"Plano de separação entre mama e m. peitoral maior. Plano cirúrgico da mastectomia.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Espaço retromamário",l:"Spatium retromammarium",d:"Tecido areolar frouxo entre mama e fáscia peitoral. Permite mobilidade. Obliterado em carcinoma.",i:"🔗",nerv:""},
-        {n:"Ligamentos de Cooper",l:"Ligg. suspensoria mammaria",d:"Traves fibrosas entre lóbulos e pele/fáscia. Retração cutânea no carcinoma ('casca de laranja').",i:"🔗",nerv:""},
-      ],
-      Músculos:[
-        {n:"M. peitoral maior (relação com mama)",l:"M. pectoralis major",d:"Posterior à mama. Limite posterior na mastectomia conservadora.",i:"💪",nerv:"Nn. peitorais C5-T1"},
-        {n:"M. serrátil anterior (relação com mama)",l:"M. serratus anterior",d:"Lateral à mama. Quadrante externo apoia-se sobre este músculo.",i:"💪",nerv:"N. torácico longo C5-C7"},
-        {n:"Músculo liso areolar",l:"M. areolaris",d:"Fibras musculares lisas na aréola. Ereção do mamilo em resposta ao frio e amamentação.",i:"💪",nerv:"Simpático"},
-      ],
-      Nervos:[
-        {n:"N. intercostal lateral (4°)",l:"N. intercostalis lateralis (IV)",d:"Principal inervação sensitiva do mamilo e aréola. Lesão em mastopexia e mamoplastia.",i:"⚡",nerv:"T4"},
-        {n:"Nn. intercostais (T2–T6)",l:"Nn. intercostales T2–T6",d:"Inervação sensitiva da mama. Ramos cutâneos anteriores e laterais.",i:"⚡",nerv:"T2-T6"},
-        {n:"N. intercostobraquial",l:"N. intercostobrachialis",d:"T2. Ramo lateral que cruza a axila. Lesão no esvaziamento axilar → dormência face medial do braço.",i:"⚡",nerv:"T2"},
-      ],
-      Vasos:[
-        {n:"A. torácica interna (mamária interna)",l:"A. thoracica interna",d:"Ramos perfurantes (esp. 2°-4° espaços) → 60% do suprimento medial da mama.",i:"🩸",nerv:""},
-        {n:"A. torácica lateral",l:"A. thoracica lateralis",d:"Da a. axilar. Irriga quadrante superior externo — mais vascularizado e mais frequente sede de carcinoma.",i:"🩸",nerv:""},
-        {n:"Linfonodos axilares",l:"Nodi lymphoidei axillares",d:"Drenagem principal da mama (75%). Níveis I (lateral ao peitoral menor), II (posterior), III (medial — apical).",i:"🩸",nerv:""},
-        {n:"Linfonodos da cadeia mamária interna",l:"Nodi lymphoidei parasternales",d:"Drenagem do quadrante medial e inferior (~25%). Ao longo da a. torácica interna.",i:"🩸",nerv:""},
-        {n:"Linfonodo sentinela",l:"Nodus lymphoideus sentinela",d:"Primeiro linfonodo da cadeia de drenagem tumoral. Biopsia intraoperatória guia o esvaziamento axilar.",i:"🩸",nerv:""},
-      ]
-    }
-  },
-  pelve_masculino:{name:"Pelve Masculina",sub:"Órgãos reprodutores masculinos, próstata, estruturas ligamentares e vasculatura específica",bilateral:false,gender:'male',
-    structs:{
-      Ossos:[
-        {n:"Pelve masculina (androide)",l:"Pelvis androida",d:"Mais estreita e profunda que a feminina. Ângulo subpúbico <90° (arco pubiano estreito). Acetábulo maior.",i:"🦴",nerv:""},
-        {n:"Sacro masculino",l:"Os sacrum (masculinum)",d:"Mais estreito, longo e curvado que o feminino. Curvatura sacral mais pronunciada.",i:"🦴",nerv:""},
-        {n:"Sínfise púbica masculina",l:"Symphysis pubica (masculina)",d:"Mais longa (~5cm) que a feminina. Ângulo subpúbico ~70°.",i:"🦴",nerv:""},
-      ],
-      Articulações:[
-        {n:"Articulação sacroilíaca (masculina)",l:"Art. sacroiliaca (masculina)",d:"Menos móvel que a feminina. Superfície auricular maior com sincondroses mais extensas.",i:"🔗",nerv:"Nn. L4-S3"},
-        {n:"Art. coxofemoral masculina",l:"Art. coxae (masculina)",d:"Menor ângulo Q (~14°) e menor anteversão acetabular que a feminina. Maior tendência ao FAI tipo CAM.",i:"🔗",nerv:"N. femoral, obturador, isquiático"},
-      ],
-      Músculos:[
-        {n:"M. elevador do ânus (masculino)",l:"M. levator ani (masculinum)",d:"Feixes: puborretal (alça ao redor do reto), pubococcígeo e iliococcígeo. Suporte da próstata e reto.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. puborretal",l:"M. puborectalis",d:"Forma alça ao redor da junção anorretal. Principal músculo da continência fecal. Relaxa na defecação.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. bulboesponjoso (masculino)",l:"M. bulbospongiosus (masculinum)",d:"Envolve o bulbo peniano. Ejaculação, micção final e ereção.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. isquiocavernoso (masculino)",l:"M. ischiocavernosus (masculinum)",d:"Comprime a crura do pênis contra o ísquio — mantém ereção.",i:"💪",nerv:"N. pudendo S2-S4"},
-        {n:"M. cremaster",l:"M. cremaster",d:"Extensão do oblíquo interno. Eleva o testículo. Reflexo cremastérico (L1-L2).",i:"💪",nerv:"N. genitofemoral L1-L2"},
-        {n:"M. dartos",l:"M. dartos",d:"Músculo liso do escroto. Contrai em resposta ao frio. Sem inervação somática — simpático.",i:"💪",nerv:"Simpático"},
-      ],
-      Nervos:[
-        {n:"N. pudendo (masculino)",l:"N. pudendus (masculinum)",d:"S2-S4. Canal de Alcock. Motor: mm. perineais. Sensitivo: pênis, escroto, períneo.",i:"⚡",nerv:"S2-S4"},
-        {n:"N. ilioinguinal (masculino)",l:"N. ilioinguinalis",d:"L1. Canal inguinal. Sensitivo: escroto, base do pênis, face medial superior da coxa.",i:"⚡",nerv:"L1"},
-        {n:"N. genitofemoral — ramo genital (masculino)",l:"N. genitofemoralis — r. genitalis",d:"L1-L2. Motor: cremaster (reflexo cremastérico). Sensitivo: escroto.",i:"⚡",nerv:"L1-L2"},
-        {n:"Nn. cavernosos",l:"Nn. cavernosi penis",d:"Do plexo prostático. Parassimpático (ereção) e simpático (ejaculação). Risco na prostatectomia.",i:"⚡",nerv:"S2-S4 (parassimpático) / T10-L2 (simpático)"},
-        {n:"Plexo prostático",l:"Plexus prostaticus",d:"Do plexo hipogástrico inferior. Inerva próstata, vesículas seminais, ducto deferente e pênis.",i:"⚡",nerv:"T10-L2 / S2-S4"},
-      ],
-      Vasos:[
-        {n:"A. pudenda interna (masculina)",l:"A. pudenda interna (masculina)",d:"Da a. ilíaca interna. Ramos: a. perineal, a. bulbar, aa. cavernosa e dorsal do pênis.",i:"🩸",nerv:""},
-        {n:"A. testicular",l:"A. testicularis",d:"Da aorta abdominal (L2). Acompanha o cordão espermático. Torção testicular compromete este suprimento.",i:"🩸",nerv:""},
-        {n:"A. dorsal do pênis",l:"A. dorsalis penis",d:"Ramo terminal da pudenda interna. Irriga glande, prepúcio e pele peniana.",i:"🩸",nerv:""},
-        {n:"A. cavernosa (profunda do pênis)",l:"A. profunda penis",d:"Irriga os corpos cavernosos. Dilata no reflexo erétil parassimpático.",i:"🩸",nerv:""},
-        {n:"Plexo pampiniforme",l:"Plexus pampiniformis",d:"Rede venosa ao redor da a. testicular no cordão. Termorregulação testicular. Varicocele: dilatação (esquerdo > direito).",i:"🩸",nerv:""},
-        {n:"Linfáticos testiculares",l:"Vasa lymphatica testicularia",d:"Drenam para linfonodos paraaórticos (L2) — seguem a a. testicular (embrionário). Diferente do escroto (inguinal).",i:"🩸",nerv:""},
-      ]
-    }
-  },
-};
+
+/* ══════════════════════════════════════════════════════
+   CABEÇA E PESCOÇO
+══════════════════════════════════════════════════════ */
+cabeca:{name:"Cabeça e Pescoço",sub:"Crânio, coluna cervical, ATM, musculatura cervical, nervos cranianos e vasos",bilateral:true,
+  structs:{
+    Ossos:[
+      {n:"Osso frontal",l:"Os frontale",d:"Forma a fronte e teto das órbitas. Seio frontal interno. Suturas: coronal (parietal), metópica (frontal medial).",i:"🦴",nerv:"N. supraorbital (V1)"},
+      {n:"Ossos parietais (2)",l:"Ossa parietalia",d:"Formam a calvária lateral e superior. Sutura sagital entre eles; lambdoidal com occipital; coronal com frontal.",i:"🦴",nerv:"N. auriculotemporal"},
+      {n:"Osso occipital",l:"Os occipitale",d:"Base e parte posterior do crânio. Forame magno, côndilo occipital (articulação com atlas), clivus.",i:"🦴",nerv:"N. occipital maior C2"},
+      {n:"Ossos temporais (2)",l:"Ossa temporalia",d:"Contêm o ouvido médio e interno, processo mastoide, processo estiloide, forame jugular, canal carotídeo.",i:"🦴",nerv:"N. facial VII, N. vestibulococlear VIII"},
+      {n:"Osso esfenoide",l:"Os sphenoideum",d:"Osso central da base do crânio. Sela túrcica (hipófise), asas maiores/menores, processos pterigoides, forame oval, redondo e espinhoso.",i:"🦴",nerv:"N. trigêmio V, N. abducente VI"},
+      {n:"Osso etmoide",l:"Os ethmoidale",d:"Lâmina cribriforme (N. olfatório I), lâmina perpendicular (septo nasal), labirinto etmoidal (seios etmoidais).",i:"🦴",nerv:"N. olfatório I"},
+      {n:"Mandíbula",l:"Mandibula",d:"Único osso móvel do crânio. Corpo, ramos, côndilo (ATM), processo coronoide (temporal), sínfise mentoniana.",i:"🦴",nerv:"N. alveolar inferior (V3), N. mentoniano"},
+      {n:"Osso hioide",l:"Os hyoideum",d:"Corpo + cornos maiores e menores. Sem articulação óssea direta. Âncora de mm. supra/infrahioideos e língua.",i:"🦴",nerv:"N. hipoglosso XII (mm. língua)"},
+      {n:"Vômer",l:"Vomer",d:"Septo nasal inferior. Articula com etmoide, esfenoide, maxilas e palatinos.",i:"🦴",nerv:"N. nasopalatino (V2)"},
+      {n:"Maxilas (2)",l:"Maxillae",d:"Dentes superiores, assoalho da órbita, palato duro anterior, paredes da cavidade nasal.",i:"🦴",nerv:"N. infraorbital (V2), N. alveolares superiores"},
+      {n:"Ossos palatinos (2)",l:"Ossa palatina",d:"Palato duro posterior, parede lateral da cavidade nasal, assoalho da órbita (processo orbital).",i:"🦴",nerv:"Nn. palatinos (V2)"},
+      {n:"Ossos nasais (2)",l:"Ossa nasalia",d:"Ponte do nariz. Articulam entre si e com o frontal superiormente.",i:"🦴",nerv:"N. infratroclear (V1)"},
+      {n:"Ossos lacrimais (2)",l:"Ossa lacrimalia",d:"Parede medial da órbita. Canal nasolacrimal (fossa do saco lacrimal).",i:"🦴",nerv:"N. lacrimal (V1)"},
+      {n:"Ossos zigomáticos (2)",l:"Ossa zygomatica",d:"Proeminência da bochecha. Arco zigomático (com temporal). Parede lateral e assoalho da órbita.",i:"🦴",nerv:"N. zigomático (V2)"},
+      {n:"Conchas nasais inferiores (2)",l:"Conchae nasales inferiores",d:"Ossos independentes na parede lateral da cavidade nasal. Aumentam área de mucosa.",i:"🦴",nerv:"N. palatino maior (V2)"},
+      {n:"Atlas (C1)",l:"Vertebra cervicalis I",d:"Sem corpo vertebral. Anel ósseo com massas laterais e tubérculos anterior/posterior. Articulação atlantooccipital (nod de cabeça).",i:"🦴",nerv:"N. suboccipital C1"},
+      {n:"Áxis (C2)",l:"Vertebra cervicalis II",d:"Processo odontoide (dens) — pivô da rotação C1-C2 (~50% rotação cervical). Ligamento transverso do atlas estabiliza.",i:"🦴",nerv:"N. occipital maior C2"},
+      {n:"Vértebras cervicais C3-C6",l:"Vertebrae cervicales III-VI",d:"Processos espinhosos bífidos, forames transversários (a. vertebral), articulações de Luschka (uncoartroses) — características típicas cervicais.",i:"🦴",nerv:"Raízes C3-C6"},
+      {n:"Vértebra C7 (proeminente)",l:"Vertebra prominens",d:"Maior processo espinhoso cervical — palpável. Forame transversário sem a. vertebral (apenas veias).",i:"🦴",nerv:"Raiz C7"},
+    ],
+    Articulações:[
+      {n:"Articulação atlantooccipital",l:"Art. atlantooccipitalis",d:"Côndilo occipital + fóvea articular do atlas. Bicondilar. Flexão/extensão ('sim') e inclinação lateral. Ligamentos: membrana atlantooccipital anterior/posterior.",i:"🔗",nerv:"C1"},
+      {n:"Articulação atlantoaxial mediana",l:"Art. atlantoaxialis mediana",d:"Dente do áxis + fóvea do atlas. Trocóide. ~50% da rotação cervical. Estabilizada pelo lig. transverso do atlas.",i:"🔗",nerv:"C1-C2"},
+      {n:"Articulações atlantoaxiais laterais",l:"Art. atlantoaxiales laterales",d:"Massas laterais do atlas + facetas superiores do áxis. Planas. Deslizamento durante rotação.",i:"🔗",nerv:"C2"},
+      {n:"Articulações zigapofisárias cervicais C2-C7",l:"Art. zygapophysiales cervicales",d:"Orientação ~45° coronal → permite flexão, extensão e rotação. Cápsula frouxa. Importante fonte de dor cervical.",i:"🔗",nerv:"Ramos medianos cervicais"},
+      {n:"Articulações de Luschka (uncoartroses)",l:"Art. uncovertebrales",d:"Processos uncinados C3-C7. Pseudoarticulações que limitam flexão lateral e protegem discos. Osteófitos comprimem raízes.",i:"🔗",nerv:"N. sinovertebral"},
+      {n:"Discos intervertebrais cervicais",l:"Disci intervertebrales cervicales",d:"C2-C7. Mais baixos que lombares. Núcleo pulposo + anel fibroso. Hérnia posterolateral comprime raiz no forame.",i:"🔗",nerv:"N. sinovertebral"},
+      {n:"ATM — Articulação Temporomandibular",l:"Art. temporomandibularis",d:"Côndilo mandibular + fossa mandibular + tubérculo articular + disco fibrocartilaginoso. Abertura, fechamento, protrusão, retrusão, laterotrusão. Ligamentos: lateral, esfenomandibular, estilomandibular.",i:"🔗",nerv:"N. auriculotemporal (V3)"},
+      {n:"Articulações intervertebrais cervicais (corpos)",l:"Symphyses intervertebrales cervicales",d:"Corpos vertebrais + discos. Anfiartroses. Permitem movimentos combinados com as facetárias.",i:"🔗",nerv:"N. sinovertebral"},
+    ],
+    Músculos:[
+      {n:"M. esternocleidomastoideo (ECM)",l:"M. sternocleidomastoideus",d:"Origem: manúbrio + clavícula medial. Inserção: processo mastoide + linha nucal superior. Ação: flexão ipsilateral + rotação contralateral. Torcicolo congênito.",i:"💪",nerv:"N. acessório XI + C2-C3"},
+      {n:"M. trapézio (fibras superiores)",l:"M. trapezius — pars descendens",d:"Origem: protuberância occipital, ligamento nucal. Inserção: clavícula lateral, acrômio. Elevação da escápula e inclinação cefálica.",i:"💪",nerv:"N. acessório XI + C3-C4"},
+      {n:"M. esplenio da cabeça",l:"M. splenius capitis",d:"Origem: ligamento nucal, C7-T3. Inserção: processo mastoide, linha nucal. Extensão + rotação ipsilateral da cabeça.",i:"💪",nerv:"Ramos laterais C2-C3"},
+      {n:"M. esplenio do pescoço",l:"M. splenius cervicis",d:"Origem: T3-T6. Inserção: tubérculos posteriores C1-C3. Extensão + rotação ipsilateral do pescoço.",i:"💪",nerv:"Ramos laterais C3-C6"},
+      {n:"M. semiespinhal da cabeça",l:"M. semispinalis capitis",d:"Maior extensor da cabeça. Entre as linhas nucais. Parte do grupo transversoespinhoso.",i:"💪",nerv:"Ramos medianos C1-C5"},
+      {n:"M. semiespinhal do pescoço",l:"M. semispinalis cervicis",d:"Processos transversos torácicos → processos espinhosos C2-C5. Extensão cervical bilateral.",i:"💪",nerv:"Ramos medianos C3-C8"},
+      {n:"Mm. suboccipitais (4)",l:"Mm. suboccipitales",d:"Reto post. maior (C2→occipital), reto post. menor (C1→occipital), oblíquo superior (C1→occipital), oblíquo inferior (C2→C1). Controle fino C0-C1-C2. Triângulo suboccipital (a. vertebral + N. suboccipital).",i:"💪",nerv:"N. suboccipital C1"},
+      {n:"M. longo da cabeça",l:"M. longus capitis",d:"Tubérculos anteriores C3-C6 → parte basilar occipital. Flexão da cabeça.",i:"💪",nerv:"N. cervical anterior C1-C3"},
+      {n:"M. longo do pescoço",l:"M. longus colli",d:"Principal flexor profundo cervical. 3 porções: vertical, oblíqua superior e inferior. Estabilizador segmentar — ativação feedforward. Atrofia em cervicalgia crônica.",i:"💪",nerv:"N. cervical anterior C2-C6"},
+      {n:"M. reto lateral da cabeça",l:"M. rectus capitis lateralis",d:"Processo transverso C1 → processo jugular occipital. Inclinação lateral da cabeça.",i:"💪",nerv:"C1"},
+      {n:"M. reto anterior da cabeça",l:"M. rectus capitis anterior",d:"Massa lateral atlas → parte basilar occipital. Flexão atlantooccipital.",i:"💪",nerv:"C1-C2"},
+      {n:"Mm. escalenos (anterior, médio, posterior)",l:"Mm. scaleni",d:"Anterior: C3-C6 → 1ª costela (tubérculo de Lisfranc). Médio: C2-C7 → 1ª costela. Posterior: C5-C7 → 2ª costela. Flexão lateral + elevação costelas. Triângulo interescalênico: plexo braquial + a. subclávia.",i:"💪",nerv:"Ramos anteriores C3-C8"},
+      {n:"M. elevador da escápula",l:"M. levator scapulae",d:"Tubérculos posteriores C1-C4 → ângulo superior escápula. Elevação e rotação inferior da escápula + inclinação ipsilateral.",i:"💪",nerv:"N. dorsal da escápula C3-C5"},
+      {n:"Mm. infrahioideos (4)",l:"Mm. infrahyoidei",d:"Omo-hioideos, esterno-hioideos, esternotiroideos, tireo-hioideos. Deprimem hioide e laringe após deglutição.",i:"💪",nerv:"Ansa cervical C1-C3"},
+      {n:"Mm. suprahioideos (4)",l:"Mm. suprahyoidei",d:"Digástrico, estilo-hioideos, milo-hioideos, gênio-hioideos. Elevam hioide e laringe, deprimem mandíbula.",i:"💪",nerv:"V3, VII, C1"},
+      {n:"Mm. mastigadores — masseter",l:"M. masseter",d:"Arco zigomático → ramo mandibular. Elevação (fechamento) potente da mandíbula. Hipertrofia no bruxismo.",i:"💪",nerv:"N. massetérico (V3)"},
+      {n:"Mm. mastigadores — temporal",l:"M. temporalis",d:"Fossa temporal → processo coronoide. Elevação + retrusão da mandíbula.",i:"💪",nerv:"Nn. temporais profundos (V3)"},
+      {n:"Mm. mastigadores — pterigoideos",l:"Mm. pterygoidei",d:"Pterigoideo medial: elevação. Pterigoideo lateral: protrusão e abertura mandibular (cabeça inferior). ATM.",i:"💪",nerv:"N. pterigoideos (V3)"},
+      {n:"M. platisma",l:"Platysma",d:"Fáscia peitoral → mandíbula e pele do pescoço. Tensiona pele do pescoço e deprime canto da boca.",i:"💪",nerv:"N. facial VII (ramo cervical)"},
+    ],
+    Nervos:[
+      {n:"N. olfatório (I)",l:"N. olfactorius",d:"Filamentos pela lâmina cribriforme → bulbo olfatório. Olfato. Lesão em trauma frontal → anosmia.",i:"⚡",nerv:"Par craniano I"},
+      {n:"N. óptico (II)",l:"N. opticus",d:"Retina → quiasma óptico → trato óptico → córtex visual. Canal óptico. Lesão: amaurose ipsilateral.",i:"⚡",nerv:"Par craniano II"},
+      {n:"N. oculomotor (III)",l:"N. oculomotorius",d:"Motor: 4 mm. extraoculares + elevador palpebral. Parassimpático: esfíncter da pupila (miose) e músculo ciliar. Lesão: ptose, midríase, estrabismo divergente.",i:"⚡",nerv:"Par craniano III"},
+      {n:"N. troclear (IV)",l:"N. trochlearis",d:"Motor: m. oblíquo superior. Único a emergir na face dorsal do tronco encefálico. Lesão: diplopia ao olhar para baixo.",i:"⚡",nerv:"Par craniano IV"},
+      {n:"N. trigêmio (V)",l:"N. trigeminus",d:"3 divisões: V1 oftálmica (órbita, fronte), V2 maxilar (bochecha, nariz, lábio superior), V3 mandibular (mandíbula, língua, motor mastigação). Sensitivo da face.",i:"⚡",nerv:"Par craniano V"},
+      {n:"N. abducente (VI)",l:"N. abducens",d:"Motor: m. reto lateral (abdução). Trajeto longo pela base — lesão em HIC. Lesão: estrabismo convergente.",i:"⚡",nerv:"Par craniano VI"},
+      {n:"N. facial (VII)",l:"N. facialis",d:"Motor: músculos da expressão facial, estapédio, estilo-hioideos, digástrico (ventre posterior). Parassimpático: glândulas lacrimal, submandibular, sublingual. Sensitivo: 2/3 anteriores da língua (corda do tímpano). Lesão periférica: paralisia de Bell.",i:"⚡",nerv:"Par craniano VII"},
+      {n:"N. vestibulococlear (VIII)",l:"N. vestibulocochlearis",d:"Ramo coclear: audição. Ramo vestibular: equilíbrio. Canal auditivo interno. Neurinoma do acústico: compressão no ângulo pontocerebelar.",i:"⚡",nerv:"Par craniano VIII"},
+      {n:"N. glossofaríngeo (IX)",l:"N. glossopharyngeus",d:"Sensitivo: 1/3 posterior língua (paladar), faringe, seio carotídeo. Motor: estilofaríngeo. Parassimpático: glândula parótida.",i:"⚡",nerv:"Par craniano IX"},
+      {n:"N. vago (X)",l:"N. vagus",d:"Maior extensão dos NC. Motor: faringe, laringe (recorrente), palato mole. Parassimpático: tórax e abdome. Sensitivo: faringe, laringe, vísceras.",i:"⚡",nerv:"Par craniano X"},
+      {n:"N. acessório (XI)",l:"N. accessorius",d:"Motor: ECM (rotação contralateral) e trapézio (elevação escápula). Raízes espinhais C1-C5. Lesão: incapacidade de elevar ombro ipsilateral.",i:"⚡",nerv:"Par craniano XI"},
+      {n:"N. hipoglosso (XII)",l:"N. hypoglossus",d:"Motor de todos os mm. intrínsecos e extrínsecos da língua (exceto palatoglosso). Canal do hipoglosso. Lesão: desvio da língua para o lado lesado.",i:"⚡",nerv:"Par craniano XII"},
+      {n:"Plexo cervical (C1-C4)",l:"Plexus cervicalis",d:"Ramos cutâneos: nn. occipital menor, auricular maior, transverso do pescoço, supraclaviculares. N. frênico (C3-C5): motor do diafragma. Ansa cervical (C1-C3): mm. infrahioideos.",i:"⚡",nerv:"C1-C4"},
+      {n:"N. occipital maior",l:"N. occipitalis major",d:"Ramo dorsal de C2. Sensitivo: couro cabeludo occipital. Neuralgia occipital: dor em choque elétrico.",i:"⚡",nerv:"C2"},
+      {n:"N. occipital menor",l:"N. occipitalis minor",d:"Plexo cervical C2-C3. Sensitivo: couro cabeludo lateral posterior.",i:"⚡",nerv:"C2-C3"},
+      {n:"N. auricular maior",l:"N. auricularis magnus",d:"C2-C3. Sensitivo: pele sobre a parótida, mastóide e orelha externa.",i:"⚡",nerv:"C2-C3"},
+      {n:"N. frênico",l:"N. phrenicus",d:"C3-C5 ('3,4,5 keeps the diaphragm alive'). Motor e sensitivo do diafragma. Lesão: hemidiafragma paralisado.",i:"⚡",nerv:"C3-C4-C5"},
+    ],
+    Vasos:[
+      {n:"A. carótida comum direita",l:"A. carotis communis dextra",d:"Da a. braquiocefálica. Ascende no pescoço. Divide-se em C4 em carótida interna e externa.",i:"🩸",nerv:""},
+      {n:"A. carótida comum esquerda",l:"A. carotis communis sinistra",d:"Diretamente do arco aórtico. Trajeto mais longo que a direita.",i:"🩸",nerv:""},
+      {n:"A. carótida interna",l:"A. carotis interna",d:"Sem ramos cervicais. Canal carotídeo → seio cavernoso → polígono de Willis. Irriga encéfalo ipsilateral.",i:"🩸",nerv:""},
+      {n:"A. carótida externa",l:"A. carotis externa",d:"8 ramos: tireoideia superior, lingual, facial, occipital, auricular posterior, faríngea ascendente, maxilar, temporal superficial.",i:"🩸",nerv:""},
+      {n:"A. vertebral",l:"A. vertebralis",d:"Da a. subclávia. Forames transversários C6-C1 → forame magno → aa. espinais + a. cerebelar inferior posterior (PICA). Irriga tronco e cerebelo.",i:"🩸",nerv:""},
+      {n:"A. subclávia",l:"A. subclavia",d:"Direita: da braquiocefálica. Esquerda: do arco aórtico. Ramos: vertebral, tireoideia inferior, torácica interna, tronco costocervical.",i:"🩸",nerv:""},
+      {n:"V. jugular interna",l:"V. jugularis interna",d:"Seio sigmoide → forame jugular → veia braquiocefálica. Drena encéfalo, face e pescoço.",i:"🩸",nerv:""},
+      {n:"V. jugular externa",l:"V. jugularis externa",d:"Formada atrás do ângulo mandibular. Drena superfície lateral do pescoço e couro cabeludo.",i:"🩸",nerv:""},
+      {n:"Seio carotídeo",l:"Sinus caroticus",d:"Dilatação na bifurcação carotídea. Barorreceptores (IX par). Hiperssensibilidade: síncope por pressão no pescoço.",i:"🩸",nerv:"N. glossofaríngeo IX"},
+      {n:"Glândula tireóide",l:"Glandula thyroidea",d:"Lobos direito/esquerdo + istmo. A. tiroideia superior (carótida ext.) e inferior (tireoideia inferior). Relação com n. laríngeo recorrente na cirurgia.",i:"🩸",nerv:"Simpático + parassimpático (vago)"},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   OMBRO
+══════════════════════════════════════════════════════ */
+ombro:{name:"Cintura Escapular e Ombro",sub:"Glenoumeral, acromioclavicular, esternoclavicular, manguito dos rotadores e bursa subacromial",bilateral:false,
+  structs:{
+    Ossos:[
+      {n:"Clavícula",l:"Clavicula",d:"Único osso longo horizontal do corpo. 1/3 medial convexo, 2/3 laterais côncavos. Fratura mais comum no 1/3 médio (força de transmissão). Conecta membro superior ao esqueleto axial.",i:"🦴",nerv:"Nn. supraclaviculares C3-C4"},
+      {n:"Escápula",l:"Scapula",d:"Osso triangular plano. Espinha, acrômio, processo coracoide, fossa supra/infraespinhal, fossa subescapular, cavidade glenoidal (rasa), ângulo inferior/superior/lateral.",i:"🦴",nerv:"N. supraescapular, N. dorsal"},
+      {n:"Acrômio",l:"Acromion",d:"Prolongamento lateral da espinha da escápula. Tipo I (plano), II (curvo), III (ganchoso — maior risco de impacto). Liga com clavícula na AC.",i:"🦴",nerv:"N. supraclavicular"},
+      {n:"Processo coracoide",l:"Processus coracoideus",d:"'Dedo que aponta'. Inserção: peitoral menor, bíceps (cabeça curta), coracobraquial. Ligamentos coracoclaviculares (trapezoide e conoide).",i:"🦴",nerv:"N. peitoral lateral"},
+      {n:"Cavidade glenoidal",l:"Cavitas glenoidalis",d:"Rasa (~1/3 da cabeça umeral). Labro glenoidal aprofunda. Inclina ~5° inferiormente e 7° posteriormente. Defeito de Hill-Sachs: fratura por impacto na luxação anterior.",i:"🦴",nerv:"N. axilar"},
+      {n:"Úmero proximal — cabeça",l:"Caput humeri",d:"2/3 de esfera. Retroversão ~30°. Colo anatômico: separação cabeça/tubérculos. Colo cirúrgico: fratura frequente (n. axilar em risco).",i:"🦴",nerv:"N. axilar C5-C6"},
+      {n:"Tubérculo maior (troquiter)",l:"Tuberculum majus",d:"Inserções: supraespinhoso (faceta superior), infraespinhoso (faceta média), redondo menor (faceta inferior). Impacto sob o acrômio.",i:"🦴",nerv:"N. supraescapular, N. axilar"},
+      {n:"Tubérculo menor (troquin)",l:"Tuberculum minus",d:"Inserção: subescapular. Sulco intertubercular (bicipital) entre os tubérculos — contém tendão da cabeça longa do bíceps.",i:"🦴",nerv:"N. subescapular"},
+    ],
+    Articulações:[
+      {n:"Articulação glenoumeral",l:"Art. humeri (glenoumeralis)",d:"Esferoide — maior mobilidade do corpo. Abd 180°, flex 180°, ext 60°, rot lat 90°, rot med 70°. Ritmo escapuloumeral 2:1 (GU:ET). Estabilizadores estáticos: labro, cápsula, LGU inferior. Dinâmicos: manguito.",i:"🔗",nerv:"N. axilar C5-C6, N. supraescapular"},
+      {n:"Articulação acromioclavicular",l:"Art. acromioclavicularis",d:"Plana sinovial com disco intra-articular variável. Ligamentos coracoclaviculares (estabilidade vertical). Graus I-VI de Rockwood. Lesão em queda direta sobre ombro.",i:"🔗",nerv:"N. supraclavicular lateral"},
+      {n:"Articulação esternoclavicular",l:"Art. sternoclavicularis",d:"Selar com disco fibrocartilaginoso. Ligamentos: esternoclavicular anterior/posterior, costoclavicular, interclavicular. Única articulação sinovial verdadeira entre membro superior e esqueleto axial.",i:"🔗",nerv:"N. supraclavicular medial"},
+      {n:"Articulação escapulotorácica",l:"Art. scapulothoracica",d:"Pseudoarticulação (deslizamento da escápula sobre tórax). Sem superfície sinovial. Rotação superior 60° durante abdução. Coordenada por serrátil anterior e trapézio.",i:"🔗",nerv:"N. torácico longo, N. acessório XI"},
+      {n:"Espaço subacromial",l:"Spatium subacromiale",d:"Entre cabeça umeral e arco coracoacromial (acrômio + lig. coracoacromial + coracoide). Contém bursa subacromial e tendão do supraespinhoso. Altura normal ~9-10mm.",i:"🔗",nerv:"N. supraescapular"},
+      {n:"Bursa subacromial-subdeltóidea",l:"Bursa subacromialis-subdeltoidea",d:"Maior bursa do corpo. Reduz fricção entre manguito e arco coracoacromial. Bursitie subacromial: dor em arco 60-120°.",i:"🔗",nerv:"N. axilar, N. supraescapular"},
+      {n:"Ligamento glenoumeral inferior (LGUI)",l:"Lig. glenohumerale inferius",d:"3 feixes: anterior, posterior e bolsa axilar. Principal estabilizador estático anterior em abdução >45°. Lesão de Bankart acomete a inserção anterior.",i:"🔗",nerv:"N. axilar"},
+      {n:"Ligamento glenoumeral médio (LGUM)",l:"Lig. glenohumerale medium",d:"Origem no labro anterior. Estabilizador anterior em abdução 0-45° e rotação externa.",i:"🔗",nerv:""},
+      {n:"Ligamento glenoumeral superior (LGUS)",l:"Lig. glenohumerale superius",d:"Limite inferior da abertura do recesso axilar. Junto ao ligamento coracoumeral limita translação inferior.",i:"🔗",nerv:""},
+      {n:"Ligamento coracoumeral",l:"Lig. coracohumerale",d:"Processo coracoide → tubérculos. Limita rotação lateral em adução e translação inferior. Contraído na capsulite adesiva.",i:"🔗",nerv:""},
+    ],
+    Músculos:[
+      {n:"M. supraespinhoso",l:"M. supraspinatus",d:"Fossa supraespinhal → faceta superior do tubérculo maior. Inicia abdução 0-15°. Zona crítica hipovascular a ~1cm da inserção — site mais frequente de ruptura. Teste: Jobe (empty can).",i:"💪",nerv:"N. supraescapular C5-C6"},
+      {n:"M. infraespinhoso",l:"M. infraspinatus",d:"Fossa infraespinhal → faceta média do tubérculo maior. Principal rotador lateral. Cobre 60-70% da cavidade glenoidal posteriormente. Teste: Patte, rotação lateral resistida.",i:"💪",nerv:"N. supraescapular C5-C6"},
+      {n:"M. subescapular",l:"M. subscapularis",d:"Fossa subescapular → tubérculo menor. Único rotador medial do manguito. Maior e mais forte do manguito. Testes: lift-off, belly-press, bear-hug.",i:"💪",nerv:"Nn. subescapulares superior e inferior C5-C6"},
+      {n:"M. redondo menor",l:"M. teres minor",d:"Borda lateral escápula → faceta inferior tubérculo maior. Rotador lateral auxiliar. Porção inferior do manguito. Lesão: quadrilátero de Velpeau (n. axilar).",i:"💪",nerv:"N. axilar C5"},
+      {n:"M. deltoide — porção anterior",l:"M. deltoideus — pars clavicularis",d:"Clavícula lateral → tuberosidade deltóidea. Flexão e rotação medial do úmero.",i:"💪",nerv:"N. axilar C5-C6"},
+      {n:"M. deltoide — porção média",l:"M. deltoideus — pars acromialis",d:"Acrômio → tuberosidade deltóidea. Abdução a partir de 15° (após supraespinhoso iniciar). Maior porção do deltoide.",i:"💪",nerv:"N. axilar C5-C6"},
+      {n:"M. deltoide — porção posterior",l:"M. deltoideus — pars spinalis",d:"Espinha da escápula → tuberosidade deltóidea. Extensão e rotação lateral do úmero.",i:"💪",nerv:"N. axilar C5-C6"},
+      {n:"M. serrátil anterior",l:"M. serratus anterior",d:"Costelas 1-9 (digitações) → borda medial da escápula (face costal). Protração + rotação superior da escápula. Paralisia → escápula alata + déficit de elevação acima de 90°.",i:"💪",nerv:"N. torácico longo C5-C6-C7"},
+      {n:"M. trapézio — fibras médias",l:"M. trapezius — pars transversa",d:"Processos espinhosos C7-T3 → espinha da escápula. Retração da escápula.",i:"💪",nerv:"N. acessório XI + C3-C4"},
+      {n:"M. trapézio — fibras inferiores",l:"M. trapezius — pars ascendens",d:"Processos espinhosos T4-T12 → raiz da espinha da escápula. Depressão e rotação superior da escápula.",i:"💪",nerv:"N. acessório XI + C3-C4"},
+      {n:"M. grande dorsal",l:"M. latissimus dorsi",d:"Processos espinhosos T7-L5, crista ilíaca, costelas 9-12 → sulco intertubercular. Adução, extensão e rotação medial. 'Músculo da natação e da tosse'.",i:"💪",nerv:"N. toracodorsal C6-C7-C8"},
+      {n:"M. redondo maior",l:"M. teres major",d:"Ângulo inferior escápula → crista do tubérculo menor. Extensão, adução e rotação medial. 'Pequeno grande dorsal'.",i:"💪",nerv:"N. subescapular inferior C5-C6"},
+      {n:"M. peitoral maior",l:"M. pectoralis major",d:"Clavícula, esterno, cartilagens costais 1-6 → crista do tubérculo maior. Adução, flexão (porção clavicular) e rotação medial. Cabeças clavicular (flexão) e esternocostal (extensão).",i:"💪",nerv:"Nn. peitorais medial e lateral C5-T1"},
+      {n:"M. peitoral menor",l:"M. pectoralis minor",d:"Costelas 3-5 → processo coracoide. Protração + rotação inferior + depressão da escápula. Síndrome do peitoral menor: compressão do plexo.",i:"💪",nerv:"N. peitoral medial C8-T1"},
+      {n:"M. bíceps braquial — cabeça longa",l:"M. biceps brachii — caput longum",d:"Tubérculo supraglenoidal → sulco intertubercular → tuberosidade bicipital. Estabilizador secundário glenoumeral. Ruptura do tendão: 'sinal de Popeye'.",i:"💪",nerv:"N. musculocutâneo C5-C6"},
+      {n:"M. bíceps braquial — cabeça curta",l:"M. biceps brachii — caput breve",d:"Processo coracoide (junto ao coracobraquial) → tuberosidade bicipital. Flexão do cotovelo e supinação máxima a 90°.",i:"💪",nerv:"N. musculocutâneo C5-C6"},
+      {n:"M. coracobraquial",l:"M. coracobrachialis",d:"Processo coracoide → face medial do úmero. Flexão e adução do braço. N. musculocutâneo perfura este músculo.",i:"💪",nerv:"N. musculocutâneo C5-C7"},
+      {n:"Mm. romboides (maior e menor)",l:"Mm. rhomboidei",d:"Menor: C7-T1 → raiz da espinha. Maior: T2-T5 → borda medial abaixo da espinha. Retração + rotação inferior da escápula. Inervado pelo n. dorsal da escápula.",i:"💪",nerv:"N. dorsal da escápula C4-C5"},
+    ],
+    Nervos:[
+      {n:"N. axilar",l:"N. axillaris",d:"C5-C6. Do fascículo posterior do plexo. Circunda o colo cirúrgico do úmero no quadrilátero de Velpeau. Motor: deltoide e redondo menor. Sensitivo: N. cutâneo lateral do braço. Lesão em fratura do colo cirúrgico ou luxação anterior.",i:"⚡",nerv:"C5-C6"},
+      {n:"N. supraescapular",l:"N. suprascapularis",d:"C5-C6. Pela incisura supraescapular (sob lig. transverso). Motor: supraespinhoso e infraespinhoso. Sensitivo: articulações AC e GU. Compressão: atletas de voleibol (cisto gangliônico).",i:"⚡",nerv:"C5-C6"},
+      {n:"N. torácico longo",l:"N. thoracicus longus",d:"C5-C6-C7. Face lateral do tórax, superficial ao serrátil anterior. Motor: serrátil anterior. Lesão: escápula alata. Trauma em cirurgia de mama/axila.",i:"⚡",nerv:"C5-C6-C7"},
+      {n:"N. toracodorsal",l:"N. thoracodorsalis",d:"C6-C7-C8. Do fascículo posterior. Motor: grande dorsal. Lesão em esvaziamento axilar.",i:"⚡",nerv:"C6-C7-C8"},
+      {n:"Nn. subescapulares (superior e inferior)",l:"Nn. subscapulares",d:"C5-C6. Do fascículo posterior. Superior: subescapular superior. Inferior: subescapular inferior e redondo maior.",i:"⚡",nerv:"C5-C6"},
+      {n:"N. peitoral lateral",l:"N. pectoralis lateralis",d:"C5-C6-C7. Do fascículo lateral. Motor: peitoral maior (porção clavicular) e peitoral menor.",i:"⚡",nerv:"C5-C7"},
+      {n:"N. peitoral medial",l:"N. pectoralis medialis",d:"C8-T1. Do fascículo medial. Motor: peitoral maior (porção esternocostal) e peitoral menor.",i:"⚡",nerv:"C8-T1"},
+      {n:"N. dorsal da escápula",l:"N. dorsalis scapulae",d:"C4-C5. Perfura o escaleno médio. Motor: romboides e levantador da escápula.",i:"⚡",nerv:"C4-C5"},
+      {n:"N. musculocutâneo",l:"N. musculocutaneus",d:"C5-C6-C7. Do fascículo lateral. Perfura o coracobraquial. Motor: coracobraquial, bíceps, braquial. Sensitivo: N. cutâneo lateral do antebraço.",i:"⚡",nerv:"C5-C7"},
+    ],
+    Vasos:[
+      {n:"A. axilar",l:"A. axillaris",d:"Da clavícula ao bordo inferior do peitoral maior. 3 partes pelo peitoral menor. Ramos: torácica suprema, toracoacromial, torácica lateral, subescapular, circunflexas umerais.",i:"🩸",nerv:""},
+      {n:"A. toracoacromial",l:"A. thoracoacromialis",d:"Da 2ª parte da axilar. 4 ramos: peitoral, acromial, clavicular, deltóideo.",i:"🩸",nerv:""},
+      {n:"A. subescapular",l:"A. subscapularis",d:"Maior ramo da axilar. Divide em torácica dorsal (grande dorsal + serrátil) e circunflexa da escápula (anastomose dorsal).",i:"🩸",nerv:""},
+      {n:"A. circunflexa umeral anterior",l:"A. circumflexa humeri anterior",d:"Menor. Irriga tendão da cabeça longa do bíceps e parte anterossuperior da cabeça umeral.",i:"🩸",nerv:""},
+      {n:"A. circunflexa umeral posterior",l:"A. circumflexa humeri posterior",d:"Maior. Acompanha o n. axilar no quadrilátero de Velpeau. Principal suprimento da cabeça umeral. Lesão em fratura do colo cirúrgico.",i:"🩸",nerv:""},
+      {n:"V. cefálica",l:"V. cephalica",d:"Sulco deltopeitoral → veia axilar. Referência no acesso deltopeitoral. Ligada para exposição na artroplastia.",i:"🩸",nerv:""},
+      {n:"V. basílica",l:"V. basilica",d:"Face medial do braço → veia axilar (ou braquial). Usada como enxerto vascular e acesso venoso central.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   COTOVELO
+══════════════════════════════════════════════════════ */
+cotovelo:{name:"Cotovelo e Antebraço",sub:"Articulações do cotovelo, músculos flexores/extensores/pronossupinadores e nervos",bilateral:false,
+  structs:{
+    Ossos:[
+      {n:"Úmero distal",l:"Humerus distalis",d:"Capítulo (para cabeça radial), tróclea (para incisura troclear da ulna), epicôndilo medial (eminência do cotovelo, sulco ulnar), epicôndilo lateral, fossa olecraniana, coronoide e radial.",i:"🦴",nerv:"N. radial, N. ulnar"},
+      {n:"Cabeça radial",l:"Caput radii",d:"Disco articular para capítulo + incisura radial da ulna. Fratura frequente em queda com mão estendida (tipo Mason I-IV). Ligamento anular estabiliza.",i:"🦴",nerv:"N. radial"},
+      {n:"Colo do rádio",l:"Collum radii",d:"Entre cabeça e tuberosidade. Fratura em valgo + compressão axial.",i:"🦴",nerv:"N. interósseo posterior"},
+      {n:"Tuberosidade bicipital",l:"Tuberositas radii",d:"Inserção do tendão distal do bíceps. Rotação do antebraço altera posição desta tuberosidade — em semipronação é mais facilmente palpável.",i:"🦴",nerv:"N. musculocutâneo"},
+      {n:"Olécrano",l:"Olecranon",d:"Processo posterior da ulna. Inserção do tríceps. Fratura por queda direta ou avulsão. Bursa olecraniana sobre ele.",i:"🦴",nerv:"N. ulnar"},
+      {n:"Processo coronoide",l:"Processus coronoideus",d:"Processo anterior da ulna. Inserção do braquial. Tríade terrível: luxação + fratura coronoide + fratura cabeça radial.",i:"🦴",nerv:"N. mediano"},
+      {n:"Incisura troclear",l:"Incisura trochlearis",d:"Cavidade em C formada pelo olécrano + processo coronoide. Encaixa na tróclea umeral. Gínglimo.",i:"🦴",nerv:""},
+      {n:"Incisura radial da ulna",l:"Incisura radialis ulnae",d:"Face lateral da ulna proximal. Articulação radioulnar proximal (trocóide).",i:"🦴",nerv:""},
+    ],
+    Articulações:[
+      {n:"Articulação umeroulnar",l:"Art. humeroulnaris",d:"Tróclea + incisura troclear. Gínglimo — flexão 0-150° e extensão. Ângulo de carregamento: ~10-15° em valgo. Maior stabilidade em 90° de flexão.",i:"🔗",nerv:"N. musculocutâneo, N. radial"},
+      {n:"Articulação umerorradial",l:"Art. humeroradialis",d:"Capítulo + fóvea radial. Esferoide modificada. Participa de flexão, extensão e prono-supinação.",i:"🔗",nerv:"N. radial"},
+      {n:"Articulação radioulnar proximal",l:"Art. radioulnaris proximalis",d:"Cabeça radial + incisura radial + ligamento anular. Trocóide. 80° de pronação + 85° de supinação.",i:"🔗",nerv:"N. radial, N. interósseo posterior"},
+      {n:"Ligamento colateral ulnar (LCU)",l:"Lig. collaterale ulnare",d:"3 feixes: anterior (principal estabilizador valgo), posterior (fan-shaped), transverso. Lesão em lançadores ('UCL tear').",i:"🔗",nerv:"N. ulnar"},
+      {n:"Ligamento colateral radial (LCR)",l:"Lig. collaterale radiale",d:"Epicôndilo lateral → ligamento anular. Estabilizador varo. Lesão em luxação postero-lateral rotatória.",i:"🔗",nerv:"N. radial"},
+      {n:"Ligamento colateral lateral ulnar (LCLU)",l:"Lig. collaterale laterale ulnare",d:"Epicôndilo lateral → crista do supinador da ulna. Principal estabilizador contra instabilidade rotatória posterolateral.",i:"🔗",nerv:""},
+      {n:"Ligamento anular do rádio",l:"Lig. anulare radii",d:"Envolve a cabeça radial, inserindo na incisura radial da ulna. Mantém a cabeça radial. Lesão de Nursemaid: subluxação em crianças por tração do braço.",i:"🔗",nerv:""},
+      {n:"Membrana interóssea",l:"Membrana interossea antebrachii",d:"Entre rádio e ulna. Transfere forças do rádio para a ulna. Fibras oblíquas principal + corda oblíqua + ligamento quadrado.",i:"🔗",nerv:""},
+      {n:"Bursa olecraniana",l:"Bursa olecrani",d:"Sobre o olécrano. Bursitie por trauma repetitivo ou gota. Superficial — facilmente palpável quando inflamada.",i:"🔗",nerv:"N. ulnar"},
+    ],
+    Músculos:[
+      {n:"M. bíceps braquial",l:"M. biceps brachii",d:"Principal flexor + supinador potente a 90°. Aponeurose bicipital protege a. braquial e n. mediano medialmente. Ruptura distal: 'sinal de Popeye distal', fraqueza de supinação.",i:"💪",nerv:"N. musculocutâneo C5-C6"},
+      {n:"M. braquial",l:"M. brachialis",d:"Úmero anterior → processo coronoide + tuberosidade ulnar. Flexor puro (independe de prono-supinação). Motor mais poderoso do cotovelo em todas as posições.",i:"💪",nerv:"N. musculocutâneo C5-C6 + ramo do N. radial C7"},
+      {n:"M. braquiorradial",l:"M. brachioradialis",d:"Crista supracondilar lateral → processo estiloide do rádio. Flexor em posição neutra. Palpável na borda lateral do antebraço.",i:"💪",nerv:"N. radial C5-C6"},
+      {n:"M. tríceps braquial — cabeça longa",l:"M. triceps brachii — caput longum",d:"Tubérculo infraglenoidal da escápula → olécrano. Único extensor + adução/extensão do braço.",i:"💪",nerv:"N. radial C7-C8"},
+      {n:"M. tríceps braquial — cabeça lateral",l:"M. triceps brachii — caput laterale",d:"Úmero posterior superior ao sulco espiral → olécrano. Potente extensor.",i:"💪",nerv:"N. radial C7-C8"},
+      {n:"M. tríceps braquial — cabeça medial",l:"M. triceps brachii — caput mediale",d:"Úmero posterior inferior ao sulco espiral → olécrano. Mais profunda. Ativa em toda extensão.",i:"💪",nerv:"N. radial C7-C8"},
+      {n:"M. ancôneo",l:"M. anconeus",d:"Epicôndilo lateral → lateral do olécrano e ulna posterior. Auxilia extensão + estabilização lateral + abdução da ulna na pronação.",i:"💪",nerv:"N. radial C7-C8"},
+      {n:"M. pronador redondo",l:"M. pronator teres",d:"Cabeça umeral (epicôndilo medial) + cabeça ulnar (processo coronoide) → face lateral do rádio (ponto mais pronador). N. mediano passa entre as duas cabeças — síndrome do pronador.",i:"💪",nerv:"N. mediano C6-C7"},
+      {n:"M. pronador quadrado",l:"M. pronator quadratus",d:"Ulna distal → rádio distal. Principal pronador (especialmente no cotovelo estendido). Inervado pelo n. interósseo anterior.",i:"💪",nerv:"N. interósseo anterior C8-T1"},
+      {n:"M. supinador",l:"M. supinator",d:"Epicôndilo lateral, crista do supinador da ulna → rádio lateral proximal. 2 cabeças (superficial e profunda). N. interósseo posterior perfura entre elas na Arcada de Frohse. Principal supinador com cotovelo estendido.",i:"💪",nerv:"N. interósseo posterior C5-C6"},
+      {n:"M. extensor carpi radialis longo (ECRL)",l:"M. extensor carpi radialis longus",d:"Crista supracondilar lateral → base do 2° metacarpo. Extensão + desvio radial do punho.",i:"💪",nerv:"N. radial C6-C7"},
+      {n:"M. extensor carpi radialis breve (ECRB)",l:"M. extensor carpi radialis brevis",d:"Epicôndilo lateral → base do 3° metacarpo. Epicondilite lateral: tensão máxima em pronação + flexão do punho. Teste: dor ao estender dedo médio com resistência.",i:"💪",nerv:"N. radial C6-C7"},
+      {n:"M. extensor dos dedos",l:"M. extensor digitorum",d:"Epicôndilo lateral → expansão extensora D2-D5. Extensão das MCF + assistência às IFP/IFD.",i:"💪",nerv:"N. interósseo posterior C7-C8"},
+      {n:"M. extensor do dedo mínimo",l:"M. extensor digiti minimi",d:"Epicôndilo lateral → expansão extensora D5. Extensão do 5° dedo.",i:"💪",nerv:"N. interósseo posterior C7-C8"},
+      {n:"M. extensor carpi ulnaris",l:"M. extensor carpi ulnaris",d:"Epicôndilo lateral + ulna → base do 5° metacarpo. Extensão + desvio ulnar. Instabilidade subsheath: dor no ulnar dorsal.",i:"💪",nerv:"N. interósseo posterior C7-C8"},
+      {n:"M. flexor carpi radialis",l:"M. flexor carpi radialis",d:"Epicôndilo medial → base do 2° e 3° metacarpo. Flexão + desvio radial do punho. Referência para artéria radial.",i:"💪",nerv:"N. mediano C6-C7"},
+      {n:"M. flexor carpi ulnaris",l:"M. flexor carpi ulnaris",d:"Cabeça umeral (epicôndilo medial) + cabeça ulnar → pisiforme → hamato → 5° metacarpo. Flexão + desvio ulnar. N. ulnar corre medial a ele.",i:"💪",nerv:"N. ulnar C7-C8"},
+      {n:"M. palmar longo",l:"M. palmaris longus",d:"Epicôndilo medial → retináculo dos flexores + aponeurose palmar. Ausente em 15%. Tensão = sinal de Phalen. Enxerto tendinoso.",i:"💪",nerv:"N. mediano C7-C8"},
+      {n:"M. flexor superficial dos dedos",l:"M. flexor digitorum superficialis",d:"Cabeça umero-ulnar (epicôndilo medial + processo coronoide) + cabeça radial → falanges médias D2-D5. Flexão das IFP. N. mediano entra entre suas cabeças.",i:"💪",nerv:"N. mediano C7-C8-T1"},
+    ],
+    Nervos:[
+      {n:"N. mediano (cotovelo)",l:"N. medianus",d:"C6-T1. Entre as cabeças do pronador redondo — síndrome do pronador. N. interósseo anterior: motor (FPD D2-D3, FLP, pronador quadrado). Teste: pinça OK fraca = lesão do NIA.",i:"⚡",nerv:"C6-T1"},
+      {n:"N. ulnar (sulco cubital)",l:"N. ulnaris",d:"C8-T1. Sulco entre epicôndilo medial e olécrano (túnel cubital). Fascia de Osborne na entrada. Lesão: hipoestesia ulnar (D4-D5), fraqueza dos interósseos → sinal de Froment, garra cubital.",i:"⚡",nerv:"C8-T1"},
+      {n:"N. radial (cotovelo)",l:"N. radialis",d:"C5-T1. Divide ao nível do capítulo em ramo superficial (sensitivo: dorso radial) e n. interósseo posterior (motor: extensores). Compressão: síndrome do túnel radial.",i:"⚡",nerv:"C5-T1"},
+      {n:"N. interósseo anterior",l:"N. interosseus antebrachii anterior",d:"Ramo motor do mediano. Motor: FPD (D2-D3), FLP, pronador quadrado. Lesão: incapacidade de fazer 'sinal OK' — pinça polegar-indicador sem flexão das IFD.",i:"⚡",nerv:"C8-T1"},
+      {n:"N. interósseo posterior",l:"N. interosseus antebrachii posterior",d:"Ramo motor do radial. Perfura o supinador pela Arcada de Frohse. Motor: ECRB, extensor dos dedos, ECU, extensores do polegar, ABD longo. Lesão: extensão fraca, sem mão caída (ECRL preservado).",i:"⚡",nerv:"C7-C8"},
+      {n:"N. musculocutâneo → N. cutâneo lateral do antebraço",l:"N. cutaneus antebrachii lateralis",d:"Continuação sensitiva do musculocutâneo abaixo do cotovelo. Sensitivo: face lateral do antebraço.",i:"⚡",nerv:"C5-C6"},
+    ],
+    Vasos:[
+      {n:"A. braquial",l:"A. brachialis",d:"Principal artéria do braço. Medial ao bíceps. Divide-se ao nível do colo do rádio em radial e ulnar. Referência para PA + lesão em fraturas supracondilares.",i:"🩸",nerv:""},
+      {n:"A. radial proximal",l:"A. radialis — pars proximalis",d:"Ramo terminal da braquial. Lateral no antebraço. Ramos: a. recorrente radial (anastomose com braquial), a. interóssea palmar, a. radial do indicador.",i:"🩸",nerv:""},
+      {n:"A. ulnar proximal",l:"A. ulnaris — pars proximalis",d:"Maior ramo terminal da braquial. Medial no antebraço. Ramos: a. recorrente ulnar anterior/posterior, tronco interósseo comum (anterior e posterior).",i:"🩸",nerv:""},
+      {n:"A. interóssea anterior",l:"A. interossea anterior",d:"Do tronco interósseo comum (ulnar). Acompanha o n. interósseo anterior na membrana interóssea. Irriga mm. profundos do antebraço anterior.",i:"🩸",nerv:""},
+      {n:"A. interóssea posterior",l:"A. interossea posterior",d:"Do tronco interósseo comum. Perfura a membrana interóssea → compartimento posterior. Irriga mm. extensores.",i:"🩸",nerv:""},
+      {n:"Anastomose periarticular do cotovelo",l:"Rete articulare cubiti",d:"Rede anastomótica entre colaterais (braquial) e recorrentes (radial, ulnar, interóssea). Circulação colateral após ligadura da braquial.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   MÃO E PUNHO
+══════════════════════════════════════════════════════ */
+mao:{name:"Punho e Mão",sub:"8 ossos do carpo, 5 metacarpos, 14 falanges, tendões, nervos e vasculatura completa",bilateral:false,
+  structs:{
+    Ossos:[
+      {n:"Escafoide",l:"Os scaphoideum",d:"Maior osso da fileira proximal. ~70% das fraturas do carpo. Vascularização distal para proximal (retrógrada) → polo proximal avascular → risco de necrose. Dor na tabaqueira anatômica.",i:"🦴",nerv:"N. radial sensitivo"},
+      {n:"Semilunar",l:"Os lunatum",d:"Central da fileira proximal. Mais frequentemente luxado (perilunate → lunate). Doença de Kienböck: necrose avascular idiopática.",i:"🦴",nerv:""},
+      {n:"Piramidal",l:"Os triquetrum",d:"Fileira proximal ulnar. Articulação pisiforme sobre sua face palmar. Fraturas por avulsão no ligamento.",i:"🦴",nerv:"N. ulnar"},
+      {n:"Pisiforme",l:"Os pisiforme",d:"Sesamóide no tendão do FCU. Canal de Guyon delimitado lateralmente. Única articulação: com o piramidal.",i:"🦴",nerv:"N. ulnar"},
+      {n:"Trapézio",l:"Os trapezium",d:"Fileira distal radial. Sela com o 1° metacarpo (CMC I — oposição do polegar). Rizartrose frequente.",i:"🦴",nerv:"N. radial sensitivo"},
+      {n:"Trapezoide",l:"Os trapezoideum",d:"Menor osso da fileira distal. Encaixa firmemente com o 2° metacarpo.",i:"🦴",nerv:""},
+      {n:"Capitato",l:"Os capitatum",d:"Maior osso do carpo. Cabeça (proximal), colo, corpo. Articulações com semilunar + escafoide + 3° metacarpo.",i:"🦴",nerv:""},
+      {n:"Hamato",l:"Os hamatum",d:"Gancho (hamulus) na face palmar: limita medialmente o canal de Guyon. Fratura do gancho: atletas de raquete. Articulação com D4-D5.",i:"🦴",nerv:"N. ulnar profundo"},
+      {n:"1° Metacarpo (polegar)",l:"Os metacarpale I",d:"Mais curto e robusto. Sem articulação com o 2° metacarpo. CMC I selar (trapézio-metacarpal) permite oposição.",i:"🦴",nerv:"N. radial sensitivo, N. mediano (tenar)"},
+      {n:"2°-5° Metacarpos",l:"Ossa metacarpalia II-V",d:"2°: mais fixo (âncora do ECRL). Fratura do boxeador: colo do 5° metacarpo em valgo. Fratura do 4°: força direta.",i:"🦴",nerv:"N. ulnar (dorsais), N. mediano/ulnar (palmares)"},
+      {n:"Falanges proximais D1-D5",l:"Phalanges proximales",d:"Base (MCF), corpo, cabeça (IFP/IFD). D1 tem 2 falanges; D2-D5 têm 3.",i:"🦴",nerv:"Nn. digitais palmares"},
+      {n:"Falanges médias D2-D5",l:"Phalanges mediae",d:"Ausente no polegar. Inserção dorsal do FSD na base. Inserção do tendão extensor central.",i:"🦴",nerv:"Nn. digitais palmares"},
+      {n:"Falanges distais",l:"Phalanges distales",d:"Tuberosidade distal na falange terminal. Inserção do FPD (palmar) e tendão terminal do extensor (dorsal). Fratura por esmagamento.",i:"🦴",nerv:"Nn. digitais palmares"},
+      {n:"Sesamóides do polegar",l:"Ossa sesamoidea pollicis",d:"2 sesamóides na face palmar da MCF I (nos tendões do abdutor curto e adutor). Fratura por impacto.",i:"🦴",nerv:"N. mediano, N. ulnar"},
+    ],
+    Articulações:[
+      {n:"Articulação radiocárpica",l:"Art. radiocarpalis",d:"Rádio distal + disco articular (TFC) + escafoide/semilunar/piramidal. Elipsoide. Flexão 70°, extensão 75°, desvio radial 20°, ulnar 35°. TFCC: disco triangular fibrocartilaginoso.",i:"🔗",nerv:"N. interósseo anterior e posterior"},
+      {n:"Articulação radioulnar distal",l:"Art. radioulnaris distalis",d:"Cabeça ulnar + incisura ulnar do rádio + TFCC. Trocóide. Pronossupinação distal. Lesão do TFCC: dor no punho ulnar.",i:"🔗",nerv:"N. interósseo anterior"},
+      {n:"Articulação mediocárpica",l:"Art. mediocarpalis",d:"Entre fileiras proximal e distal do carpo. Maior amplitude: flexão/extensão. Instabilidade mediocárpica: clunck na desvio ulnar ativo.",i:"🔗",nerv:"N. interósseo posterior"},
+      {n:"CMC do polegar",l:"Art. carpometacarpalis pollicis",d:"Selar (sela de cavalo) — 2 graus de liberdade + oposição (rotação). Flexão/extensão, abdução/adução, oposição. Rizartrose: osteoartrite CMC I mais comum após o joelho.",i:"🔗",nerv:"N. radial sensitivo (dorsal)"},
+      {n:"Articulações CMC II-V",l:"Art. carpometacarpales II-V",d:"Planas. II-III fixas (âncora). IV-V com maior mobilidade → cúpula palmar na preensão de força.",i:"🔗",nerv:"N. ulnar profundo"},
+      {n:"Articulações MCF",l:"Art. metacarpophalangeae",d:"Condilares biaxiais. Flexão 90°, extensão 20-30°, abd/adução. Ligamentos colaterais tensos em flexão — imobilizar em flexão para evitar contratura.",i:"🔗",nerv:"Nn. digitais palmares"},
+      {n:"Articulações IFP",l:"Art. interphalangeae proximales",d:"Gínglimos. Flexão 100-120°, extensão 0°. Ligamentos colaterais + placa volar. Lesão central slip: deformidade boutonnière.",i:"🔗",nerv:"Nn. digitais palmares"},
+      {n:"Articulações IFD",l:"Art. interphalangeae distales",d:"Gínglimos. Flexão 70-90°, extensão leve. Lesão tendão terminal: deformidade em martelo. Nódulos de Heberden na osteoartrite.",i:"🔗",nerv:"Nn. digitais palmares"},
+      {n:"IF do polegar",l:"Art. interphalangea pollicis",d:"Gínglimo. Flexão 70-80°. Ligamento sesamóide reforça palmarmente.",i:"🔗",nerv:"N. mediano (palmar), N. radial (dorsal)"},
+      {n:"Túnel do carpo",l:"Canalis carpi",d:"Retináculo dos flexores (teto) + ossos do carpo (assoalho/paredes). Contém: 4 tendões FSD, 4 FPD, 1 FLP + n. mediano (9 tendões + 1 nervo). Pressão elevada → síndrome do túnel do carpo.",i:"🔗",nerv:"N. mediano"},
+      {n:"Canal de Guyon",l:"Canalis ulnaris (Guyon)",d:"Pisiforme (lateral) + gancho do hamato (medial) + retináculo palmar. Contém a. e n. ulnar. 3 zonas: I (proximal — motor+sensitivo), II (motor), III (sensitivo).",i:"🔗",nerv:"N. ulnar"},
+      {n:"Placa volar (volar plate)",l:"Lamina volaris",d:"Fibrocartilagem palmar das MCF e IFP. Limita hiperextensão. Lesão: avulsão da base da falange proximal em extensão forçada.",i:"🔗",nerv:""},
+    ],
+    Músculos:[
+      {n:"M. flexor superficial dos dedos (FSD)",l:"M. flexor digitorum superficialis",d:"Antebraço → falanges médias D2-D5 (fende para passar o FPD). Flexão das IFP. Teste: segurar outros dedos estendidos e flexionar IFP.",i:"💪",nerv:"N. mediano C7-C8-T1"},
+      {n:"M. flexor profundo dos dedos (FPD)",l:"M. flexor digitorum profundus",d:"Ulna anterior → falange distal D2-D5. Flexão das IFD. Dupla inervação: D2-D3 pelo n. interósseo anterior (mediano), D4-D5 pelo n. ulnar.",i:"💪",nerv:"N. mediano (D2-D3) + N. ulnar (D4-D5)"},
+      {n:"M. flexor longo do polegar (FLP)",l:"M. flexor pollicis longus",d:"Rádio anterior → falange distal D1. Flexão da IF do polegar. N. interósseo anterior. Jersey finger do polegar.",i:"💪",nerv:"N. interósseo anterior C8-T1"},
+      {n:"Mm. lumbricais I-II",l:"Mm. lumbricales I-II",d:"Tendões FPD de D2-D3. Inserção: expansão extensora radial. Flexão das MCF + extensão das IFP/IFD (posição intrínseca-plus).",i:"💪",nerv:"N. mediano C8-T1"},
+      {n:"Mm. lumbricais III-IV",l:"Mm. lumbricales III-IV",d:"Tendões FPD de D4-D5. Mesma ação dos I-II.",i:"💪",nerv:"N. ulnar profundo C8-T1"},
+      {n:"Mm. interósseos dorsais (4)",l:"Mm. interossei dorsales",d:"DABA (dorsais abduzem): 2 cabeças cada um. D1: abduza D2 radialmente. D2: abduza D2 ulnarmente. D3: abduza D3 radialmente. D4: abduza D4 ulnarmente. + Flexão MCF + extensão IFP.",i:"💪",nerv:"N. ulnar profundo C8-T1"},
+      {n:"Mm. interósseos palmares (3)",l:"Mm. interossei palmares",d:"PAFA (palmares aduzem): D2 (radial), D4 e D5 (ulnar). 1 cabeça cada. Adução dos dedos + flexão MCF + extensão IFP.",i:"💪",nerv:"N. ulnar profundo C8-T1"},
+      {n:"M. abdutor curto do polegar (APB)",l:"M. abductor pollicis brevis",d:"Retináculo + escafoide/trapézio → falange proximal D1. Abdução palmar do polegar. Atrofia tenar → sinal avançado de STC.",i:"💪",nerv:"N. mediano recorrente T1"},
+      {n:"M. flexor curto do polegar (FPB)",l:"M. flexor pollicis brevis",d:"Cabeça superficial (N. mediano) + cabeça profunda (N. ulnar). Retináculo/trapézio → sesamóide radial. Flexão da MCF I.",i:"💪",nerv:"N. mediano (superficial) + N. ulnar (profunda)"},
+      {n:"M. oponente do polegar",l:"M. opponens pollicis",d:"Retináculo + trapézio → 1° metacarpo (face radial). Oposição do polegar (rotação + flexão + abdução). Músculo mais profundo do tenar.",i:"💪",nerv:"N. mediano recorrente C8-T1"},
+      {n:"M. adutor do polegar",l:"M. adductor pollicis",d:"Cabeça oblíqua (capitato + bases D2-D3) + cabeça transversa (3° metacarpo) → sesamóide ulnar + base falange proximal D1. Adução + flexão MCF I. Sinal de Froment: fraqueza → compensa com FLP.",i:"💪",nerv:"N. ulnar profundo C8-T1"},
+      {n:"M. abdutor do dedo mínimo",l:"M. abductor digiti minimi",d:"Pisiforme → base falange proximal D5. Abdução do D5.",i:"💪",nerv:"N. ulnar profundo C8-T1"},
+      {n:"M. flexor curto do dedo mínimo",l:"M. flexor digiti minimi brevis",d:"Gancho do hamato → base falange proximal D5. Flexão da MCF V.",i:"💪",nerv:"N. ulnar profundo C8-T1"},
+      {n:"M. oponente do dedo mínimo",l:"M. opponens digiti minimi",d:"Gancho do hamato + retináculo → 5° metacarpo. Aprofunda a cúpula palmar.",i:"💪",nerv:"N. ulnar profundo C8-T1"},
+      {n:"M. palmar curto",l:"M. palmaris brevis",d:"Retináculo → pele hipotenar. Aprofunda a cúpula hipotenar + protege n. ulnar no canal de Guyon.",i:"💪",nerv:"N. ulnar superficial C8-T1"},
+      {n:"M. extensor longo do polegar (EPL)",l:"M. extensor pollicis longus",d:"Ulna posterior → falange distal D1. Extensão da IF + estabilização da CMC. Terceiro compartimento extensor. Ruptura espontânea pós-fratura distal do rádio.",i:"💪",nerv:"N. interósseo posterior C7-C8"},
+      {n:"M. extensor curto do polegar (EPB)",l:"M. extensor pollicis brevis",d:"Rádio posterior → falange proximal D1. Extensão da MCF I. 1° compartimento extensor (com APL).",i:"💪",nerv:"N. interósseo posterior C7-C8"},
+      {n:"M. abdutor longo do polegar (APL)",l:"M. abductor pollicis longus",d:"Rádio/ulna posterior → base do 1° metacarpo. Abdução e extensão da CMC I. 1° compartimento. De Quervain: tenosinovite no 1° compartimento.",i:"💪",nerv:"N. interósseo posterior C7-C8"},
+    ],
+    Nervos:[
+      {n:"N. mediano (mão)",l:"N. medianus — manus",d:"Pelo túnel do carpo. Ramo recorrente (tenar): APB, FPB superficial, oponente. Ramos digitais: sensitivo palmar D1-D3 e metade radial D4. LOAF: Lumbricais I-II, Oponente, APB, FPB superficial.",i:"⚡",nerv:"C6-T1"},
+      {n:"N. ulnar (mão)",l:"N. ulnaris — manus",d:"Canal de Guyon. Ramo profundo (motor): hipotênares, interósseos, lumbricais III-IV, adutor do polegar, FPB profundo. Ramo superficial (sensitivo): D5 e metade ulnar D4.",i:"⚡",nerv:"C8-T1"},
+      {n:"N. radial superficial (mão)",l:"N. radialis superficialis — manus",d:"Emerge sob o braquiorradial distalmente. Sensitivo: dorso radial da mão, D1, D2, metade radial D3 (até IFP). Neurite de Wartenberg.",i:"⚡",nerv:"C6-C7"},
+      {n:"Nn. digitais palmares comuns",l:"Nn. digitales palmares communes",d:"Do n. mediano: D1, D2, D3 e metade radial D4. Do n. ulnar: metade ulnar D4 e D5.",i:"⚡",nerv:"C6-T1"},
+      {n:"Nn. digitais palmares próprios",l:"Nn. digitales palmares proprii",d:"Ramos terminais dos digitais comuns. Inervam os dois lados de cada dedo. Neuroma de Morton análogo na mão.",i:"⚡",nerv:"C6-T1"},
+    ],
+    Vasos:[
+      {n:"A. radial (punho e mão)",l:"A. radialis — manus",d:"Tabaqueira anatômica → primeiro espaço interósseo → arco palmar profundo. Ramo palmar superficial contribui para arco superficial.",i:"🩸",nerv:""},
+      {n:"A. ulnar (punho e mão)",l:"A. ulnaris — manus",d:"Canal de Guyon → arco palmar superficial (principal). Ramo profundo contribui para arco profundo.",i:"🩸",nerv:""},
+      {n:"Arco palmar superficial",l:"Arcus palmaris superficialis",d:"Principalmente ulnar. 4 aa. digitais palmares comuns → aa. digitais próprias (2 por dedo). Nível da prega palmar distal.",i:"🩸",nerv:""},
+      {n:"Arco palmar profundo",l:"Arcus palmaris profundus",d:"Principalmente radial. Mais proximal que o superficial. Aa. metacarpais palmares contribuem para digitais próprias.",i:"🩸",nerv:""},
+      {n:"A. princeps pollicis",l:"A. princeps pollicis",d:"Da a. radial no 1° espaço. Divide em aa. digitais palmares próprias do polegar (radial e ulnar).",i:"🩸",nerv:""},
+      {n:"A. radialis indicis",l:"A. radialis indicis",d:"Da radial ou princeps. Borda radial do indicador. Importante em retalhos microcirúrgicos.",i:"🩸",nerv:""},
+      {n:"Vv. digitais dorsais",l:"Vv. digitales dorsales",d:"Drenam para rede venosa dorsal da mão → cefálica (radial) e basílica (ulnar).",i:"🩸",nerv:""},
+      {n:"Teste de Allen",l:"Testus Alleni",d:"Avalia permeabilidade dos arcos palmares. Comprime radial + ulnar, abre a mão, libera uma de cada vez — enchimento < 5s = normal.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   COLUNA VERTEBRAL
+══════════════════════════════════════════════════════ */
+coluna:{name:"Coluna Vertebral",sub:"7 cervicais, 12 torácicas, 5 lombares, sacro e cóccix — estruturas, ligamentos e biomecânica",bilateral:true,
+  structs:{
+    Ossos:[
+      {n:"Vértebras cervicais C1-C2 (atlas e áxis)",l:"Vertebrae C1-C2",d:"Atlas: sem corpo, anel ósseo. Áxis: odontoide (dens). Responsáveis por 50% da rotação e 50% da flexoextensão cervical.",i:"🦴",nerv:"C1-C2"},
+      {n:"Vértebras cervicais C3-C7",l:"Vertebrae C3-C7",d:"Processos espinhosos bífidos (C3-C6). Forames transversários: a. vertebral passa em C1-C6. Articulações de Luschka. C7: processo espinhoso proeminente.",i:"🦴",nerv:"C3-C7"},
+      {n:"Vértebras torácicas T1-T12",l:"Vertebrae thoracicae",d:"Facetas costais no corpo (articulações costovertebral) e nos processos transversos (T1-T10). Cifose fisiológica 20-45° (Cobb).",i:"🦴",nerv:"T1-T12"},
+      {n:"Vértebras lombares L1-L5",l:"Vertebrae lumbales",d:"Maiores corpos vertebrais. Processos transversos (costiformes). Processos mamilares e acessórios. Lordose fisiológica 40-60°.",i:"🦴",nerv:"L1-L5"},
+      {n:"Sacro",l:"Os sacrum",d:"5 vértebras sacras fundidas. Promontório sacral, foramens sacrais anteriores/posteriores, canal sacral, cornos sacrais, canal do sacro. Articulação com L5 (L5-S1) e ílio (ASI).",i:"🦴",nerv:"S1-S5"},
+      {n:"Cóccix",l:"Os coccygis",d:"3-5 vértebras rudimentares fundidas. Inserção: glúteo máximo, ligamentos sacrococcígeos, elevador do ânus. Coccigodinia: dor pós-trauma.",i:"🦴",nerv:"N. coccígeo"},
+    ],
+    Articulações:[
+      {n:"Disco intervertebral",l:"Discus intervertebralis",d:"23 discos. Núcleo pulposo (proteoglicanos/água — 80% ao nascer, 70% adulto) + anel fibroso 12-15 lamelas concêntricas (colágeno I externo, II interno). Herniação: posterolateral (mais comum) ou central.",i:"🔗",nerv:"N. sinovertebral (Luschka)"},
+      {n:"Articulações zigapofisárias (facetárias)",l:"Art. zygapophysiales",d:"Cervical: plano coronal 45° → rotação livre. Torácica: plano frontal → rotação predominante. Lombar: plano sagital → flexoextensão, limita rotação. Fonte de dor nos ramos medianos.",i:"🔗",nerv:"Ramos medianos (dupla inervação)"},
+      {n:"Articulação atlantooccipital",l:"Art. atlantooccipitalis",d:"Côndilo occipital + fóvea do atlas. Bicondilar. Flexão/extensão ('sim') ~15° cada. Inclinação lateral ~5-8°.",i:"🔗",nerv:"C1"},
+      {n:"Articulação atlantoaxial",l:"Art. atlantoaxialis mediana",d:"Dente do áxis + anel do atlas (lig. transverso). Trocóide. ~50% da rotação cervical (~45° para cada lado).",i:"🔗",nerv:"C2"},
+      {n:"Articulações costovertebrais",l:"Art. costovertebrales",d:"Costovertebral (cabeça da costela + corpo vertebral) + costotransversal (tubérculo + processo transverso). T1-T10.",i:"🔗",nerv:"Nn. intercostais"},
+      {n:"Articulação lombossacral L5-S1",l:"Art. lumbosacralis",d:"Maior cisalhamento. Ângulo de Ferguson ~30° — força de shear aumentada. Pars interarticularis em estresse: espondilólise → espondilolistese ístmica.",i:"🔗",nerv:"L5-S1"},
+      {n:"Ligamento longitudinal anterior (LLA)",l:"Lig. longitudinale anterius",d:"Base do occipital → sacro. Largo, forte. Limita extensão excessiva + ruptura em trauma por extensão (lesão em chicote).",i:"🔗",nerv:"N. sinovertebral"},
+      {n:"Ligamento longitudinal posterior (LLP)",l:"Lig. longitudinale posterius",d:"C2 → sacro. Limita flexão. Estreita no lombar → herniações posterolaterais mais frequentes que posteriores.",i:"🔗",nerv:"N. sinovertebral"},
+      {n:"Ligamento amarelo (flavum)",l:"Lig. flavum",d:"Entre lâminas vertebrais adjacentes. ~80% elastina. Pré-tensionado em posição neutra — retorna sem flambagem. Hipertrofia → estenose do canal.",i:"🔗",nerv:""},
+      {n:"Ligamentos interespinhosos",l:"Ligg. interspinalia",d:"Entre processos espinhosos adjacentes. Colágeno. Limita flexão.",i:"🔗",nerv:""},
+      {n:"Ligamento supraespinhoso",l:"Lig. supraspinale",d:"Sobre ápices dos processos espinhosos C7-sacro. Continua superiormente como ligamento nucal.",i:"🔗",nerv:""},
+      {n:"Ligamento nucal",l:"Lig. nuchae",d:"Expansão do supraespinhoso na região cervical. De C7 à protuberância occipital. Separa músculos do pescoço.",i:"🔗",nerv:""},
+      {n:"Ligamentos intertransversários",l:"Ligg. intertransversaria",d:"Entre processos transversos. Limitam inclinação lateral. Melhor desenvolvidos no lombar.",i:"🔗",nerv:""},
+      {n:"Ligamento transverso do atlas",l:"Lig. transversum atlantis",d:"Entre as massas laterais do atlas, posterior ao dente do áxis. Estabiliza C1-C2. Ruptura em SD de Down, AR — instabilidade atlantoaxial.",i:"🔗",nerv:""},
+    ],
+    Músculos:[
+      {n:"M. multífido",l:"M. multifidus",d:"2-5 segmentos. Profundo, espinhotransverso. Principal estabilizador segmentar. Ativa feedforward em movimentos dos membros. Atrofia ipsilateral e seletiva após episódio de lombalgia.",i:"💪",nerv:"Ramos medianos dos nn. dorsais"},
+      {n:"M. eretor da espinha — iliocostal",l:"M. iliocostalis",d:"Porção mais lateral do eretor. Cervical, torácico e lombar. Extensão + inclinação ipsilateral.",i:"💪",nerv:"Ramos laterais dos nn. dorsais"},
+      {n:"M. eretor da espinha — longuíssimo",l:"M. longissimus",d:"Porção intermediária. Da cabeça ao sacro. Principal extensor da coluna.",i:"💪",nerv:"Ramos laterais dos nn. dorsais"},
+      {n:"M. eretor da espinha — espinhoso",l:"M. spinalis",d:"Porção medial. Conecta processos espinhosos. Mais desenvolvido no torácico.",i:"💪",nerv:"Ramos medianos dos nn. dorsais"},
+      {n:"M. semiespinhal",l:"M. semispinalis",d:"Transversoespinhal. Torácico, cervical e cabeça. Extensão + rotação contralateral.",i:"💪",nerv:"Ramos medianos dos nn. dorsais"},
+      {n:"M. rotadores (curtos e longos)",l:"Mm. rotatores",d:"Menor grupo do transversoespinhal. Curtos: 1 segmento. Longos: 2 segmentos. Propriocepção + extensão segmentar.",i:"💪",nerv:"Ramos medianos dos nn. dorsais"},
+      {n:"M. intertransversários",l:"Mm. intertransversarii",d:"Entre processos transversos. Inclinação lateral. Função proprioceptiva relevante.",i:"💪",nerv:"Ramos ventrais e dorsais"},
+      {n:"M. interespinhosos",l:"Mm. interspinales",d:"Entre processos espinhosos. Extensão segmentar. Mais desenvolvidos em cervical e lombar.",i:"💪",nerv:"Ramos medianos"},
+      {n:"M. transverso abdominal",l:"M. transversus abdominis",d:"6 últimas costelas, fáscia toracolombar, crista ilíaca → linha alba. Parede anterior do cilindro abdominal. Ativa feedforward 30ms antes do movimento. Principal estabilizador profundo do tronco.",i:"💪",nerv:"Nn. intercostais T7-T12, N. iliohipogástrico L1"},
+      {n:"M. oblíquo interno",l:"M. obliquus internus abdominis",d:"Fáscia toracolombar, crista ilíaca → costelas 10-12, linha alba. Estabilizador global do tronco. Rotação ipsilateral.",i:"💪",nerv:"Nn. intercostais T8-T12, N. iliohipogástrico"},
+      {n:"M. oblíquo externo",l:"M. obliquus externus abdominis",d:"Costelas 5-12 → crista ilíaca, linha alba. Rotação contralateral. Forma parede anterior do canal inguinal.",i:"💪",nerv:"Nn. intercostais T5-T12"},
+      {n:"M. reto abdominal",l:"M. rectus abdominis",d:"Cartilagens costais 5-7, processo xifoide → púbis. Flexão do tronco + contenção das vísceras. Bainha do reto abdominal.",i:"💪",nerv:"Nn. intercostais T7-T12"},
+      {n:"M. quadrado lombar",l:"M. quadratus lumborum",d:"Crista ilíaca, lig. iliolumbar → 12ª costela, processos transversos L1-L4. Inclinação lateral ipsilateral + fixação 12ª costela na inspiração. 'Músculo da postura lombar'.",i:"💪",nerv:"Nn. lombares T12-L4"},
+      {n:"M. psoas maior",l:"M. psoas major",d:"Processos transversos e discos L1-L5 → trocânter menor. Flexor do quadril + flexão da coluna lombar. Encurtamento → hiperlordose + sinal do psoas positivo em apendicite.",i:"💪",nerv:"Nn. lombares L1-L3"},
+      {n:"M. ilíaco",l:"M. iliacus",d:"Fossa ilíaca → trocânter menor (junto ao psoas = iliopsoas). Flexão do quadril.",i:"💪",nerv:"N. femoral L2-L3"},
+      {n:"M. diafragma",l:"Diaphragma",d:"Costelas 7-12, processo xifoide, vértebras lombares (pilares) → centro tendíneo. Principal músculo inspiratório (70-80% do volume corrente). Faz parte do cilindro de pressão abdominal.",i:"💪",nerv:"N. frênico C3-C4-C5"},
+    ],
+    Nervos:[
+      {n:"Raiz C5",l:"Radix C5",d:"Dermátomo: ombro lateral, braço lateral. Motor: deltoide, supraespinhoso. Reflexo: bíceps (componente). Compressão em C4-C5.",i:"⚡",nerv:"C5"},
+      {n:"Raiz C6",l:"Radix C6",d:"Dermátomo: antebraço radial, polegar e indicador. Motor: bíceps, ECRL/ECRB. Reflexo: braquiorradial. Compressão em C5-C6.",i:"⚡",nerv:"C6"},
+      {n:"Raiz C7",l:"Radix C7",d:"Dermátomo: dedo médio (D3). Motor: tríceps, extensores do punho. Reflexo: tríceps. Compressão em C6-C7.",i:"⚡",nerv:"C7"},
+      {n:"Raiz C8",l:"Radix C8",d:"Dermátomo: borda ulnar do antebraço, D4-D5. Motor: flexores dos dedos, intrínsecos da mão. Compressão em C7-T1.",i:"⚡",nerv:"C8"},
+      {n:"Raiz T1",l:"Radix T1",d:"Dermátomo: face medial do braço. Motor: músculos intrínsecos da mão. Lesão: síndrome de Horner (se fibras simpáticas comprometidas).",i:"⚡",nerv:"T1"},
+      {n:"Raízes T2-T12 (intercostais)",l:"Nn. intercostales",d:"Dermátomos torácicos em faixas horizontais. T4: mamilos. T10: umbigo. T12: região inguinal.",i:"⚡",nerv:"T2-T12"},
+      {n:"Raiz L1",l:"Radix L1",d:"Dermátomo: virilha e região inguinal. N. iliohipogástrico + ilioinguinal. Motor: psoas.",i:"⚡",nerv:"L1"},
+      {n:"Raiz L2",l:"Radix L2",d:"Dermátomo: face anterior e medial superior da coxa. Motor: flexores do quadril, adutores.",i:"⚡",nerv:"L2"},
+      {n:"Raiz L3",l:"Radix L3",d:"Dermátomo: face anterior da coxa, joelho medial. Motor: quadríceps. Reflexo patelar (componente).",i:"⚡",nerv:"L3"},
+      {n:"Raiz L4",l:"Radix L4",d:"Dermátomo: face medial da perna, maléolo medial, face dorsomedial do pé. Motor: quadríceps, tibial anterior. Reflexo: patelar. Compressão em L3-L4.",i:"⚡",nerv:"L4"},
+      {n:"Raiz L5",l:"Radix L5",d:"Dermátomo: face lateral da perna, dorso do pé, hálux. Motor: extensor longo do hálux, glúteo médio, tibial posterior. Sem reflexo próprio. Compressão em L4-L5.",i:"⚡",nerv:"L5"},
+      {n:"Raiz S1",l:"Radix S1",d:"Dermátomo: face lateral do pé, calcanhar, D5. Motor: fibulares, tríceps sural, glúteo máximo. Reflexo: aquileu. Compressão em L5-S1.",i:"⚡",nerv:"S1"},
+      {n:"Raízes S2-S5",l:"Radices S2-S5",d:"Dermátomo: períneo, face posterior da coxa (S2), região anal (S3-S5). Bexiga, reto e genitais. 'Sela' perineal.",i:"⚡",nerv:"S2-S5"},
+      {n:"N. sinovertebral (recorrente de Luschka)",l:"N. sinuvertebralis",d:"Cada nível. Ramo do n. espinal + ramo simpático. Inerva anel fibroso externo, LLP, dura-máter, vértebra. Principal mediador da dor discogênica.",i:"⚡",nerv:"Cada nível"},
+    ],
+    Vasos:[
+      {n:"A. espinal anterior",l:"A. spinalis anterior",d:"Das aa. vertebrais, une-se na linha média. Irriga 2/3 anteriores da medula (cornos anteriores, tratos espinotalâmicos). Síndrome da a. espinal anterior: paralisia + perda álgica-térmica.",i:"🩸",nerv:""},
+      {n:"Aa. espinais posteriores (2)",l:"Aa. spinales posteriores",d:"Das aa. vertebrais ou cerebelares inferiores posteriores. Irriga 1/3 posterior (colunas dorsais). Bilateral.",i:"🩸",nerv:""},
+      {n:"Aa. radiculares (segmentares)",l:"Aa. radiculares",d:"De intercostais, lombares, sacrais → reforçam aa. espinais. A. de Adamkiewicz (T9-T12, esquerda): principal reforço da medula torácica baixa e lombar alta.",i:"🩸",nerv:""},
+      {n:"Plexo venoso vertebral interno",l:"Plexus venosus vertebralis internus",d:"Dentro do canal vertebral (epidural). Sem válvulas → rota de disseminação hematogênica de tumores (seio de Batson).",i:"🩸",nerv:""},
+      {n:"Plexo venoso vertebral externo",l:"Plexus venosus vertebralis externus",d:"Anterior e posterior às vértebras. Comunica-se com veias intercostais, lombares e sacrais.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   QUADRIL E PELVE
+══════════════════════════════════════════════════════ */
+pelve:{name:"Pelve e Quadril",sub:"Coxofemoral, glúteos, pelvitrôcanteres, isquiotibiais e articulação sacroilíaca",bilateral:false,
+  structs:{
+    Ossos:[
+      {n:"Ílio",l:"Os ilium",d:"Porção superior do coxal. EIAS (ligamento inguinal), EIIS (reto femoral), EIPS, EIPI. Fossa ilíaca (ilíaco). Crista ilíaca: inserção de mm. abdominais.",i:"🦴",nerv:"N. glúteo superior, N. cutâneo femoral lateral"},
+      {n:"Ísquio",l:"Os ischii",d:"Porção posteroinferior do coxal. Tuberosidade isquiática: inserção dos isquiotibiais e adutor magno (feixe isquiocondilar). Espinha isquiática: ligamento sacroespinhal, n. pudendo.",i:"🦴",nerv:"N. isquiático, N. cutâneo posterior"},
+      {n:"Púbis",l:"Os pubis",d:"Porção anteromedial do coxal. Ramo superior (fundo do acetábulo), ramo inferior (arco subpúbico). Tubérculo pubiano: inserção do lig. inguinal.",i:"🦴",nerv:"N. ilioinguinal, N. obturador"},
+      {n:"Acetábulo",l:"Acetabulum",d:"Formado por ílio (40%), ísquio (40%), púbis (20%). Superfície lunada (articular) + fossa acetabular (não articular). Labro acetabular: aprofunda ~20% e veda pressão negativa.",i:"🦴",nerv:"N. obturador, N. femoral"},
+      {n:"Fêmur proximal — cabeça",l:"Caput femoris",d:"2/3 de esfera. Fóvea: inserção do lig. redondo. Centro de ossificação: aparece 6 meses vida. Necrose avascular: pós-trauma, corticoides, alcoolismo.",i:"🦴",nerv:"N. obturador (ramo acetabular)"},
+      {n:"Fêmur proximal — colo",l:"Collum femoris",d:"Ângulo de inclinação ~126° (coxa vara <115°, valga >135°). Anteversão ~15° (adulto). Fratura de colo: Garden I-IV (risco de NAV aumenta com o grau).",i:"🦴",nerv:""},
+      {n:"Trocânter maior",l:"Trochanter major",d:"Inserção: glúteos médio/mínimo, piriforme, obturatório externo/interno, gêmeos. Bursa trocantérica sobre ele. Síndrome da dor trocantérica.",i:"🦴",nerv:"N. glúteo superior e inferior"},
+      {n:"Trocânter menor",l:"Trochanter minor",d:"Face posteromedial. Inserção do iliopsoas. Avulsão em adolescentes atletas.",i:"🦴",nerv:"N. femoral"},
+      {n:"Fossa intertrocantérica / crista intertrocantérica",l:"Fossa/Crista intertrochanterica",d:"Anterior (fossa) + posterior (crista, inserção do quadrado femoral). Local de fraturas transtrocantéricas.",i:"🦴",nerv:""},
+    ],
+    Articulações:[
+      {n:"Articulação coxofemoral",l:"Art. coxae",d:"Esferoide multiaxial (enartrosis). Labro acetabular + fossa acetabular (almofada gordurosa + lig. transverso). Pressão negativa intra-articular. Movimentos: flexão 120°, extensão 20°, abdução 45°, adução 30°, rotação 45°.",i:"🔗",nerv:"N. femoral, N. obturador, N. isquiático"},
+      {n:"Ligamento iliofemoral (de Bigelow)",l:"Lig. iliofemorale",d:"EIAI → linha intertrocantérica. Forma de Y invertido. Mais resistente do corpo humano (350N). Limita extensão e rotação lateral. Tenso em extensão máxima.",i:"🔗",nerv:""},
+      {n:"Ligamento pubofemoral",l:"Lig. pubofemorale",d:"Eminência iliopectínea → fossa intertrocantérica. Limita abdução e rotação lateral.",i:"🔗",nerv:""},
+      {n:"Ligamento isquiofemoral",l:"Lig. ischiofemorale",d:"Corpo do ísquio → fossa digital do trocânter maior. Limita extensão e rotação medial.",i:"🔗",nerv:""},
+      {n:"Ligamento redondo (da cabeça femoral)",l:"Lig. capitis femoris",d:"Fossa acetabular → fóvea da cabeça femoral. Passagem da a. acetabular (do obturador). Tração em luxação posterior — lesão do ligamento.",i:"🔗",nerv:"N. obturador"},
+      {n:"Labro acetabular",l:"Labrum acetabuli",d:"Fibrocartilagem ao redor do acetábulo. Aumenta cobertura ~22%. Veda articulação (pressão negativa). Lesão: dor anterior + click + FAI.",i:"🔗",nerv:"N. obturador, N. femoral"},
+      {n:"Articulação sacroilíaca (ASI)",l:"Art. sacroiliaca",d:"Porção posterior: sindesmosal (lig. sacroilíacos dorsais, lig. interósseo). Porção anterior: sinovial plana. Nutação/contranutação. Testes: FABER, Gaenslen, compressão/distração.",i:"🔗",nerv:"Ramos de L4-S3"},
+      {n:"Sínfise púbica",l:"Symphysis pubica",d:"Fibrocartilagem interpúbica. Mínima mobilidade. Diástase traumática em parto ou trauma. Pubalgia atlética: estresse na inserção dos adutores.",i:"🔗",nerv:"N. ilioinguinal, N. obturador"},
+      {n:"Bursa trocantérica",l:"Bursa trochanterica",d:"Entre glúteo máximo e trocânter maior. Inflamação = síndrome da dor trocantérica (anteriormente 'bursitie trocantérica'). Associada à tendinopatia do glúteo médio.",i:"🔗",nerv:"N. glúteo superior"},
+      {n:"Bursa do iliopsoas",l:"Bursa iliopectinea",d:"Maior bursa do corpo. Entre iliopsoas e eminência iliopectínea. Snap hip anterior: deslizamento do iliopsoas.",i:"🔗",nerv:"N. femoral"},
+    ],
+    Músculos:[
+      {n:"M. glúteo máximo",l:"M. gluteus maximus",d:"Maior músculo do corpo. Ilíaco posterior, sacro, cóccix → trato iliotibial (superficial) e tuberosidade glútea (profunda). Extensão + rotação lateral + abdução (fibras superiores). Ativação máxima em subir escadas, levantar da cadeira.",i:"💪",nerv:"N. glúteo inferior L5-S1-S2"},
+      {n:"M. glúteo médio",l:"M. gluteus medius",d:"Asa do ílio (entre linhas glúteas anterior e posterior) → trocânter maior (face lateral e superior). Abdução + estabilização pélvica no apoio unipodal. Sinal de Trendelenburg positivo na fraqueza. Principal alvo no fortalecimento.",i:"💪",nerv:"N. glúteo superior L4-L5-S1"},
+      {n:"M. glúteo mínimo",l:"M. gluteus minimus",d:"Asa do ílio (entre linhas glúteas anterior e inferior) → trocânter maior (face anterior). Abdução + rotação medial. Sinergia com glúteo médio.",i:"💪",nerv:"N. glúteo superior L4-L5-S1"},
+      {n:"M. tensor da fáscia lata (TFL)",l:"M. tensor fasciae latae",d:"EIAS → trato iliotibial. Abdução + rotação medial + flexão do quadril. Tensiona o trato IT. Síndrome do TIT na corrida.",i:"💪",nerv:"N. glúteo superior L4-L5-S1"},
+      {n:"M. iliopsoas",l:"M. iliopsoas",d:"Psoas maior (L1-L5) + ilíaco (fossa ilíaca) → trocânter menor. Principal flexor do quadril (força e amplitude). Importante para postura lombar. Sinal do psoas em apendicite.",i:"💪",nerv:"N. femoral L1-L3 (psoas: ramos diretos L1-L3)"},
+      {n:"M. piriforme",l:"M. piriformis",d:"Face anterior do sacro (S2-S4) → trocânter maior (ápice). Rotador lateral em extensão, abdutor em flexão >60°. N. isquiático passa inferiormente (85%) ou através dele (15%) — síndrome do piriforme.",i:"💪",nerv:"N. piriforme S1-S2"},
+      {n:"M. obturador interno",l:"M. obturatorius internus",d:"Face interna da membrana obturatória → trocânter maior. Rotação lateral. Atravessa pequeno forame isquiático.",i:"💪",nerv:"N. do obturador interno L5-S1-S2"},
+      {n:"M. obturador externo",l:"M. obturatorius externus",d:"Face externa da membrana obturatória + ramos do púbis/ísquio → fossa digital do trocânter maior. Rotação lateral.",i:"💪",nerv:"N. obturador L3-L4"},
+      {n:"Mm. gêmeos (superior e inferior)",l:"Mm. gemelli",d:"Superior: espinha isquiática. Inferior: tuberosidade isquiática → tendão do obturador interno. Rotadores laterais auxiliares.",i:"💪",nerv:"N. do obturador interno e quadrado femoral S1-S2"},
+      {n:"M. quadrado femoral",l:"M. quadratus femoris",d:"Tuberosidade isquiática → crista intertrocantérica. Rotação lateral + adução. Conflito isquiofemoral: compressão entre trocânter menor e ísquio.",i:"💪",nerv:"N. do quadrado femoral L4-S1"},
+      {n:"M. reto femoral",l:"M. rectus femoris",d:"EIAI (cabeça direta) + sulco supraacetabular (cabeça refletida) → tendão quadricipital → patela. Flexão do quadril + extensão do joelho. Único biarticalar do quadríceps.",i:"💪",nerv:"N. femoral L2-L4"},
+      {n:"M. sartório",l:"M. sartorius",d:"EIAS → face medial proximal da tíbia (pes anserinus). Flexão + abdução + rotação lateral do quadril; flexão do joelho. Músculo mais longo do corpo.",i:"💪",nerv:"N. femoral L2-L3"},
+      {n:"Mm. isquiotibiais — bíceps femoral",l:"M. biceps femoris",d:"Cabeça longa: tuberosidade isquiática (N. tibial). Cabeça curta: lábio lateral da linha áspera (N. fibular). → Cabeça da fíbula. Extensão do quadril + flexão + rotação lateral do joelho.",i:"💪",nerv:"N. isquiático (tibial L5-S2 + fibular L5-S2)"},
+      {n:"Mm. isquiotibiais — semitendinoso",l:"M. semitendinosus",d:"Tuberosidade isquiática → face medial proximal da tíbia (pes anserinus). Extensão do quadril + flexão + rotação medial do joelho.",i:"💪",nerv:"N. tibial (ramo do isquiático) L5-S2"},
+      {n:"Mm. isquiotibiais — semimembranáceo",l:"M. semimembranosus",d:"Tuberosidade isquiática → côndilo medial da tíbia + cápsula posterior. Mais profundo. Expansão posterior forma o lig. poplíteo oblíquo.",i:"💪",nerv:"N. tibial (ramo do isquiático) L5-S2"},
+      {n:"M. adutor longo",l:"M. adductor longus",d:"Corpo do púbis → linha áspera (terço médio). Adução + flexão do quadril.",i:"💪",nerv:"N. obturador L2-L4"},
+      {n:"M. adutor curto",l:"M. adductor brevis",d:"Corpo + ramo inferior do púbis → linha áspera (terço superior). Adução + flexão.",i:"💪",nerv:"N. obturador L2-L4"},
+      {n:"M. adutor magno",l:"M. adductor magnus",d:"Feixe adutor (ramo inferior ísquio → linha áspera): N. obturador. Feixe isquiocondilar (tuberosidade isquiática → epicôndilo medial): N. tibial. Maior adutor.",i:"💪",nerv:"N. obturador (L2-L4) + N. tibial (L4)"},
+      {n:"M. grácil",l:"M. gracilis",d:"Ramo inferior do púbis → face medial proximal da tíbia (pes anserinus). Adução + flexão do joelho + rotação medial.",i:"💪",nerv:"N. obturador L2-L3"},
+      {n:"M. pectíneo",l:"M. pectineus",d:"Pecten do púbis → linha pectínea do fêmur. Adução + flexão + rotação medial.",i:"💪",nerv:"N. femoral (e frequentemente N. obturador) L2-L3"},
+    ],
+    Nervos:[
+      {n:"N. isquiático (ciático)",l:"N. ischiadicus",d:"L4-S3. Maior nervo do corpo. Emerge pelo forame isquiático maior abaixo do piriforme. Divide no ápice poplíteo em n. tibial + n. fibular comum. Motor: isquiotibiais e todos os mm. abaixo do joelho. Lesão em luxação do quadril.",i:"⚡",nerv:"L4-S3"},
+      {n:"N. femoral",l:"N. femoralis",d:"L2-L4. Pelo espaço entre psoas e ilíaco. Sob o lig. inguinal (lateral à a. femoral). Motor: iliopsoas, quadríceps, sartório, pectíneo. Sensitivo: face anterior da coxa + n. safeno (perna medial). Lesão em hematoma do psoas.",i:"⚡",nerv:"L2-L4"},
+      {n:"N. obturador",l:"N. obturatorius",d:"L2-L4. Canal obturatório. Motor: adutores. Sensitivo: face medial da coxa. Lesão em parto + cirurgia pélvica.",i:"⚡",nerv:"L2-L4"},
+      {n:"N. glúteo superior",l:"N. gluteus superior",d:"L4-S1. Pelo forame isquiático maior acima do piriforme. Motor: glúteos médio e mínimo, TFL. Lesão: Trendelenburg contralateral.",i:"⚡",nerv:"L4-S1"},
+      {n:"N. glúteo inferior",l:"N. gluteus inferior",d:"L5-S2. Pelo forame isquiático maior abaixo do piriforme. Motor: glúteo máximo. Lesão: fraqueza de extensão do quadril.",i:"⚡",nerv:"L5-S2"},
+      {n:"N. cutâneo femoral lateral",l:"N. cutaneus femoris lateralis",d:"L2-L3. Medial à EIAS, sob o lig. inguinal. Sensitivo puro: face anterolateral da coxa. Meralgia parestésica: compressão → queimação/parestesia.",i:"⚡",nerv:"L2-L3"},
+      {n:"N. pudendo",l:"N. pudendus",d:"S2-S4. Canal de Alcock (fáscia do obturador interno). Motor: mm. perineais, esfincteres. Sensitivo: genitais externos, períneo, ânus.",i:"⚡",nerv:"S2-S4"},
+      {n:"N. cutâneo posterior da coxa",l:"N. cutaneus femoris posterior",d:"S1-S3. Face posterior da coxa e porção inferior da nádega. Ramos: clunial inferior + perineais.",i:"⚡",nerv:"S1-S3"},
+    ],
+    Vasos:[
+      {n:"A. femoral",l:"A. femoralis",d:"Continuação da a. ilíaca externa sob o lig. inguinal. Triângulo femoral (entre sartório e adutor longo). A. femoral profunda: 3,5cm abaixo do lig. inguinal — principais ramos da coxa.",i:"🩸",nerv:""},
+      {n:"A. femoral profunda",l:"A. profunda femoris",d:"Principal artéria da coxa. Ramos: circunflexas femorais (medial e lateral), aa. perfurantes (3-4) que atravessam o adutor magno.",i:"🩸",nerv:""},
+      {n:"A. circunflexa femoral medial (ACFM)",l:"A. circumflexa femoris medialis",d:"Principal suprimento da cabeça femoral (pela artéria retinacular). Face posterior do colo femoral. Risco em fraturas intracapsulares e luxações.",i:"🩸",nerv:""},
+      {n:"A. circunflexa femoral lateral (ACFL)",l:"A. circumflexa femoris lateralis",d:"Ramos: ascendente (tensor TFL), transverso, descendente (anastomose perijoelho).",i:"🩸",nerv:""},
+      {n:"A. obturatória",l:"A. obturatoria",d:"Da ilíaca interna. Canal obturatório. Ramo acetabular → lig. redondo → cabeça femoral (nutrição minor). 'Coroa da morte': anastomose com epigástrica inferior.",i:"🩸",nerv:""},
+      {n:"A. glútea superior",l:"A. glutea superior",d:"Maior ramo da ilíaca interna. Forame isquiático maior acima do piriforme. Irriga glúteos médio/mínimo e TFL.",i:"🩸",nerv:""},
+      {n:"A. glútea inferior",l:"A. glutea inferior",d:"Forame isquiático maior abaixo do piriforme. Irriga glúteo máximo + anastomose com circunflexa medial (capital supply).",i:"🩸",nerv:""},
+      {n:"V. femoral",l:"V. femoralis",d:"Medial à a. femoral. Recebe v. safena magna no hiato safeno (4cm abaixo do lig. inguinal).",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   JOELHO
+══════════════════════════════════════════════════════ */
+joelho:{name:"Joelho",sub:"Fêmur distal, tíbia proximal, patela, meniscos, ligamentos cruzados e colaterais, músculos",bilateral:false,
+  structs:{
+    Ossos:[
+      {n:"Fêmur distal — côndilo medial",l:"Condylus medialis femoris",d:"Mais proeminente e volumoso. Curvatura maior → compensa ângulo Q. Epicôndilo medial: origem do LCM.",i:"🦴",nerv:"N. safeno, N. tibial"},
+      {n:"Fêmur distal — côndilo lateral",l:"Condylus lateralis femoris",d:"Menor e mais circular. Epicôndilo lateral: origem do LCL e poplíteo. Sulco poplíteo na face posterior.",i:"🦴",nerv:"N. fibular comum"},
+      {n:"Fêmur distal — sulco troclear",l:"Sulcus trochlearis",d:"Guia a patela na flexoextensão. Displasia troclear: sulco raso → instabilidade patelar. Sinal do cruzamento na radiografia.",i:"🦴",nerv:"N. femoral"},
+      {n:"Fossa intercondiliana",l:"Fossa intercondylaris",d:"Entre os côndilos. Contém LCA e LCP. Estenose → conflito com LCA (notchplasty na reconstrução).",i:"🦴",nerv:""},
+      {n:"Tíbia proximal — platô medial",l:"Condylus medialis tibiae",d:"Côncavo. Maior, mais estável. Inserção do LCM profundo + semimembranáceo. Fratura: depressão em valgo.",i:"🦴",nerv:"N. safeno, N. tibial"},
+      {n:"Tíbia proximal — platô lateral",l:"Condylus lateralis tibiae",d:"Convexo. Menor. Inserção do LCL (indireta). Fratura: mais frequente (queda + valgo). Inclinação posterior ~5-7°.",i:"🦴",nerv:"N. fibular comum"},
+      {n:"Eminência intercondilar / espinhas",l:"Eminentia intercondylaris",d:"Entre os platôs. Tubérculo intercondilar medial (inserção do LCA) e lateral (LCP). Fratura da espinha: avulsão do LCA em criança.",i:"🦴",nerv:""},
+      {n:"Tuberosidade tibial",l:"Tuberositas tibiae",d:"Face anterior da tíbia proximal. Inserção do tendão patelar. Osgood-Schlatter em adolescentes. Osteotomia de tuberosidade tibial na instabilidade patelar.",i:"🦴",nerv:"N. infrapatelar (safeno)"},
+      {n:"Cabeça da fíbula",l:"Caput fibulae",d:"Inserção do LCL + tendão do bíceps femoral. N. fibular comum circunda o colo da fíbula. Fratura por avulsão (varo forçado).",i:"🦴",nerv:"N. fibular comum"},
+      {n:"Patela",l:"Patella",d:"Sesamóide no tendão quadricipital. Aumenta braço de momento do quadríceps ~30%. Superfície articular: facetas medial, lateral, ímpar (extrema medial). Altura: índice de Insall-Salvati (normal 0,8-1,2).",i:"🦴",nerv:"N. infrapatelar"},
+    ],
+    Articulações:[
+      {n:"Menisco medial",l:"Meniscus medialis",d:"Em C (aberto). Mais fixo: aderido ao LCM e cápsula. Corno posterior maior. Lesão mais frequente (McMurray rotação externa + valgo). Irrigação: 1/3 externo (zona vermelha).",i:"🔗",nerv:"N. articular posterior (tibial)"},
+      {n:"Menisco lateral",l:"Meniscus lateralis",d:"Quase circular (O). Mais móvel: tendão poplíteo cria hiato. Menisco discoide: tipo de Watanabe. Lesão em rotação interna.",i:"🔗",nerv:"N. articular posterior (tibial)"},
+      {n:"LCA — ligamento cruzado anterior",l:"Lig. cruciatum anterius",d:"Área intercondilar anterior da tíbia → côndilo femoral lateral (face posteromedial). 2 feixes: anteromedial (tenso em flexão) e posterolateral (tenso em extensão). Lachman (20°), pivot shift, gaveta anterior.",i:"🔗",nerv:"Ramos do N. tibial"},
+      {n:"LCP — ligamento cruzado posterior",l:"Lig. cruciatum posterius",d:"Área intercondilar posterior da tíbia → côndilo femoral medial (face anterolateral). Maior e mais resistente que o LCA. Gaveta posterior, teste de Godfrey.",i:"🔗",nerv:"Ramos do N. tibial"},
+      {n:"LCM — ligamento colateral medial",l:"Lig. collaterale tibiale",d:"Epicôndilo medial femoral → côndilo medial tibial. Camadas superficial (principal) e profunda (aderida ao menisco medial). Estabilizador valgo primário. Classificação de graus I-III.",i:"🔗",nerv:"N. safeno"},
+      {n:"LCL — ligamento colateral lateral",l:"Lig. collaterale fibulare",d:"Epicôndilo lateral femoral → cabeça da fíbula. Separado do menisco lateral pelo tendão poplíteo. Estabilizador varo + rotação lateral. Parte do canto posterolateral.",i:"🔗",nerv:"N. fibular comum"},
+      {n:"Canto posterolateral (CPL)",l:"Complexus posterolateralis",d:"LCL + poplíteo + ligamento poplíteo fibular + cápsula. Estabiliza varo + rotação lateral. Lesão isolada → dial test positivo a 30° e 90°.",i:"🔗",nerv:"N. fibular comum"},
+      {n:"Canto posteromedial (CPM)",l:"Complexus posteromedialis",d:"LCM profundo + semimembranáceo + oblíquo poplíteo + cápsula. Estabiliza valgo + rotação medial em extensão.",i:"🔗",nerv:"N. safeno, N. tibial"},
+      {n:"Ligamento patelofemoral medial (LPFM)",l:"Lig. patellofemorale mediale",d:"Epicôndilo medial → patela (borda medial). Principal estabilizador medial da patela (60% da força de restrição lateral). Reconstrução em luxação patelar recorrente.",i:"🔗",nerv:"N. safeno"},
+      {n:"Tendão patelar (ligamento patelar)",l:"Lig. patellae",d:"Ápice da patela → tuberosidade tibial. Transmissão do quadríceps. Tendinopatia patelar: 'joelho do saltador'. Blazina I-IV.",i:"🔗",nerv:"N. infrapatelar"},
+      {n:"Bursa infrapatelar profunda",l:"Bursa infrapatellaris profunda",d:"Entre tendão patelar e tíbia proximal. Não comunica com articulação. Bursitie por overuse.",i:"🔗",nerv:"N. infrapatelar"},
+      {n:"Bursa pré-patelar",l:"Bursa prepatellaris",d:"Sobre a patela. 'Joelho de rezadeira' (housemaid's knee): bursitie por apoio prolongado.",i:"🔗",nerv:"N. infrapatelar"},
+      {n:"Recesso suprapatelar",l:"Recessus suprapatellaris",d:"Extensão proximal da cavidade articular. Acúmulo de líquido → abaulamento suprapatelar. Punção: acesso superolateral.",i:"🔗",nerv:""},
+    ],
+    Músculos:[
+      {n:"M. vasto medial oblíquo (VMO)",l:"M. vastus medialis obliquus",d:"Fibras oblíquas do vasto medial (55-70°). Principal estabilizador medial ativo da patela. Atrofia rápida após lesão articular. Alvo primário na reabilitação patelofemoral.",i:"💪",nerv:"N. femoral L2-L4"},
+      {n:"M. vasto lateral",l:"M. vastus lateralis",d:"Linha intertrocantérica, linha áspera → tendão quadricipital. Traciona patela lateralmente. Retináculo lateral → liberação em ITB rígida.",i:"💪",nerv:"N. femoral L2-L4"},
+      {n:"M. vasto intermediário",l:"M. vastus intermedius",d:"Face anterior do fêmur → tendão quadricipital. Extensor puro do joelho. Mais profundo do quadríceps.",i:"💪",nerv:"N. femoral L3-L4"},
+      {n:"M. reto femoral (joelho)",l:"M. rectus femoris",d:"Biarticalar: flexão quadril + extensão joelho. Menor produção de força de extensão do joelho que os vastos (por comprimento).",i:"💪",nerv:"N. femoral L2-L4"},
+      {n:"M. poplíteo",l:"M. popliteus",d:"Côndilo lateral femoral (face externa) + menisco lateral → linha soleária da tíbia. 'Abre a fechadura do joelho': rotação medial da tíbia nos primeiros 20° de flexão. Estabilizador posterolateral.",i:"💪",nerv:"N. tibial L4-S1"},
+      {n:"M. gastrocnêmio — cabeça medial",l:"M. gastrocnemius caput mediale",d:"Epicôndilo medial → tendão do Aquiles. Flexão plantar + flexão do joelho. Cabeça medial maior que a lateral.",i:"💪",nerv:"N. tibial S1-S2"},
+      {n:"M. gastrocnêmio — cabeça lateral",l:"M. gastrocnemius caput laterale",d:"Epicôndilo lateral → tendão do Aquiles. Flexão plantar + flexão do joelho.",i:"💪",nerv:"N. tibial S1-S2"},
+      {n:"M. plantare",l:"M. plantaris",d:"Linha supracondilar lateral → tendão do Aquiles (medialmente). Vestigial. Ruptura: 'snap' súbito na panturrilha — diagnóstico diferencial de TVP.",i:"💪",nerv:"N. tibial S1-S2"},
+      {n:"Pes anserinus (pata de ganso)",l:"Pes anserinus",d:"Inserção conjunta do sartório (N. femoral), grácil (N. obturador) e semitendinoso (N. tibial) na face anteromedial proximal da tíbia. Bursa anserina entre eles e o LCM.",i:"💪",nerv:"N. femoral + N. obturador + N. tibial"},
+      {n:"Trato iliotibial",l:"Tractus iliotibialis",d:"Do TFL e glúteo máximo → tubérculo de Gerdy (tíbia lateral). Estabiliza joelho lateralmente. Síndrome do TIT: fricção sobre o epicôndilo lateral a 30° de flexão.",i:"💪",nerv:"N. glúteo superior"},
+    ],
+    Nervos:[
+      {n:"N. fibular comum",l:"N. fibularis communis",d:"L4-S2. Divide-se na cabeça da fíbula em superficial (eversores) e profundo (dorsiflexores). Lesão pelo gesso mal colocado ou fratura da cabeça da fíbula → pé caído.",i:"⚡",nerv:"L4-S2"},
+      {n:"N. tibial (fossa poplítea)",l:"N. tibialis",d:"L4-S3. Centro da fossa poplítea (mais profundo que a veia). Motor: tríceps sural, poplíteo, isquiotibiais. Divisões terminais: n. plantar medial e lateral.",i:"⚡",nerv:"L4-S3"},
+      {n:"N. safeno (joelho)",l:"N. saphenus",d:"L3-L4. Ramo terminal sensitivo do femoral. Emerge no canal dos adutores (hiato do adutor). Ramo infrapatelar: sensitivo da face anteromedial do joelho. Lesão em cirurgias mediais.",i:"⚡",nerv:"L3-L4"},
+      {n:"N. cutâneo lateral da sura",l:"N. cutaneus surae lateralis",d:"L4-S2. Do fibular comum. Sensitivo: face lateral da sura.",i:"⚡",nerv:"L4-S2"},
+    ],
+    Vasos:[
+      {n:"A. poplítea",l:"A. poplitea",d:"Continuação da a. femoral pelo hiato do adutor. 5 ramos geniculares (superior/inferior medial e lateral + média). Divide em tibial anterior e tronco tibiofibular. Lesão em luxação do joelho → isquemia grave.",i:"🩸",nerv:""},
+      {n:"Aa. geniculares (5)",l:"Aa. geniculares",d:"Superior medial/lateral (acima da patela), inferior medial/lateral (abaixo da patela), média (cápsula + ligamentos cruzados). Anastomose periarticular.",i:"🩸",nerv:""},
+      {n:"V. poplítea",l:"V. poplitea",d:"Recebe vv. safena parva, geniculares e sura. Superficial à a. poplítea.",i:"🩸",nerv:""},
+      {n:"V. safena magna (joelho)",l:"V. saphena magna",d:"Face medial do joelho. Referência cirúrgica em acesso medial. Risco em cirurgias de LCM.",i:"🩸",nerv:""},
+      {n:"V. safena parva",l:"V. saphena parva",d:"Face posterior da perna → fossa poplítea → v. poplítea. Relação com n. sural.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   TORNOZELO E PÉ
+══════════════════════════════════════════════════════ */
+tornozelo:{name:"Tornozelo e Pé",sub:"Talocrural, subtalar, médio-pé, metatarsos, tendões, nervos e vasculatura completa",bilateral:false,
+  structs:{
+    Ossos:[
+      {n:"Tíbia distal",l:"Tibia distalis",d:"Maléolo medial (sulco do tibial posterior), superfície articular inferior e incisura fibular. Plafond tibial: ângulo de inclinação ~83° no plano frontal.",i:"🦴",nerv:"N. tibial, N. fibular profundo"},
+      {n:"Fíbula distal — maléolo lateral",l:"Malleolus lateralis",d:"Maléolo lateral: 1cm mais distal que o medial. Sulcos dos fibulares na face posterior. Inserção do LTFA, LTFP e CFL.",i:"🦴",nerv:"N. sural, N. fibular superficial"},
+      {n:"Tálus",l:"Talus",d:"Recebe toda a carga do peso corporal. Sem inserções musculares diretas (apenas ligamentos). Articulações: talocrural (troclear), subtalar (3 facetas), talonavicular. Vascularização precária — NAV pós-fratura.",i:"🦴",nerv:"Ramos do tibial e fibular"},
+      {n:"Calcâneo",l:"Calcaneus",d:"Maior osso do tarso. Tuberosidade posterior (inserção do Aquiles + plantares). Sustentáculo do tálus (face medial): suporta tálus + canaliza tibial posterior. Processo anterior. Fratura por queda de altura.",i:"🦴",nerv:"N. calcâneos mediais, N. plantar lateral"},
+      {n:"Navicular",l:"Os naviculare",d:"Entre tálus e cuneiformes. Tuberosidade: inserção principal do tibial posterior. Navicular acessório (os tibiale externum) em 10-14%: dor medial no arco.",i:"🦴",nerv:"N. plantar medial"},
+      {n:"Cuboide",l:"Os cuboideum",d:"Face lateral do pé. Canal fibular na face plantar (fibular longo). Articulação com calcâneo (calcaneocuboide) e metatarsos 4-5.",i:"🦴",nerv:"N. plantar lateral"},
+      {n:"Cuneiformes (medial, intermédio, lateral)",l:"Ossa cuneiformia",d:"Medial (1° metatarso + tibial anterior), intermédio (2°), lateral (3°). Forma o arco transverso (chave de abóbada: 2° metatarso).",i:"🦴",nerv:"N. plantar medial (1°-2°), plantar lateral (3°)"},
+      {n:"1° Metatarso",l:"Os metatarsale I",d:"Mais curto e robusto. Base: inserção do tibial anterior (dorsal) e fibular longo (plantar). 2 sesamóides plantares. Hálux valgo: desvio lateral do hálux.",i:"🦴",nerv:"N. plantar medial"},
+      {n:"2°-5° Metatarsos",l:"Ossa metatarsalia II-V",d:"2°: mais fixo (côncavo articulado entre cuneiformes). 5°: tuberosidade = inserção fibular curto. Fratura de Jones: diáfise proximal do 5° (risco de não-união).",i:"🦴",nerv:"Nn. plantares, digitais"},
+      {n:"Falanges do pé",l:"Phalanges pedis",d:"14 falanges. Hálux: proximal + distal. D2-D5: proximal, média, distal. Deformidades: dedos em martelo (IFP), em garra (MCF + IFP), em maço (IFD).",i:"🦴",nerv:"Nn. digitais plantares e dorsais"},
+      {n:"Sesamóides do hálux",l:"Ossa sesamoidea hallucis",d:"2 sesamóides na placa plantar da MCF I (nos tendões dos mm. curtos do hálux). Fraturas por estresse. Sesamoidite.",i:"🦴",nerv:"N. plantar medial"},
+    ],
+    Articulações:[
+      {n:"Articulação talocrural (tibiotársica)",l:"Art. talocruralis",d:"Mortaça: maléolo medial + plafond tibial + maléolo lateral + troclear do tálus. Gínglimo. Dorsiflexão 20°, flexão plantar 50°. Mais estável em dorsiflexão (parte larga do tálus encaixada).",i:"🔗",nerv:"N. tibial + N. fibular profundo"},
+      {n:"Articulação subtalar (talocalcânea)",l:"Art. subtalaris",d:"3 facetas (posterior, média, anterior). Inversão 35°, eversão 15°. Eixo oblíquo 42° do plano frontal. Compensação de rotações da perna durante a marcha.",i:"🔗",nerv:"N. tibial posterior"},
+      {n:"Articulação talonavicular",l:"Art. talonavicularis",d:"Cabeça do tálus + cavidade navicular + ligamento calcaneonavicular plantar ('mola'). Parte da articulação de Chopart.",i:"🔗",nerv:"N. plantar medial"},
+      {n:"Articulação calcaneocuboide",l:"Art. calcaneocuboidea",d:"Complementa a talonavicular na articulação de Chopart (transversa do tarso). Movimento em rotação/translação.",i:"🔗",nerv:"N. plantar lateral"},
+      {n:"Articulação de Chopart (transversa do tarso)",l:"Art. tarsi transversa",d:"Talonavicular + calcaneocuboide. Linha de amputação de Chopart. Mobilidade em supinação/pronação.",i:"🔗",nerv:""},
+      {n:"Articulação de Lisfranc (tarsometatarsal)",l:"Art. tarsometatarsalis",d:"Cuneiformes + cuboide + bases metatársicas. Ligamento de Lisfranc: cuneiforme medial → base do 2° metatarso. Lesão subdiagnosticada em trauma indireto.",i:"🔗",nerv:"N. fibular profundo"},
+      {n:"LTFA — ligamento talofibular anterior",l:"Lig. talofibulare anterius",d:"Maléolo lateral → colo do tálus. Mais fraco e lesionado em inversão + flexão plantar. Teste da gaveta anterior do tornozelo.",i:"🔗",nerv:"N. fibular superficial"},
+      {n:"CFL — ligamento calcaneofibular",l:"Lig. calcaneofibulare",d:"Maléolo lateral → face lateral do calcâneo. Lesionado após LTFA em entorses grau II-III. Teste de inversão em stress.",i:"🔗",nerv:"N. fibular superficial"},
+      {n:"LTFP — ligamento talofibular posterior",l:"Lig. talofibulare posterius",d:"Maléolo lateral → processo posterior do tálus. Mais forte dos 3 laterais. Lesionado apenas em luxação.",i:"🔗",nerv:"N. sural"},
+      {n:"Ligamento deltoide (medial)",l:"Lig. mediale (deltoideum)",d:"4 feixes: tibionavicular, tibiocalcâneo, tibiotalar anterior e posterior. Muito resistente. Lesão em eversão forçada ou fratura em avulsão do maléolo.",i:"🔗",nerv:"N. safeno, N. tibial"},
+      {n:"Ligamento calcaneonavicular plantar ('mola')",l:"Lig. calcaneonaviculare plantare",d:"Sustentáculo do tálus → navicular. Suporta a cabeça do tálus. Lesão → queda do arco longitudinal medial → pé plano adquirido.",i:"🔗",nerv:"N. plantar medial"},
+      {n:"Fáscia plantar (aponeurose plantar)",l:"Aponeurosis plantaris",d:"Tuberosidade medial calcânea → placas volares das MCF. 3 porções: medial (hálux), central (D2-D4), lateral (D5). Mecanismo de guincho (windlass): extensão do hálux tensiona → eleva arco.",i:"🔗",nerv:"N. plantar medial e lateral"},
+      {n:"Túnel do tarso",l:"Canalis tarsi",d:"Retináculo dos flexores + maléolo medial + calcâneo. Contém: tibial posterior, FLD, FLD, n. e a. tibial posterior. Síndrome do túnel do tarso: compressão do n. tibial.",i:"🔗",nerv:"N. tibial posterior"},
+      {n:"Sindesmose tibiofibular",l:"Syndesmosis tibiofibularis",d:"Ligamentos: tibiofibular anterior/posterior + membrana interóssea + transverso. Mantém a mortaça. Lesão = entorse alta do tornozelo. Teste de compressão (squeeze test).",i:"🔗",nerv:"N. fibular profundo"},
+    ],
+    Músculos:[
+      {n:"M. tibial anterior",l:"M. tibialis anterior",d:"Tíbia lateral + membrana interóssea → cuneiforme medial + 1° metatarso (plantar). 1° compartimento anterior. Dorsiflexão + inversão. Fraqueza = pé caído (drop foot), marcha em steppage. Raiz L4.",i:"💪",nerv:"N. fibular profundo L4-L5"},
+      {n:"M. extensor longo dos dedos",l:"M. extensor digitorum longus",d:"Fíbula lateral + membrana interóssea → falanges médias e distais D2-D5. Dorsiflexão + extensão D2-D5. 1° compartimento anterior.",i:"💪",nerv:"N. fibular profundo L4-S1"},
+      {n:"M. extensor longo do hálux",l:"M. extensor hallucis longus",d:"Fíbula medial + membrana interóssea → falange distal do hálux. Dorsiflexão + extensão do hálux. Fraqueza = déficit de L5.",i:"💪",nerv:"N. fibular profundo L4-L5"},
+      {n:"M. fibular terceiro",l:"M. fibularis tertius",d:"1/3 inferior da fíbula → 5° metatarso. Dorsiflexão + eversão. Ausente em ~10%.",i:"💪",nerv:"N. fibular profundo L4-S1"},
+      {n:"M. sóleo",l:"M. soleus",d:"Cabeça da fíbula + linha soleária da tíbia → tendão do Aquiles. Flexão plantar em todos os ângulos do joelho. Rico em fibras tipo I — resistência. Bomba venosa da panturrilha.",i:"💪",nerv:"N. tibial S1-S2"},
+      {n:"M. gastrocnêmio",l:"M. gastrocnemius",d:"Epicôndilos femorais → tendão do Aquiles. Flexão plantar potente + flexão do joelho. Rico em fibras tipo II — potência.",i:"💪",nerv:"N. tibial S1-S2"},
+      {n:"Tendão do calcâneo (Aquiles)",l:"Tendo calcaneus",d:"Sóleo + gastrocnêmio (+ plantare) → tuberosidade do calcâneo. Maior tendão do corpo. Zona hipovascular 2-6cm da inserção. Ruptura: sinal de Thompson, palpação do gap. Classificação de Kager.",i:"💪",nerv:"N. sural (área sensitiva)"},
+      {n:"M. tibial posterior",l:"M. tibialis posterior",d:"Tíbia + fíbula + membrana interóssea posterior → tuberosidade navicular (principal) + cuneiformes + metatarsos 2-4. Inversão + flexão plantar. Principal sustentador dinâmico do arco longitudinal medial. Insuficiência: pé plano adquirido do adulto.",i:"💪",nerv:"N. tibial L4-L5"},
+      {n:"M. flexor longo dos dedos (FLD)",l:"M. flexor digitorum longus",d:"Tíbia posterior → falanges distais D2-D5. Flexão plantar + flexão IFD. Cruzamento com FHD no nó de Henry.",i:"💪",nerv:"N. tibial L5-S2"},
+      {n:"M. flexor longo do hálux (FLH)",l:"M. flexor hallucis longus",d:"Fíbula posterior + membrana interóssea → falange distal do hálux. Flexão plantar + flexão IF do hálux. Motor da propulsão. Tenosinovite em bailarinos ('FHL tendinopathy').",i:"💪",nerv:"N. tibial L5-S2"},
+      {n:"M. fibular longo",l:"M. fibularis longus",d:"Cabeça + 2/3 proximais da fíbula → cuneiforme medial + 1° metatarso (plantar). Eversão + flexão plantar. Cruza por baixo do pé → tensiona e sustenta o arco transverso.",i:"💪",nerv:"N. fibular superficial L5-S1"},
+      {n:"M. fibular curto",l:"M. fibularis brevis",d:"2/3 distais da fíbula → tuberosidade do 5° metatarso. Eversão principal. Avulsão da tuberosidade em entorse de inversão.",i:"💪",nerv:"N. fibular superficial L5-S1"},
+      {n:"M. extensor curto dos dedos",l:"M. extensor digitorum brevis",d:"Face dorsal do calcâneo → face dorsal D1-D4. Extensão dos dedos. Atrofia → 'protuberância' dorsal do pé.",i:"💪",nerv:"N. fibular profundo S1-S2"},
+      {n:"M. extensor curto do hálux",l:"M. extensor hallucis brevis",d:"Calcâneo dorsal → falange proximal do hálux. Extensão da MCF I.",i:"💪",nerv:"N. fibular profundo L4-S1"},
+      {n:"M. abdutor do hálux",l:"M. abductor hallucis",d:"Tuberosidade medial calcânea + retináculo dos flexores → sesamóide medial + falange proximal D1. Abdução + flexão do hálux. Borda medial do pé.",i:"💪",nerv:"N. plantar medial L5-S1"},
+      {n:"M. flexor curto do hálux",l:"M. flexor hallucis brevis",d:"Cuboide + cuneiforme lateral → sesamóides + falange proximal. 2 cabeças. Flexão da MCF I. N. plantar medial (cabeça medial) + lateral (cabeça lateral).",i:"💪",nerv:"N. plantar medial + lateral"},
+      {n:"M. adutor do hálux",l:"M. adductor hallucis",d:"Cabeça oblíqua (bases M2-M4) + cabeça transversa (cápsula MCF 3-5) → sesamóide lateral. Adução + sustentação do arco transverso.",i:"💪",nerv:"N. plantar lateral S1-S2"},
+      {n:"M. abdutor do dedo mínimo do pé",l:"M. abductor digiti minimi pedis",d:"Tuberosidade calcânea → falange proximal D5. Abdução do D5 + sustentação borda lateral.",i:"💪",nerv:"N. plantar lateral S1-S2"},
+      {n:"M. flexor curto dos dedos",l:"M. flexor digitorum brevis",d:"Tuberosidade medial calcânea → falanges médias D2-D5 (bipartido). Flexão das IFP.",i:"💪",nerv:"N. plantar medial S1-S2"},
+      {n:"M. quadrado plantar",l:"M. quadratus plantae",d:"2 cabeças do calcâneo → tendão do FLD. Redireciona a tração do FLD para a linha dos dedos.",i:"💪",nerv:"N. plantar lateral S1-S2"},
+      {n:"Mm. lumbricais do pé (4)",l:"Mm. lumbricales pedis",d:"Tendões do FLD → expansão extensora. Flexão MCF + extensão IFP/IFD. L1: N. plantar medial; L2-L4: N. plantar lateral.",i:"💪",nerv:"N. plantar medial (L1) + lateral (L2-L4)"},
+      {n:"Mm. interósseos plantares (3)",l:"Mm. interossei plantares",d:"D3, D4, D5 (base e face medial) → base falange proximal. Adução dos dedos.",i:"💪",nerv:"N. plantar lateral S1-S2"},
+      {n:"Mm. interósseos dorsais do pé (4)",l:"Mm. interossei dorsales pedis",d:"2 cabeças de metatarsos adjacentes → falanges proximais. Abdução dos dedos.",i:"💪",nerv:"N. plantar lateral S1-S2"},
+    ],
+    Nervos:[
+      {n:"N. fibular superficial",l:"N. fibularis superficialis",d:"L4-S2. Motor: mm. fibulares longo e curto (eversão). Sensitivo: dorso do pé (exceto 1° espaço e borda lateral). Lesão em entorse de inversão crônica.",i:"⚡",nerv:"L4-S2"},
+      {n:"N. fibular profundo",l:"N. fibularis profundus",d:"L4-S1. Motor: tibial anterior, extensor longo dos dedos, extensor longo do hálux, fibular terceiro, extensores curtos. Sensitivo: 1° espaço interdigital dorsal. Síndrome do seio do tarso anterior.",i:"⚡",nerv:"L4-S1"},
+      {n:"N. tibial posterior (tornozelo)",l:"N. tibialis — pars distalis",d:"L4-S3. Pelo túnel do tarso. Divide em n. plantar medial e lateral + nn. calcâneos. Síndrome do túnel do tarso: parestesia plantar noturna.",i:"⚡",nerv:"L4-S3"},
+      {n:"N. plantar medial",l:"N. plantaris medialis",d:"L5-S1. Motor: abdutor do hálux, FCD, FHB, lumbrical I. Sensitivo: 2/3 mediais da planta + D1-D3 e metade medial D4.",i:"⚡",nerv:"L5-S1"},
+      {n:"N. plantar lateral",l:"N. plantaris lateralis",d:"S1-S2. Motor: quadrado plantar, abdutor do D5, interósseos, adutores, lumbricais II-IV, FHB (cabeça lat.). Sensitivo: 1/3 lateral + D5 e metade lateral D4.",i:"⚡",nerv:"S1-S2"},
+      {n:"N. sural",l:"N. suralis",d:"S1-S2. Face posterolateral da perna → maléolo lateral. Sensitivo: borda lateral do pé e D5. Usado como enxerto de nervo.",i:"⚡",nerv:"S1-S2"},
+      {n:"N. safeno (tornozelo)",l:"N. saphenus",d:"L3-L4. Face medial do tornozelo e pé. Acompanha a v. safena magna.",i:"⚡",nerv:"L3-L4"},
+      {n:"Nn. calcâneos mediais",l:"Nn. calcanei mediales",d:"Do n. tibial (antes do túnel). Sensitivo: calcanhar medial e plantar. Fasciite plantar: dor na origem. Primeiro passo matinal.",i:"⚡",nerv:"S1-S2"},
+      {n:"N. interdigital (neuroma de Morton)",l:"N. interdigitalis — neuroma Mortoni",d:"Ramos terminais dos plantares. 3° espaço: mais frequente (entre D3-D4). Engrossamento perineural. Sinal de Mulder.",i:"⚡",nerv:"Plantar lateral + ramo do medial"},
+    ],
+    Vasos:[
+      {n:"A. tibial anterior",l:"A. tibialis anterior",d:"Perfura a membrana interóssea → compartimento anterior. Continua como a. dorsal do pé após o tornozelo.",i:"🩸",nerv:""},
+      {n:"A. dorsal do pé (pediosa)",l:"A. dorsalis pedis",d:"Continuação da tibial anterior. Pulso pediosa: entre extensor longo do hálux e D2. Ramos: arco dorsal do pé, 1ª dorsal metatarsal.",i:"🩸",nerv:""},
+      {n:"A. tibial posterior",l:"A. tibialis posterior",d:"Compartimento posterior profundo. Pelo túnel do tarso (posterior ao maléolo medial). Divide em plantar medial e lateral.",i:"🩸",nerv:""},
+      {n:"A. fibular (peroneal)",l:"A. fibularis",d:"Do tronco tibiofibular. Compartimento posterior lateral. Ramos: perfurante (anastomose com dorsal do pé), calcâneos laterais.",i:"🩸",nerv:""},
+      {n:"A. plantar medial",l:"A. plantaris medialis",d:"Irriga borda medial do pé e contribui para o arco plantar superficial.",i:"🩸",nerv:""},
+      {n:"A. plantar lateral",l:"A. plantaris lateralis",d:"Principal ramo terminal da tibial posterior. Forma o arco plantar profundo anastomosando com a dorsal do pé.",i:"🩸",nerv:""},
+      {n:"Arco plantar profundo",l:"Arcus plantaris profundus",d:"Principalmente pela a. plantar lateral + ramo plantar profundo da dorsal. Aa. metatársicas plantares → aa. digitais.",i:"🩸",nerv:""},
+      {n:"V. safena magna (tornozelo)",l:"V. saphena magna",d:"Originada do arco venoso dorsal, anterior ao maléolo medial. Acesso venoso de emergência.",i:"🩸",nerv:""},
+      {n:"V. safena parva (tornozelo)",l:"V. saphena parva",d:"Posterior ao maléolo lateral. Ascende pela face posterior da perna.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   PÉLVIS FEMININA (mantida e expandida)
+══════════════════════════════════════════════════════ */
+pelve_feminino:{name:"Pelve Feminina",sub:"Órgãos reprodutores femininos, ligamentos, assoalho pélvico e vasculatura",bilateral:false,gender:'female',
+  structs:{
+    Ossos:[
+      {n:"Pelve feminina (ginecoide)",l:"Pelvis gynaecoidea",d:"Mais larga e rasa. Ângulo subpúbico >90°. Abertura pélvica maior circular. Diâmetros: conjugata vera ~11cm, transverso ~13cm, oblíquos ~12cm.",i:"🦴",nerv:""},
+      {n:"Sacro feminino",l:"Os sacrum (femininum)",d:"Mais largo, curto e menos curvado. Promontório menos pronunciado. Permite maior diâmetro sagital pélvico.",i:"🦴",nerv:"Nn. sacrais"},
+      {n:"Cóccix feminino",l:"Os coccygis (femininum)",d:"Mais móvel que o masculino — recua durante o parto. Articulação sacrococcígea com fibrocartilagem.",i:"🦴",nerv:"N. coccígeo"},
+      {n:"Sínfise púbica feminina",l:"Symphysis pubica (feminina)",d:"Disco interpúbico afrouxa sob relaxina na gestação. Diástase pubiana: >10mm no pós-parto imediato.",i:"🦴",nerv:"N. ilioinguinal"},
+    ],
+    Articulações:[
+      {n:"ASI feminina",l:"Art. sacroiliaca (feminina)",d:"Maior mobilidade que a masculina. Nutação aumentada no parto.",i:"🔗",nerv:"L4-S3"},
+      {n:"Sínfise pubiana gravídica",l:"Symphysis pubica gravídica",d:"Relaxina → afrouxamento do fibrocartilagem interpúbico. Diástase pode chegar a 9mm.",i:"🔗",nerv:"N. ilioinguinal"},
+      {n:"Articulação coxofemoral feminina",l:"Art. coxae (feminina)",d:"Ângulo Q ~17°. Maior anteversão acetabular. Maior risco de DPF.",i:"🔗",nerv:"N. femoral, obturador, isquiático"},
+    ],
+    Músculos:[
+      {n:"M. elevador do ânus — pubococcígeo",l:"M. pubococcygeus (femininum)",d:"Corpo do púbis → cóccix. Principal músculo do assoalho pélvico. Suporta útero, vagina, bexiga.",i:"💪",nerv:"N. pudendo S2-S4 + ramos diretos S3-S4"},
+      {n:"M. elevador do ânus — pubovaginal",l:"M. pubovaginalis",d:"Feixe anterior que envolve a vagina. Comprime e eleva.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. elevador do ânus — iliococcígeo",l:"M. iliococcygeus",d:"Arco tendíneo do elevador + espinha isquiática → rafe anococcígea + cóccix. Porção posterior do elevador.",i:"💪",nerv:"N. pudendo + ramos diretos S4"},
+      {n:"M. puborretal",l:"M. puborectalis",d:"Alça em U ao redor da junção anorretal. Ângulo anorretal. Contínência fecal. Relaxa na defecação.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. coccígeo (isquiococcígeo)",l:"M. coccygeus",d:"Espinha isquiática → cóccix + sacro. Suporte posterior do assoalho.",i:"💪",nerv:"S4-S5"},
+      {n:"M. bulboesponjoso feminino",l:"M. bulbospongiosus (femininum)",d:"Envolve o bulbo do vestíbulo. Comprime vagina. Contração durante o orgasmo.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. isquiocavernoso feminino",l:"M. ischiocavernosus (femininum)",d:"Crura do clitóris. Ereção clitoriana.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. transverso profundo do períneo",l:"M. transversus perinei profundus",d:"Estabiliza o núcleo central do períneo. Continência urinária.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. transverso superficial do períneo",l:"M. transversus perinei superficialis",d:"Base do corpo perineal. Suporte do períneo.",i:"💪",nerv:"N. pudendo S3-S4"},
+      {n:"M. esfíncter externo da uretra feminino",l:"M. sphincter urethrae externus (femininum)",d:"Envolve uretra e vagina anteriormente. Continência urinária voluntária.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. esfíncter externo do ânus",l:"M. sphincter ani externus",d:"3 porções: subcutânea, superficial, profunda. Continência anal voluntária. Lesão no parto.",i:"💪",nerv:"N. pudendo S2-S4 + N. retal inferior"},
+    ],
+    Nervos:[
+      {n:"N. pudendo feminino",l:"N. pudendus (femininum)",d:"S2-S4. Canal de Alcock. Motor: mm. perineais, esfincteres. Sensitivo: clitóris, lábios, períneo, vagina inferior.",i:"⚡",nerv:"S2-S4"},
+      {n:"N. ilioinguinal feminino",l:"N. ilioinguinalis (femininum)",d:"L1. Canal inguinal → lábio maior e monte pubiano.",i:"⚡",nerv:"L1"},
+      {n:"N. genitofemoral ramo genital feminino",l:"N. genitofemoralis — r. genitalis (femininum)",d:"L1-L2. Monte pubiano e lábio maior.",i:"⚡",nerv:"L1-L2"},
+      {n:"N. cutâneo femoral posterior (perineais)",l:"N. cutaneus femoris posterior (perinealis)",d:"S1-S3. Lábios maiores e face posterior proximal da coxa.",i:"⚡",nerv:"S1-S3"},
+      {n:"Plexo uterovaginal (Frankenhauser)",l:"Plexus uterovaginalis",d:"Fibras simpáticas (T10-L1) e parassimpáticas (S2-S4) para útero, vagina, bexiga.",i:"⚡",nerv:"T10-L1 + S2-S4"},
+      {n:"N. ovárico (plexo)",l:"Plexus ovaricus",d:"Acompanha a. ovárica. T10-T11. Dor referida em T10 (umbilical).",i:"⚡",nerv:"T10-T11"},
+      {n:"Nn. esplâncnicos pélvicos",l:"Nn. splanchnici pelvici",d:"S2-S4. Parassimpático sacral. Ereção clitoriana, secreção vaginal.",i:"⚡",nerv:"S2-S4"},
+    ],
+    Vasos:[
+      {n:"A. uterina",l:"A. uterina",d:"Da a. ilíaca interna. Cruza o ureter ('água sob a ponte') antes de ascender pelo ligamento largo. Ramos: vaginal, ovárico, tubário.",i:"🩸",nerv:""},
+      {n:"A. ovárica",l:"A. ovarica",d:"Da aorta em L2. Desce pelo ligamento suspensor do ovário. Anastomosa com a. uterina.",i:"🩸",nerv:""},
+      {n:"A. vaginal",l:"A. vaginalis",d:"Da uterina ou ilíaca interna. Irriga toda a extensão da vagina.",i:"🩸",nerv:""},
+      {n:"A. pudenda interna feminina",l:"A. pudenda interna (feminina)",d:"Da ilíaca interna. Canal de Alcock. Ramos: perineal, a. do bulbo vestibular, a. do clitóris (profunda e dorsal).",i:"🩸",nerv:""},
+      {n:"Plexo venoso uterino",l:"Plexus venosus uterinus",d:"Dilata significativamente na gestação. Drena para v. ilíaca interna.",i:"🩸",nerv:""},
+      {n:"V. ovárica direita",l:"V. ovarica dextra",d:"Drena para v. cava inferior. Risco de trombose.",i:"🩸",nerv:""},
+      {n:"V. ovárica esquerda",l:"V. ovarica sinistra",d:"Drena para v. renal esquerda. Síndrome de Nutcracker.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   PÉLVIS MASCULINA (mantida e expandida)
+══════════════════════════════════════════════════════ */
+pelve_masculino:{name:"Pelve Masculina",sub:"Órgãos reprodutores masculinos, próstata, assoalho pélvico masculino e vasculatura",bilateral:false,gender:'male',
+  structs:{
+    Ossos:[
+      {n:"Pelve masculina (androide)",l:"Pelvis androida",d:"Estreita e profunda. Ângulo subpúbico <90°. Acetábulo maior. Diâmetros pélvicos menores.",i:"🦴",nerv:""},
+      {n:"Sacro masculino",l:"Os sacrum (masculinum)",d:"Mais estreito, longo e curvado. Curvatura sacral mais pronunciada.",i:"🦴",nerv:"Nn. sacrais"},
+      {n:"Sínfise púbica masculina",l:"Symphysis pubica (masculina)",d:"Mais longa (~5cm). Ângulo subpúbico ~70°. Menos móvel que a feminina.",i:"🦴",nerv:"N. ilioinguinal"},
+    ],
+    Articulações:[
+      {n:"ASI masculina",l:"Art. sacroiliaca (masculina)",d:"Menos móvel. Superfície auricular maior. Mais cartilagem.",i:"🔗",nerv:"L4-S3"},
+      {n:"Sínfise pubiana masculina",l:"Symphysis pubica (masculina)",d:"Mais rígida. Menor mobilidade durante o esporte. Pubalgia atlética: estresse na inserção dos adutores.",i:"🔗",nerv:"N. obturador"},
+    ],
+    Músculos:[
+      {n:"M. elevador do ânus masculino — pubococcígeo",l:"M. pubococcygeus (masculinum)",d:"Corpo do púbis → cóccix. Suporte da próstata e bexiga. Importante na continência pós-prostatectomia.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. puborretal masculino",l:"M. puborectalis (masculinum)",d:"Alça em U ao redor do reto. Principal músculo da continência fecal.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. iliococcígeo masculino",l:"M. iliococcygeus (masculinum)",d:"Porção posterior do elevador. Arco tendíneo → rafe + cóccix.",i:"💪",nerv:"N. pudendo S4"},
+      {n:"M. coccígeo masculino",l:"M. coccygeus (masculinum)",d:"Espinha isquiática → sacro/cóccix. Suporte posterior.",i:"💪",nerv:"S4-S5"},
+      {n:"M. bulboesponjoso masculino",l:"M. bulbospongiosus (masculinum)",d:"Envolve o bulbo peniano. Ejaculação, micção final (expulsão de urina residual).",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. isquiocavernoso masculino",l:"M. ischiocavernosus (masculinum)",d:"Crura do pênis → comprime contra ísquio. Manutenção da ereção.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. transverso profundo do períneo masculino",l:"M. transversus perinei profundus (masculinum)",d:"Parte do diafragma urogenital. Continência urinária.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. esfíncter externo da uretra masculino",l:"M. sphincter urethrae externus (masculinum)",d:"Uretra membranosa. Continência voluntária. Risco na prostatectomia.",i:"💪",nerv:"N. pudendo S2-S4"},
+      {n:"M. esfíncter externo do ânus masculino",l:"M. sphincter ani externus (masculinum)",d:"Continência fecal voluntária.",i:"💪",nerv:"N. pudendo + N. retal inferior S2-S4"},
+      {n:"M. cremaster",l:"M. cremaster",d:"Extensão do oblíquo interno pelo canal inguinal. Eleva o testículo. Reflexo cremastérico (L1-L2): estímulo medial da coxa → elevação.",i:"💪",nerv:"N. genitofemoral L1-L2"},
+      {n:"M. dartos",l:"M. dartos",d:"Músculo liso do escroto. Enruga escroto em resposta ao frio (termorregulação testicular).",i:"💪",nerv:"Simpático"},
+    ],
+    Nervos:[
+      {n:"N. pudendo masculino",l:"N. pudendus (masculinum)",d:"S2-S4. Canal de Alcock. Motor: mm. perineais. Sensitivo: pênis, escroto, períneo, ânus.",i:"⚡",nerv:"S2-S4"},
+      {n:"N. ilioinguinal masculino",l:"N. ilioinguinalis (masculinum)",d:"L1. Canal inguinal → escroto e base do pênis.",i:"⚡",nerv:"L1"},
+      {n:"N. genitofemoral ramo genital masculino",l:"N. genitofemoralis — r. genitalis (masculinum)",d:"L1-L2. Motor: cremaster. Sensitivo: escroto.",i:"⚡",nerv:"L1-L2"},
+      {n:"Nn. cavernosos do pênis",l:"Nn. cavernosi penis",d:"Do plexo prostático. Parassimpático (S2-S4): ereção. Simpático (T10-L2): ejaculação. Lesão na prostatectomia radical.",i:"⚡",nerv:"S2-S4 + T10-L2"},
+      {n:"N. dorsal do pênis",l:"N. dorsalis penis",d:"Ramo terminal do pudendo. Sensitivo: glande e pênis dorsal.",i:"⚡",nerv:"S2-S4"},
+      {n:"Plexo prostático",l:"Plexus prostaticus",d:"Do plexo hipogástrico inferior. Inerva próstata, vesículas seminais, ducto deferente, uretra e pênis.",i:"⚡",nerv:"T10-L2 + S2-S4"},
+    ],
+    Vasos:[
+      {n:"A. pudenda interna masculina",l:"A. pudenda interna (masculina)",d:"Da ilíaca interna. Canal de Alcock. Ramos: perineal, bulbar, a. profunda do pênis (cavernosa), a. dorsal do pênis.",i:"🩸",nerv:""},
+      {n:"A. testicular",l:"A. testicularis",d:"Da aorta em L2. Acompanha o cordão espermático. Torção testicular: isquemia aguda.",i:"🩸",nerv:""},
+      {n:"A. dorsal do pênis",l:"A. dorsalis penis",d:"Irriga glande, prepúcio, pele peniana.",i:"🩸",nerv:""},
+      {n:"A. profunda do pênis (cavernosa)",l:"A. profunda penis",d:"Irriga os corpos cavernosos. Dilata no reflexo erétil parassimpático.",i:"🩸",nerv:""},
+      {n:"A. deferencial",l:"A. ductus deferentis",d:"Da vesical superior ou umbilical. Irriga o ducto deferente e epidídimo.",i:"🩸",nerv:""},
+      {n:"Plexo pampiniforme",l:"Plexus pampiniformis",d:"Rede venosa ao redor da a. testicular. Troca de calor — mantém testículo ~33°C. Varicocele: dilatação (esquerdo 90% pela angulação da v. renal).",i:"🩸",nerv:""},
+      {n:"Linfáticos testiculares",l:"Vasa lymphatica testicularia",d:"Seguem a a. testicular → linfonodos paraaórticos em L2 (origem embrionária). Diferente do escroto que drena para inguinais.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   MAMA FEMININA (mantida)
+══════════════════════════════════════════════════════ */
+mama:{name:"Mama Feminina",sub:"Glândula mamária, ligamentos de Cooper, vascularização e drenagem linfática",bilateral:false,gender:'female',
+  structs:{
+    Ossos:[
+      {n:"Costelas 2-6 (base da mama)",l:"Costae II-VI",d:"Base óssea de suporte. Extensão lateral até a linha axilar anterior.",i:"🦴",nerv:"Nn. intercostais"},
+      {n:"Fáscia peitoral",l:"Fascia pectoralis",d:"Plano de separação entre mama e m. peitoral maior. Plano cirúrgico da mastectomia total.",i:"🦴",nerv:""},
+    ],
+    Articulações:[
+      {n:"Espaço retromamário",l:"Spatium retromammarium",d:"Tecido areolar frouxo entre mama e fáscia. Permite mobilidade normal. Obliterado em carcinoma → mama 'fixada'.",i:"🔗",nerv:""},
+      {n:"Ligamentos de Cooper",l:"Ligg. suspensoria mammaria",d:"Traves fibroglandulares entre lóbulos e pele/fáscia. Retração cutânea em carcinoma ('casca de laranja' ou dimpling). Base das bridas em mastopexia.",i:"🔗",nerv:""},
+    ],
+    Músculos:[
+      {n:"M. peitoral maior (relação mama)",l:"M. pectoralis major",d:"Posterior à mama. Plano de dissecção posterior na mastectomia.",i:"💪",nerv:"Nn. peitorais C5-T1"},
+      {n:"M. serrátil anterior (relação mama)",l:"M. serratus anterior",d:"Lateral à mama. Quadrante externo sobre este músculo.",i:"💪",nerv:"N. torácico longo C5-C7"},
+      {n:"Músculo liso areolar",l:"M. areolaris",d:"Fibras musculares lisas na aréola e mamilo. Ereção do mamilo.",i:"💪",nerv:"Simpático"},
+    ],
+    Nervos:[
+      {n:"N. intercostal lateral 4° (mamilo)",l:"N. intercostalis lateralis IV",d:"T4. Principal sensitivo do mamilo e aréola. Lesão em mamoplastia e mastopexia.",i:"⚡",nerv:"T4"},
+      {n:"Nn. intercostais T2-T6",l:"Nn. intercostales T2-T6",d:"Sensitivos da mama. Ramos cutâneos anteriores e laterais.",i:"⚡",nerv:"T2-T6"},
+      {n:"N. intercostobraquial",l:"N. intercostobrachialis",d:"T2. Cruza a axila. Lesão no esvaziamento axilar → dormência face medial do braço.",i:"⚡",nerv:"T2"},
+      {n:"N. peitoral lateral (mama)",l:"N. pectoralis lateralis",d:"C5-C7. Ramos podem inervar parte da mama via mm. peitorais.",i:"⚡",nerv:"C5-C7"},
+    ],
+    Vasos:[
+      {n:"A. torácica interna (mamária interna)",l:"A. thoracica interna",d:"Ramos perfurantes 2°-4° espaços → 60% do suprimento medial da mama.",i:"🩸",nerv:""},
+      {n:"A. torácica lateral",l:"A. thoracica lateralis",d:"Da a. axilar. Irriga quadrante superolateral — sede mais frequente de carcinoma.",i:"🩸",nerv:""},
+      {n:"A. toracoacromial (ramos peitorais)",l:"A. thoracoacromialis — rr. pectorales",d:"Contribui para vascularização da mama pelo m. peitoral.",i:"🩸",nerv:""},
+      {n:"Ramos intercostais laterais",l:"Rami intercostales laterales",d:"Contribuem para a vascularização da porção lateral da mama.",i:"🩸",nerv:""},
+      {n:"Linfonodos axilares nível I",l:"Nodi lymphoidei axillares (nivel I)",d:"Laterais ao m. peitoral menor. Drenagem principal. 1ª estação em carcinoma.",i:"🩸",nerv:""},
+      {n:"Linfonodos axilares nível II",l:"Nodi lymphoidei axillares (nivel II)",d:"Posteriores ao peitoral menor. Linfonodo de Rotter entre peitorais.",i:"🩸",nerv:""},
+      {n:"Linfonodos axilares nível III (apicais)",l:"Nodi lymphoidei axillares (nivel III)",d:"Mediais ao peitoral menor. Drenam para tronco subclávia.",i:"🩸",nerv:""},
+      {n:"Cadeia mamária interna",l:"Nodi lymphoidei parasternales",d:"Drenagem do quadrante medial (~25%). Ao longo da a. torácica interna.",i:"🩸",nerv:""},
+      {n:"Linfonodo sentinela",l:"Nodus lymphoideus sentinela",d:"1º linfonodo da drenagem tumoral. Biópsia intraoperatória (azul de metileno + radiofármaco). Guia esvaziamento axilar.",i:"🩸",nerv:""},
+    ]
+  }
+},
+
+/* ══════════════════════════════════════════════════════
+   ÚTERO, TROMPAS E OVÁRIOS
+══════════════════════════════════════════════════════ */
+utero:{name:"Útero, Trompas e Ovários",sub:"Órgãos reprodutores internos femininos, ligamentos e relações",bilateral:false,gender:'female',
+  structs:{
+    Ossos:[
+      {n:"Estreito superior da pelve",l:"Apertura pelvis superior",d:"Promontório sacral + linhas arqueadas + sínfise. Conjugata vera ~11cm, transverso ~13cm.",i:"🦴",nerv:""},
+      {n:"Estreito inferior da pelve",l:"Apertura pelvis inferior",d:"Ísquio + sacro + cóccix. Canal de saída do feto.",i:"🦴",nerv:""},
+    ],
+    Articulações:[
+      {n:"Ligamento largo",l:"Lig. latum uteri",d:"Peritônio dobrado sobre os lados do útero. Compartimentos: mesométrio (útero), mesossalpinge (tubas), mesovário (ovário).",i:"🔗",nerv:"Plexo uterovaginal"},
+      {n:"Ligamento redondo do útero",l:"Lig. teres uteri",d:"Cornos uterinos → canal inguinal → lábio maior. Mantém anteversão uterina. Dor em gravidez.",i:"🔗",nerv:"N. ilioinguinal L1"},
+      {n:"Ligamento cardinal (Mackenrodt)",l:"Lig. cardinale",d:"Colo uterino → parede pélvica lateral. Principal estabilizador do colo. Lesão → prolapso uterino.",i:"🔗",nerv:"Plexo hipogástrico"},
+      {n:"Ligamento uterossacral",l:"Lig. uterosacralis",d:"Colo uterino → sacro S2-S4. Mantém posição posterior do colo. Endometriose comum neste ligamento.",i:"🔗",nerv:"Plexo hipogástrico"},
+      {n:"Ligamento suspensor do ovário",l:"Lig. suspensorium ovarii",d:"Contém a. e v. ováricas. Da parede pélvica lateral ao polo superior do ovário.",i:"🔗",nerv:"Plexo ovárico"},
+      {n:"Fórnice vaginal posterior",l:"Fornix vaginae posterior",d:"Fundo de saco de Douglas. Palpação de coleção pélvica. Culdocentese.",i:"🔗",nerv:"N. pudendo"},
+    ],
+    Músculos:[
+      {n:"Miométrio",l:"Myometrium",d:"3 camadas de músculo liso: externa longitudinal, média circular, interna plexiforme. Contrações do trabalho de parto. Regulado por ocitocina e prostaglandinas.",i:"💪",nerv:"T10-L1 (simpático) + S2-S4 (parassimpático)"},
+      {n:"Endométrio (glândulas e estroma)",l:"Endometrium",d:"Camada funcional (cai na menstruação) + basal (regeneração). Receptores de estrogênio e progesterona.",i:"💪",nerv:"Plexo uterovaginal"},
+      {n:"Mm. das tubas uterinas",l:"Mm. tubae uterinae",d:"Longitudinal e circular. Movimentos peristálticos para transportar o ovócito.",i:"💪",nerv:"Plexo ovárico"},
+    ],
+    Nervos:[
+      {n:"Plexo hipogástrico inferior feminino",l:"Plexus hypogastricus inferior (femininus)",d:"Principal plexo autônomo pélvico. Simpático (T10-L2) e parassimpático (S2-S4). Inerva útero, vagina, bexiga.",i:"⚡",nerv:"T10-L2 + S2-S4"},
+      {n:"Nn. esplâncnicos pélvicos (útero)",l:"Nn. splanchnici pelvici",d:"S2-S4. Parassimpático. Peristaltismo uterino e vasodilatação.",i:"⚡",nerv:"S2-S4"},
+      {n:"Plexo ovárico",l:"Plexus ovaricus",d:"Acompanha a. ovárica. T10-T11. Dor em T10.",i:"⚡",nerv:"T10-T11"},
+    ],
+    Vasos:[
+      {n:"A. uterina (ligamento largo)",l:"A. uterina — lig. latum",d:"Cruza ureter na base do ligamento largo. Ramos: cervicovaginal, corporal, tubário, ovárico anastomótico.",i:"🩸",nerv:""},
+      {n:"A. ovárica (origem)",l:"A. ovarica",d:"Aorta L2. Pelo ligamento suspensor.",i:"🩸",nerv:""},
+      {n:"A. ilíaca interna feminina",l:"A. iliaca interna (feminina)",d:"Divisão anterior: uterina, vaginal, pudenda interna, obturatória, vesical. Divisão posterior: iliolumbar, sacral lateral, glútea superior.",i:"🩸",nerv:""},
+      {n:"Plexo venoso uterino e vaginal",l:"Plexus venosus uterinus et vaginalis",d:"Drenam para v. ilíaca interna.",i:"🩸",nerv:""},
+      {n:"Linfáticos uterinos",l:"Vasa lymphatica uterina",d:"Corpo/fundo: paraaórticos L2. Colo: ilíacos internos e obturatórios. Via ligamento redondo: inguinais.",i:"🩸",nerv:""},
+    ]
+  }
+}
+
+}; /* ══ FIM DO BODY_DATA ══ */
 
 /* ════════════════════════════════════════
    HOTSPOT DEFINITIONS
@@ -1375,8 +1749,42 @@ let selectedCats = new Set(CATEGORIES.map(c => c.id));
 let quizQuestions=[], currentQ=0, score=0, streak=0, bestStreak=0, answers=[];
 let timerInterval=null, timeLeft=25;
 let currentBodyView='front', currentRegion=null, currentStructTab=null, bodySide='bilateral', bodyGender='male';
-let gameHistory=JSON.parse(localStorage.getItem('af_history')||'[]');
-let catStats=JSON.parse(localStorage.getItem('af_catstats')||'{}');
+let gameHistory=[], catStats={};
+try{ gameHistory=JSON.parse(localStorage.getItem('af_history')||'[]'); }catch(e){ gameHistory=[]; }
+try{ catStats=JSON.parse(localStorage.getItem('af_catstats')||'{}'); }catch(e){ catStats={}; }
+
+function calcStreak(){
+  const today=new Date().toDateString();
+  const last=localStorage.getItem('af_last_login');
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  let streak=parseInt(localStorage.getItem('af_streak')||'0');
+  let longest=parseInt(localStorage.getItem('af_longest')||'0');
+
+  if(last===today){
+    // já logou hoje, mantém
+  } else if(last===yesterday){
+    // logou ontem, incrementa
+    streak++;
+    localStorage.setItem('af_streak', streak);
+    if(streak>longest){
+      longest=streak;
+      localStorage.setItem('af_longest', longest);
+    }
+  } else if(!last){
+    // primeiro acesso
+    streak=1;
+    longest=1;
+    localStorage.setItem('af_streak','1');
+    localStorage.setItem('af_longest','1');
+  } else {
+    // quebrou a sequência
+    streak=1;
+    localStorage.setItem('af_streak','1');
+  }
+
+  localStorage.setItem('af_last_login', today);
+  return {streak, longest};
+}
 
 /* ════════════════════════════════════════
    AUTH
@@ -1411,8 +1819,14 @@ async function doRegister(){
 }
 
 function onLogin(d){
-  token=d.token; username=d.username; isAdmin=d.is_admin;
-  userStreak=d.streak||0; userLongest=d.longest||0;
+  token=d.token||'local'; 
+  username=d.username;
+  isAdmin=d.is_admin||false;
+
+  const {streak, longest} = calcStreak();
+  userStreak=streak;
+  userLongest=longest;
+
   document.getElementById('navUsername').textContent=username;
   document.getElementById('navStreakNum').textContent=userStreak;
   document.getElementById('topNav').classList.add('visible');
@@ -1457,15 +1871,17 @@ function closeWeeklyPopup(){document.getElementById('weeklyPopup').classList.rem
 /* ════════════════════════════════════════
    MY STATS
 ════════════════════════════════════════ */
-async function loadMyStats(){
-  try{
-    const res=await fetch(`${API}/api/me/stats`,{headers:{Authorization:`Bearer ${token}`}});
-    const d=await res.json();
-    document.getElementById('hsBest').textContent=d.best!=null?`${d.best}/10`:'–';
-    document.getElementById('hsGames').textContent=d.games||0;
-    document.getElementById('hsStreak').textContent=`${d.streak||0}🔥`;
-    document.getElementById('hsAvg').textContent=d.avg!=null?d.avg:'–';
-  }catch(e){}
+function loadMyStats(){
+  const games=gameHistory.length;
+  const best=games?Math.max(...gameHistory.map(g=>g.score)):null;
+  const avg=games?Math.round(gameHistory.reduce((s,g)=>s+(g.score/10)*100,0)/games):null;
+
+  document.getElementById('hsBest').textContent=best!=null?`${best}/10`:'–';
+  document.getElementById('hsGames').textContent=games;
+  document.getElementById('hsStreak').textContent=`${userStreak}🔥`;
+  document.getElementById('hsAvg').textContent=avg!=null?`${avg}%`:'–';
+
+  document.getElementById('navStreakNum').textContent=userStreak;
 }
 
 /* ════════════════════════════════════════
