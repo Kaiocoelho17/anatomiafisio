@@ -323,7 +323,13 @@ body::before{content:'';position:fixed;inset:0;background:
 .btoggle-btn.gender-active{border-color:#e879f9;color:#e879f9;background:rgba(232,121,249,.08);}
 .explorer-wrap{display:flex;width:100%;flex:1;overflow:hidden;}
 /* explorer below top bars */
-.explorer-content{display:flex;width:100%;height:calc(100vh - 52px - 52px);overflow:hidden;}
+.explorer-content{
+  display:flex;
+  width:100%;
+  height:calc(100vh - 104px);
+  overflow:hidden;
+  margin-top:0;
+}
 /* Left: body image */
 .body-side-panel{flex:0 0 260px;background:var(--surface);border-right:1px solid var(--border);
   overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:10px 6px;}
@@ -899,6 +905,88 @@ const QUESTIONS = [
   {cat:"Avançado",q:"A plataforma de força mede principalmente:",opts:["EMG muscular","Ângulos articulares","Força de reação do solo (GRF) e COP","Velocidade de marcha"],a:2,exp:"Plataforma de força: mede a Ground Reaction Force (GRF) em 3 eixos e o centro de pressão (COP)."},
   {cat:"Avançado",q:"O conceito de variabilidade motor ideal (VMP) sugere que:",opts:["Menor variabilidade = maior saúde do sistema","Variabilidade excessiva = colapso do sistema","Variabilidade ótima = sinal de saúde e adaptabilidade do sistema","Variabilidade é irrelevante clinicamente"],a:2,exp:"Variabilidade motora ideal: sistemas saudáveis apresentam variabilidade complexa — sua redução ou excesso indica patologia."},
   {cat:"Avançado",q:"A eletromiografia de superfície (sEMG) não permite:",opts:["Avaliação do timing muscular","Análise de fadiga pela frequência mediana","Distinção de unidades motoras individuais","Biofeedback muscular"],a:2,exp:"sEMG não permite distinguir unidades motoras individuais — isso requer eletrodos intramusculares (agulha)."},
+   
+  {cat:"Faculdade",q:"O músculo piriforme pode ser palpado a partir de qual referência anatômica?",opts:["Margem lateral da tíbia até o maléolo medial","Porção média da margem lateral do sacro até o trocânter maior do fêmur","Crista ilíaca até a patela","Cabeça da fíbula até o calcâneo"],a:1,exp:"O piriforme vai da margem lateral do sacro ao trocânter maior — referência clássica na palpação glútea profunda."},
+  {cat:"Faculdade",q:"Qual movimento facilita a palpação indireta do músculo piriforme?",opts:["Flexão plantar","Adução do quadril","Rotação lateral","Extensão do joelho"],a:2,exp:"A rotação lateral ativa o piriforme, facilitando sua identificação durante a palpação indireta."},
+  {cat:"Faculdade",q:"Os músculos obturatório interno, obturatório externo, gêmeos e quadrado da coxa pertencem a qual grupamento?",opts:["Extensores do joelho","Rotadores laterais da coxa","Flexores plantares","Abdutores do ombro"],a:1,exp:"Esses músculos profundos da região glútea são classificados como rotadores laterais da coxa."},
+  {cat:"Faculdade",q:"Qual posição é indicada para palpação indireta dos músculos pelvicotrocantéricos?",opts:["Decúbito dorsal","Ortostática","Decúbito lateral","Sentado"],a:2,exp:"O decúbito lateral é a posição mais indicada para acessar os rotadores laterais profundos do quadril."},
+  {cat:"Faculdade",q:"Na palpação dos músculos pelvicotrocantéricos, o joelho deve permanecer:",opts:["Totalmente estendido","Fletido","Em hiperextensão","Em rotação medial"],a:1,exp:"Com o joelho fletido, a tensão dos isquiotibiais é reduzida, facilitando a palpação dos rotadores profundos."},
+  {cat:"Faculdade",q:"A coxa possui qual formato anatômico predominante?",opts:["Triangular","Retangular","Cilíndrico","Oval achatado"],a:2,exp:"A coxa tem formato cilíndrico, com compartimentos musculares anterior, posterior e medial."},
+  {cat:"Faculdade",q:"Na palpação indireta dos pelvicotrocantéricos, a coxa deve estar:",opts:["Levemente abduzida","Em adução máxima","Em extensão total","Em rotação medial"],a:0,exp:"A leve abdução relaxa a tensão da fáscia lateral, permitindo melhor acesso aos músculos profundos."},
+  {cat:"Faculdade",q:"O paciente para palpação do piriforme deve ficar em:",opts:["Decúbito ventral","Decúbito dorsal","Sentado","Ortostase"],a:0,exp:"O decúbito ventral oferece acesso direto à região glútea posterior, onde o piriforme é palpado."},
+ 
+  /* ── Anatomia Palpatória — Membro Superior ── */
+  {cat:"Faculdade",q:"O úmero é o osso localizado entre:",opts:["Punho e mão","Ombro e cotovelo","Quadril e joelho","Escápula e clavícula"],a:1,exp:"O úmero é o único osso do braço, articulando-se proximalmente com a escápula e distalmente com rádio e ulna."},
+  {cat:"Faculdade",q:"Para palpar os epicôndilos do úmero, o cotovelo deve estar em:",opts:["Extensão total","Flexão de 90°","Flexão de 20°","Hiperextensão"],a:1,exp:"A flexão de 90° projeta os epicôndilos lateralmente, facilitando a palpação."},
+  {cat:"Faculdade",q:"A epicondilite lateral relaciona-se principalmente com qual músculo?",opts:["Extensor radial curto do carpo","Bíceps braquial","Tríceps braquial","Deltoide"],a:0,exp:"O ECRB (extensor carpi radialis brevis) é o principal músculo envolvido na epicondilite lateral ('cotovelo do tenista')."},
+  {cat:"Faculdade",q:"Posteriormente ao epicôndilo medial localiza-se:",opts:["Nervo radial","Nervo ulnar","Artéria braquial","Tendão patelar"],a:1,exp:"O nervo ulnar corre no sulco posterior ao epicôndilo medial — palpável e vulnerável a trauma direto."},
+  {cat:"Faculdade",q:"A cabeça do rádio é melhor identificada com movimentos de:",opts:["Flexão plantar","Adução","Prono-supinação","Extensão cervical"],a:2,exp:"Durante a prono-supinação, a cabeça radial gira sob os dedos do examinador, sendo facilmente identificada."},
+  {cat:"Faculdade",q:"O processo estiloide da ulna possui formato semelhante a:",opts:["Cubo","Linha reta","Ponta de lápis","Disco"],a:2,exp:"O estiloide ulnar tem formato pontiagudo, palpável na face posteromedial do punho."},
+  {cat:"Faculdade",q:"O tubérculo dorsal do rádio também é chamado de:",opts:["Tubérculo de Merkel","Tubérculo de Lister","Tubérculo de Golgi","Tubérculo de Krause"],a:1,exp:"O tubérculo de Lister é uma saliência dorsal do rádio que serve de polia para o tendão do extensor longo do polegar."},
+  {cat:"Faculdade",q:"O osso capitato relaciona-se com a base de qual metacarpo?",opts:["Primeiro","Segundo","Terceiro","Quinto"],a:2,exp:"O capitato (maior osso do carpo) articula-se principalmente com a base do 3° metacarpo."},
+  {cat:"Faculdade",q:"O gancho do hamato está localizado na região:",opts:["Dorsal do pé","Ventral da mão","Cervical","Lombar"],a:1,exp:"O gancho do hamato projeta-se para a palma da mão, delimitando lateralmente o canal de Guyon."},
+ 
+  /* ── Anatomia Palpatória — Cintura Escapular ── */
+  {cat:"Faculdade",q:"A cintura escapular é composta por quantos ossos?",opts:["Dois","Três","Quatro","Cinco"],a:1,exp:"A cintura escapular é formada por três ossos: clavícula, escápula e úmero (alguns autores incluem apenas clavícula e escápula)."},
+  {cat:"Faculdade",q:"A clavícula possui formato aproximado de:",opts:["Círculo","Triângulo","S","Retângulo"],a:2,exp:"A clavícula tem formato em 'S' — 1/3 medial convexo anteriormente e 2/3 laterais côncavos."},
+  {cat:"Faculdade",q:"A espinha da escápula localiza-se ao nível de:",opts:["T1","T3","T7","L2"],a:1,exp:"A espinha da escápula encontra-se ao nível de T3 — referência palpatória clássica."},
+  {cat:"Faculdade",q:"O ângulo inferior da escápula geralmente encontra-se ao nível de:",opts:["T1","T3","T5","T7"],a:3,exp:"O ângulo inferior da escápula é referência para T7 em posição neutra dos membros superiores."},
+  {cat:"Faculdade",q:"O processo coracoide pode ser palpado:",opts:["Na região lombar","Dois centímetros abaixo da concavidade anterolateral da clavícula","Na ulna","No rádio distal"],a:1,exp:"O coracoide é encontrado cerca de 2 cm inferiormente à porção lateral côncava da clavícula — palpável com pressão moderada."},
+  {cat:"Faculdade",q:"As fraturas mais comuns da clavícula ocorrem no:",opts:["Terço distal","Terço proximal","Terço médio","Acrômio"],a:2,exp:"O terço médio da clavícula é a região mais frágil e responsável por ~80% das fraturas, por ser o ponto de menor suporte."},
+  {cat:"Faculdade",q:"O acrômio serve de origem para qual músculo?",opts:["Bíceps","Deltoide","Sartório","Trapézio inferior"],a:1,exp:"O acrômio é um dos três pontos de origem do músculo deltoide (junto com a espinha da escápula e a clavícula)."},
+ 
+  /* ── Técnicas Palpatórias ── */
+  {cat:"Faculdade",q:"Palpação é definida como:",opts:["Movimento muscular involuntário","Exploração do corpo pela palma da mão ou dedos","Exame apenas visual","Técnica cirúrgica"],a:1,exp:"A palpação é uma técnica de avaliação física que utiliza tato e pressão para explorar estruturas corporais."},
+  {cat:"Faculdade",q:"Os corpúsculos de Meissner são abundantes:",opts:["Nos pés","No fígado","Nas pontas dos dedos","Na retina"],a:2,exp:"Os corpúsculos de Meissner se concentram nas pontas dos dedos — mecanorreceptores de tato fino e discriminativo."},
+  {cat:"Faculdade",q:"Os corpúsculos de Vater-Pacini respondem principalmente a:",opts:["Luz","Pressão forte","Cheiros","Sons"],a:1,exp:"Os corpúsculos de Vater-Pacini são mecanorreceptores de adaptação rápida que detectam pressão intensa e vibração."},
+  {cat:"Faculdade",q:"O órgão tendinoso de Golgi está localizado:",opts:["Na retina","Na junção musculotendinosa","No coração","Na medula espinhal"],a:1,exp:"Os OTGs localizam-se na junção musculotendinosa, detectando tensão muscular e ativando inibição autogênica."},
+  {cat:"Faculdade",q:"A propriocepção também pode ser chamada de:",opts:["Hematose","Cinestesia","Homeostase","Endocitose"],a:1,exp:"Cinestesia e propriocepção são termos usados para descrever a percepção da posição e movimento corporal."},
+ 
+  /* ── Osteopatia ── */
+  {cat:"Faculdade",q:"Quem criou a Osteopatia?",opts:["William Sutherland","Andrew Taylor Still","John Littlejohn","Irwin Korr"],a:1,exp:"Andrew Taylor Still fundou a Osteopatia em 1874, nos Estados Unidos."},
+  {cat:"Faculdade",q:"Em que ano a Osteopatia foi desenvolvida?",opts:["1874","1915","1892","1900"],a:0,exp:"A Osteopatia foi desenvolvida por Still em 1874, com a primeira escola fundada em Kirksville em 1892."},
+  {cat:"Faculdade",q:"O acrônimo TART na Osteopatia significa:",opts:["Tensão, Assimetria, Restrição e Tenderness","Tensão, Alongamento, Resistência e Trauma","Tecido, Articulação, Rotação e Tendão","Tônus, Ação, Rigidez e Temperatura"],a:0,exp:"TART: Texture (textura), Asymmetry (assimetria), Restriction (restrição), Tenderness (sensibilidade/dor) — critérios da disfunção somática."},
+  {cat:"Faculdade",q:"O que é facilitação medular na Osteopatia?",opts:["Redução da atividade neural","Aumento da atividade dos neurônios medulares","Bloqueio muscular","Diminuição da circulação"],a:1,exp:"Facilitação medular: segmentos medulares com limiar de ativação reduzido, mantendo hiperatividade neural reflexa."},
+  {cat:"Faculdade",q:"Qual princípio osteopático afirma que a estrutura condiciona a função?",opts:["Lei da artéria","Unidade corporal","Autocura","A estrutura governa a função"],a:3,exp:"'A estrutura governa a função' é um dos pilares da osteopatia: alterações estruturais modificam funções corporais."},
+  {cat:"Faculdade",q:"Quem desenvolveu a Osteopatia craniana?",opts:["Fred Mitchell","Lawrence Jones","William Sutherland","Harrison Fryette"],a:2,exp:"William Sutherland, aluno de Still, desenvolveu a osteopatia craniana no início do século XX."},
+  {cat:"Faculdade",q:"A primeira escola de Osteopatia foi fundada em:",opts:["Londres","Paris","Chicago","Kirksville"],a:3,exp:"A American School of Osteopathy foi fundada em Kirksville, Missouri, em 1892, por Andrew Taylor Still."},
+  {cat:"Faculdade",q:"Qual princípio afirma que um bom fluxo sanguíneo mantém os tecidos saudáveis?",opts:["Lei da artéria","Autocura","Unidade corporal","Facilitação neural"],a:0,exp:"A 'Lei da artéria' de Still: a saúde dos tecidos depende do livre fluxo sanguíneo e linfático."},
+ 
+  /* ── Cinesioterapia ── */
+  {cat:"Faculdade",q:"O que é cinesioterapia?",opts:["Terapia medicamentosa","Terapia pelo movimento","Técnica cirúrgica","Terapia respiratória"],a:1,exp:"Cinesioterapia é o tratamento pela cinesiologia — uso terapêutico do movimento para reabilitar funções."},
+  {cat:"Faculdade",q:"O método McKenzie utiliza principalmente:",opts:["Exercícios de extensão","Exercícios aquáticos","Alongamentos cervicais","Exercícios respiratórios"],a:0,exp:"O método McKenzie baseia-se em exercícios de extensão para centralizar a dor discogênica e restaurar a lordose."},
+  {cat:"Faculdade",q:"A FNP significa:",opts:["Facilitação Neural Primária","Facilitação Neuromuscular Proprioceptiva","Flexão Neurológica Passiva","Função Neuromotora Principal"],a:1,exp:"FNP (Facilitação Neuromuscular Proprioceptiva): técnica que usa padrões diagonais de movimento e princípios neurológicos para ganho funcional."},
+  {cat:"Faculdade",q:"O conceito Bobath é utilizado principalmente para:",opts:["Lesões cardíacas","Patologias do sistema nervoso central","Fraturas ósseas","Problemas pulmonares"],a:1,exp:"O conceito Bobath é voltado à reabilitação neurológica — especialmente AVC, PC e lesão medular."},
+  {cat:"Faculdade",q:"Os exercícios passivos são realizados por:",opts:["Contração voluntária","Força externa","Apenas aparelhos","Sistema nervoso"],a:1,exp:"Exercícios passivos: realizados completamente por força externa (terapeuta, aparelho), sem contração ativa do paciente."},
+  {cat:"Faculdade",q:"Uma indicação dos exercícios passivos é:",opts:["Hipertrofia muscular","Paralisia muscular","Ganho de resistência cardiovascular","Emagrecimento"],a:1,exp:"Exercícios passivos são indicados em paralisia, coma, período pós-operatório imediato e outras condições com impossibilidade de contração ativa."},
+  {cat:"Faculdade",q:"Qual NÃO é benefício dos exercícios passivos?",opts:["Manter elasticidade muscular","Evitar aderências","Ganho de força muscular","Melhorar circulação"],a:2,exp:"Exercícios passivos NÃO promovem ganho de força — para isso são necessárias contrações ativas resistidas."},
+ 
+  /* ── Mobilização Neural ── */
+  {cat:"Faculdade",q:"A medula espinhal termina aproximadamente em:",opts:["C7","T12","L2","S1"],a:2,exp:"A medula espinhal termina no cone medular, em torno de L1-L2 no adulto — abaixo há apenas a cauda equina."},
+  {cat:"Faculdade",q:"Os nervos espinhais são constituídos por quantos pares?",opts:["12","24","31","33"],a:2,exp:"São 31 pares de nervos espinhais: 8 cervicais, 12 torácicos, 5 lombares, 5 sacrais e 1 coccígeo."},
+  {cat:"Faculdade",q:"As raízes ventrais da medula possuem fibras:",opts:["Sensitivas","Aferentes","Motoras","Autônomas"],a:2,exp:"As raízes ventrais (anteriores) são motoras (eferentes); as raízes dorsais (posteriores) são sensitivas (aferentes) — Lei de Bell-Magendie."},
+  {cat:"Faculdade",q:"Qual tecido envolve cada fibra nervosa individualmente?",opts:["Epineuro","Perineuro","Endoneuro","Mesoneuro"],a:2,exp:"O endoneuro envolve individualmente cada fibra nervosa (axônio + bainha de mielina)."},
+  {cat:"Faculdade",q:"Com quanto de alongamento o fluxo sanguíneo neural começa a diminuir?",opts:["2%","5%","8%","20%"],a:2,exp:"A partir de ~8% de alongamento, o fluxo sanguíneo intraneural começa a ser comprometido."},
+  {cat:"Faculdade",q:"Qual nervo é responsável pela inervação motora do músculo deltoide?",opts:["Nervo radial","Nervo mediano","Nervo axilar","Nervo ulnar"],a:2,exp:"O nervo axilar (C5-C6) inerva o deltoide e o redondo menor, circundando o colo cirúrgico do úmero."},
+  {cat:"Faculdade",q:"O plexo braquial é formado por raízes de:",opts:["T1 a T5","C5 a T1","L1 a L5","S1 a S5"],a:1,exp:"O plexo braquial origina-se das raízes C5, C6, C7, C8 e T1."},
+  {cat:"Faculdade",q:"Qual meninge é a mais espessa?",opts:["Pia-máter","Aracnoide","Dura-máter","Subaracnoide"],a:2,exp:"A dura-máter é a meninge mais externa e espessa, fornecendo proteção mecânica ao SNC."},
+  {cat:"Faculdade",q:"O líquor circula em qual espaço meníngeo?",opts:["Epidural","Subdural","Subaracnoide","Vertebral"],a:2,exp:"O LCR circula no espaço subaracnoide, entre a aracnoide e a pia-máter."},
+ 
+  /* ── Método Pilates ── */
+  {cat:"Faculdade",q:"O método criado por Joseph Pilates recebeu originalmente o nome de:",opts:["Calistenia","Contrologia","RPG","Ginástica Naturalista"],a:1,exp:"Pilates chamou seu método de 'Contrologia' — o estudo e domínio consciente do controle corporal."},
+  {cat:"Faculdade",q:"Durante a Primeira Guerra Mundial, Pilates ficou preso:",opts:["Na França","Na Ilha de Man","Em Berlim","Em Roma"],a:1,exp:"Pilates foi internado na Ilha de Man (Reino Unido) como prisioneiro de guerra alemão, onde desenvolveu seus primeiros aparelhos com as camas hospitalares."},
+  {cat:"Faculdade",q:"Quantos princípios clássicos foram destacados por Friedman e Eisen no método Pilates?",opts:["4","5","6","8"],a:2,exp:"Friedman e Eisen descreveram 6 princípios clássicos do Pilates: concentração, controle, centro, fluxo, precisão e respiração."},
+  {cat:"Faculdade",q:"O Mat Pilates corresponde:",opts:["Aos exercícios aquáticos","Aos exercícios de solo","Aos exercícios militares","Aos exercícios respiratórios"],a:1,exp:"Mat Pilates é a sequência de exercícios realizada no solo (mat = tapete/colchonete)."},
+  {cat:"Faculdade",q:"O equipamento do Pilates que se parece com uma cama com molas é o:",opts:["Cadillac","Wall Unit","Reformer","Magic Circle"],a:2,exp:"O Reformer é o aparelho principal do Pilates — uma estrutura deslizante com molas que oferecem resistência regulável."},
+ 
+  /* ── Reeducação Postural ── */
+  {cat:"Faculdade",q:"O método Mézières foi criado por:",opts:["Philippe Souchard","Ida Rolf","Françoise Mézières","Bernard Bricot"],a:2,exp:"Françoise Mézières criou seu método em 1947, propondo que a musculatura posterior forma uma cadeia que deve ser alongada globalmente."},
+  {cat:"Faculdade",q:"O método RPG (Reeducação Postural Global) foi criado por:",opts:["Marcel Bienfait","Bernard Bricot","Philippe Souchard","Thomas Myers"],a:2,exp:"Philippe Souchard desenvolveu o RPG a partir do método Mézières, incluindo o conceito de posturas de alongamento global."},
+  {cat:"Faculdade",q:"Qual estrutura possui grande importância nas cadeias musculares?",opts:["Ossos","Tendões","Fáscias","Artérias"],a:2,exp:"As fáscias conectam músculos em cadeias miofasciais, transmitindo tensões por todo o corpo."},
+  {cat:"Faculdade",q:"A musculatura estática tende a:",opts:["Ficar flácida rapidamente","Enrijecer e encurtar","Perder mobilidade imediatamente","Diminuir o tônus"],a:1,exp:"Músculos tônicos (estáticos) tendem a encurtar e aumentar o tônus com desuso ou posturas inadequadas."},
+  {cat:"Faculdade",q:"A musculatura dinâmica tende a:",opts:["Fibrosar rapidamente","Permanecer rígida","Ficar fraca e flácida","Aumentar excessivamente o tônus"],a:2,exp:"Músculos fásicos (dinâmicos) tendem à inibição e fraqueza, enquanto os tônicos encurtam — desequilíbrio muscular de Janda."},
+  {cat:"Faculdade",q:"O método Rolfing foi desenvolvido por:",opts:["Ida Rolf","Mézières","Busquet","Godelieve"],a:0,exp:"Ida Rolf desenvolveu o Rolfing (Integração Estrutural) — técnica de manipulação miofascial profunda para realinhamento postural."},
+  {cat:"Faculdade",q:"Bernard Bricot destacou-se por:",opts:["Criar aparelhos de Pilates","Desenvolver palmilhas personalizadas","Criar o método RPG","Desenvolver exercícios aquáticos"],a:1,exp:"Bricot popularizou o uso de palmilhas proprioceptivas personalizadas como recurso de reeducação postural."},
 ];
 
 /* ════════════════════════════════════════
@@ -922,6 +1010,7 @@ const CATEGORIES = [
   {id:"Patologia Ortopédica",icon:"🩺",color:"#a3e635"},
   {id:"Neuro Funcional",icon:"🧩",color:"#e879f9"},
   {id:"Avançado",icon:"🏆",color:"#fbbf24"},
+  {id:"Faculdade",icon:"🎓",color:"#34d399"},
 ];
 
 /* ════════════════════════════════════════
